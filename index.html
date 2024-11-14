@@ -3,135 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Name</title>
+    <title>Nima Yavari</title>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --font-size-base: 1.125rem;
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-color: #e2e2e2;
+            --toggle-bg: #e2e2e2;
+            --toggle-dark: #1a1a1a;
+            --toggle-light: #ffffff;
+            --max-width: 650px;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --border-color: #333333;
+            --toggle-bg: #ffffff;
+            --toggle-dark: #e0e0e0;
+            --toggle-light: #1a1a1a;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-family: "Newsreader", serif;
+            font-size: var(--font-size-base);
+            font-weight: 400;
             line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
             margin: 0;
             padding: 0;
-            min-height: 100vh;
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
+
         .container {
-            width: 500px;
-            padding: 40px 0;
+            max-width: var(--max-width);
+            margin: 40px auto;
+            padding: 0 20px;
         }
-        header {
-            margin-bottom: 60px;
-        }
-        nav {
+
+        .header-container {
             display: flex;
-            flex-direction: row;
             justify-content: space-between;
-            width: 100%;
-            box-sizing: border-box;
+            align-items: center;
+            margin-bottom: 1.5em;
         }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 18px;
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin: 0;
             font-weight: 500;
         }
-        h1 {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-align: justify;
-            line-height: 1.8;
-        }
-        .profile-picture {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            margin: 0 0 20px 0;
-            overflow: hidden;
-        }
-        .profile-picture img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .profile-picture .fallback-text {
-            display: none;
-        }
-        .profile-picture img:not([src]) + .fallback-text {
+
+        .contact-links {
+            margin-top: 0.5em;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            background-color: #333;
-            color: #fff;
-            font-size: 14px;
+            flex-wrap: wrap;
+            gap: 1em;
         }
-        .social-links {
-            margin-top: 60px;
+
+        .contact-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.9em;
+            transition: color 0.2s ease;
+        }
+
+        .contact-links a:hover {
+            text-decoration: underline;
+            color: var(--text-color);
+        }
+
+        .theme-toggle {
+            width: 36px;
+            height: 18px;
+            background-color: var(--toggle-bg);
+            border-radius: 9px;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s ease;
+        }
+
+        .toggle-circle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 14px;
+            height: 14px;
+            background-color: var(--toggle-dark);
+            border-radius: 50%;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        [data-theme="dark"] .toggle-circle {
+            transform: translateX(18px);
+            background-color: var(--toggle-light);
+        }
+
+        .section {
+            margin-bottom: 2em;
+            border-left: 2px solid var(--border-color);
+            padding-left: 1em;
+        }
+
+        .section-header {
             display: flex;
             justify-content: space-between;
-            box-sizing: border-box;
+            align-items: center;
+            cursor: pointer;
+            margin-left: -1em;
+            padding-left: 1em;
+            margin-bottom: 1em;
         }
-        .social-links a {
-            color: #fff;
+
+        .section-title {
+            font-size: 1.25em;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .section-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .section-content.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .section-header .arrow {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .section-header .arrow.active {
+            transform: rotate(180deg);
+        }
+
+        .experience-item {
+            margin-bottom: 1.5em;
+        }
+
+        .experience-title {
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .experience-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin: 0.2em 0;
+        }
+
+        .experience-date {
+            color: var(--text-muted);
+            font-size: 0.9em;
+            margin: 0.2em 0;
+        }
+
+        .experience-description {
+            margin-top: 0.5em;
+            font-size: 0.95em;
+        }
+
+        .certification-item {
+            margin-bottom: 0.5em;
+        }
+
+        .skills-category {
+            margin-bottom: 0.5em;
+        }
+
+        .skills-category span {
+            font-weight: 500;
+        }
+
+        .project {
+            margin-bottom: 1.5em;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5em;
+        }
+
+        .project-title {
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .project-links a {
+            color: var(--text-muted);
             text-decoration: none;
-            font-size: 18px;
+            font-size: 0.9em;
         }
-        
-        @media (max-width: 500px) {
-            .container {
-                width: 100%;
-                padding: 20px;
-                box-sizing: border-box;
-            }
-            h1 {
-                font-size: 28px;
-            }
-            p {
-                font-size: 16px;
-            }
-            .profile-picture {
-                width: 150px;
-                height: 150px;
-            }
+
+        .project-links a:hover {
+            text-decoration: underline;
+        }
+
+        .intro {
+            margin-bottom: 2em;
+            font-size: 1.1em;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <nav>
-                <a href="projects.html">Projects</a>
-                <a href="blog.html">Blog</a>
-                <a href="certificates.html">Certificates</a>
-                <a href="resume.html">Resume</a>
-            </nav>
-        </header>
-
-        <main>
-            <div class="profile-picture">
-                <img src="img/profile_picture/1.jpeg" alt="Nima's profile picture" onerror="this.onerror=null; this.src='default-profile.jpg'; this.alt='Default profile picture'">
-                <span class="fallback-text">Nima's Profile Picture</span>
+        <!-- Container starts -->
+        <div class="header-container">
+            <div class="header-left">
+                <h1>Nima Yavari</h1>
+                <div class="contact-links">
+                    <a href="mailto:nima7yavari@gmail.com">Email</a>
+                    <a href="tel:+989386742569">Call</a>
+                    <a href="https://www.linkedin.com/in/nimayavari/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://github.com/n9e6y" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener noreferrer">Kaggle</a>
+                </div>
             </div>
-            <h1>Hi, I'm Nima</h1>
-            <p>I'm a data enthusiast with a solid foundation in Computer Engineering. My passion lies in leveraging programming skills to extract, analyze, visualize, and model data for informed decision-making. As a junior software engineer and computer engineering student, I'm constantly exploring the intersection of data science and software development.</p>
-            <p>Feel free to reach out to me via <a href="mailto:nima7yavari@gmail.com" style="color: #fff; text-decoration: underline;">mail</a> or <a href="https://t.me/ni7ma" target="_blank" style="color: #fff; text-decoration: underline;">telegram</a>. I'm always open to discussing new projects or opportunities.</p>    
-            </main>
-
-        <footer>
-            <div class="social-links">
-                <a href="https://github.com/n9e6y" target="_blank">GitHub</a>
-                <a href="https://linkedin.com/in/nimayavari" target="_blank">LinkedIn</a>
-                <a href="https://kaggle.com/nimayavari" target="_blank">Kaggle</a>
+            <div class="theme-toggle" id="theme-toggle">
+                <div class="toggle-circle"></div>
             </div>
-        </footer>
-    </div>
+        </div>
+        
+
+        <p class="intro">
+            I'm a data enthusiast with a solid foundation in Computer Engineering. My passion lies in leveraging programming skills to extract, analyze, visualize, and model data for informed decision-making. As a junior software engineer and computer engineering student, I'm constantly exploring the intersection of data science and software development.
+        </p>
+
+        <!-- Skills Section -->
+        <div class="section">
+            <div class="section-header" data-section="skills">
+                <h2 class="section-title">Skills</h2>
+                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="section-content active">
+                <div class="skills-category"><span>Languages:</span> Go, Python, SQL</div>
+                <div class="skills-category"><span>Libraries & Frameworks:</span> Pandas, Numpy, Seaborn, Scikit-Learn, Scrapy, Tensorflow, Scipy, Streamlit, Plotly</div>
+                <div class="skills-category"><span>Others:</span> Linux, Git, Docker, Kafka, Power BI</div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="section">
+            <div class="section-header" data-section="projects">
+                <h2 class="section-title">Projects</h2>
+                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="section-content active">
+                <div class="project">
+                    <div class="project-header">
+                        <h3 class="project-title">Snappbox challenge for algorithm arena</h3>
+                        <div class="project-links">
+                            <a href="https://github.com/n9e6y/snappBoxChallengeForAlgorithmArena">GitHub</a>
+                        </div>
+                    </div>
+                    <p class="project-description">This project implements a Delivery Fare Estimation System capable of processing large volumes of GPS data to calculate fare estimates for courier deliveries. It's designed to handle big chunk of input data efficiently using concurrent processing. </p>
+                </div>
+
+                <div class="project">
+                    <div class="project-header">
+                        <h3 class="project-title">Kaggle Dataset Downloader</h3>
+                        <div class="project-links">
+                            <a href="https://github.com/n9e6y/kaggle-dataset-downloader">GitHub</a>
+                        </div>
+                    </div>
+                    <p class="project-description">Kaggle Dataset Downloader is a simple Python tool that simplifies the process of downloading and previewing Kaggle datasets. It provides a command-line interface for easy dataset retrieval and preview. </p>
+                </div>
+
+                <div class="project">
+                    <div class="project-header">
+                        <h3 class="project-title">Visualization and price prediction of Divar rents</h3>
+                        <div class="project-links">
+                            <a href="https://colab.research.google.com/drive/19xJuRLUE5bmR9b1ukwoIs5WlZQMQLx28?usp=sharing">Colab</a>
+                        </div>
+                    </div>
+                    <p class="project-description">Kaggle Dataset Downloader is a simple Python tool that simplifies the process of downloading and previewing Kaggle datasets. It provides a command-line interface for easy dataset retrieval and preview. </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Section -->
+        <div class="section">
+            <div class="section-header" data-section="education">
+                <h2 class="section-title">Education</h2>
+                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="section-content active">
+                <div class="experience-item">
+                    <h3 class="experience-title">Islamic Azad University</h3>
+                    <p class="experience-subtitle">Bachelor of Computer Engineering</p>
+                    <p class="experience-date">January 2021 - December 2024, Tehran</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Experience Section -->
+        <div class="section">
+            <div class="section-header" data-section="experience">
+                <h2 class="section-title">Experience</h2>
+                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="section-content active">
+                <div class="experience-item">
+                    <h3 class="experience-title">Fanap Training Campus</h3>
+                    <p class="experience-subtitle">Data Scientist Internship</p>
+                    <p class="experience-date">December 2023 - August 2024 (ongoing), Tehran, Remote</p>
+                </div>
+
+                <div class="experience-item">
+                    <h3 class="experience-title">Freelance, LimitLines, X Solution, AM Studio</h3>
+                    <p class="experience-subtitle">Visual Designer</p>
+                    <p class="experience-date">June 2019 - November 2021, Tehran</p>
+                    <p class="experience-description">Specialized in creating visual identities that matched target markets and brand values. I focused on understanding customer personas to develop engaging visual stories for different audiences.</p>
+                </div>
+
+                <div class="experience-item">
+                    <h3 class="experience-title">LimitLines</h3>
+                    <p class="experience-subtitle">Account Manager</p>
+                    <p class="experience-date">June 2018 - June 2019, Tehran</p>
+                    <p class="experience-description">Handled the financial and strategic parts of brand campaigns, focusing on making decisions based on data. My role included using data to create effective strategies, find useful insights, and improve results.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications Section -->
+        <div class="section">
+            <div class="section-header" data-section="certifications">
+                <h2 class="section-title">Certifications</h2>
+                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </div>
+            <div class="section-content active">
+                <div class="certification-item">Associate Data Analyst with Python - <strong>DataCamp</strong></div>
+                <div class="certification-item">Machine Learning Specialist - <strong>Rahnema College</strong></div>
+                <div class="certification-item">Data Scientist II & III - <strong>Filoger</strong></div>
+            </div>
+        </div>
+    </div> <!-- Container ends -->
+
+    <script>
+        const toggle = document.getElementById('theme-toggle');  // Theme toggle functionality
+        
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // Handle theme toggle
+        toggle.addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Section toggle functionality
+        document.querySelectorAll('.section-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const arrow = header.querySelector('.arrow');
+                
+                content.classList.toggle('active');
+                arrow.classList.toggle('active');
+                
+                // Save state to localStorage
+                const section = header.getAttribute('data-section');
+                localStorage.setItem(`section-${section}`, content.classList.contains('active'));
+            });
+
+            // Restore section states from localStorage
+            const section = header.getAttribute('data-section');
+            const isOpen = localStorage.getItem(`section-${section}`);
+            
+            if (isOpen === 'false') {
+                const content = header.nextElementSibling;
+                const arrow = header.querySelector('.arrow');
+                content.classList.remove('active');
+                arrow.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>
