@@ -1,414 +1,146 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nima Yavari</title>
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --font-size-base: 1.125rem;
-            --bg-color: #ffffff;
-            --text-color: #333333;
-            --text-muted: #666666;
-            --border-color: #e2e2e2;
-            --toggle-bg: #e2e2e2;
-            --toggle-dark: #1a1a1a;
-            --toggle-light: #ffffff;
-            --max-width: 650px;
-        }
+<html>
+  <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+    <link
+      rel="stylesheet"
+      as="style"
+      onload="this.rel='stylesheet'"
+      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900&amp;family=Work+Sans%3Awght%40400%3B500%3B700%3B900"
+    />
 
-        [data-theme="dark"] {
-            --bg-color: #1a1a1a;
-            --text-color: #e0e0e0;
-            --text-muted: #a0a0a0;
-            --border-color: #333333;
-            --toggle-bg: #ffffff;
-            --toggle-dark: #e0e0e0;
-            --toggle-light: #1a1a1a;
-        }
+    <title>Stitch Design</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
 
-        body {
-            font-family: "Newsreader", serif;
-            font-size: var(--font-size-base);
-            font-weight: 400;
-            line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 0;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-
-        .container {
-            max-width: var(--max-width);
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5em;
-        }
-
-        .header-left {
-            display: flex;
-            flex-direction: column;
-        }
-
-        h1 {
-            font-size: 2em;
-            margin: 0;
-            font-weight: 500;
-        }
-
-        .contact-links {
-            margin-top: 0.5em;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1em;
-        }
-
-        .contact-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 0.9em;
-            transition: color 0.2s ease;
-        }
-
-        .contact-links a:hover {
-            text-decoration: underline;
-            color: var(--text-color);
-        }
-
-        .theme-toggle {
-            width: 36px;
-            height: 18px;
-            background-color: var(--toggle-bg);
-            border-radius: 9px;
-            cursor: pointer;
-            position: relative;
-            transition: background-color 0.2s ease;
-        }
-
-        .toggle-circle {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 14px;
-            height: 14px;
-            background-color: var(--toggle-dark);
-            border-radius: 50%;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
-
-        [data-theme="dark"] .toggle-circle {
-            transform: translateX(18px);
-            background-color: var(--toggle-light);
-        }
-
-        .section {
-            margin-bottom: 2em;
-            border-left: 2px solid var(--border-color);
-            padding-left: 1em;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            margin-left: -1em;
-            padding-left: 1em;
-            margin-bottom: 1em;
-        }
-
-        .section-title {
-            font-size: 1.25em;
-            font-weight: 500;
-            margin: 0;
-        }
-
-        .section-content {
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .section-content.active {
-            display: block;
-            opacity: 1;
-        }
-
-        .section-header .arrow {
-            width: 24px;
-            height: 24px;
-            transition: transform 0.3s ease;
-        }
-
-        .section-header .arrow.active {
-            transform: rotate(180deg);
-        }
-
-        .experience-item {
-            margin-bottom: 1.5em;
-        }
-
-        .experience-title {
-            font-weight: 500;
-            margin: 0;
-        }
-
-        .experience-subtitle {
-            color: var(--text-muted);
-            font-size: 0.9em;
-            margin: 0.2em 0;
-        }
-
-        .experience-date {
-            color: var(--text-muted);
-            font-size: 0.9em;
-            margin: 0.2em 0;
-        }
-
-        .experience-description {
-            margin-top: 0.5em;
-            font-size: 0.95em;
-        }
-
-        .certification-item {
-            margin-bottom: 0.5em;
-        }
-
-        .skills-category {
-            margin-bottom: 0.5em;
-        }
-
-        .skills-category span {
-            font-weight: 500;
-        }
-
-        .project {
-            margin-bottom: 1.5em;
-        }
-
-        .project-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.5em;
-        }
-
-        .project-title {
-            font-weight: 500;
-            margin: 0;
-        }
-
-        .project-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9em;
-        }
-
-        .project-links a:hover {
-            text-decoration: underline;
-        }
-
-        .intro {
-            margin-bottom: 2em;
-            font-size: 1.1em;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Container starts -->
-        <div class="header-container">
-            <div class="header-left">
-                <h1>Nima Yavari</h1>
-                <div class="contact-links">
-                    <a href="mailto:nima7yavari@gmail.com">Email</a>
-                    <a href="tel:+989386742569">Call</a>
-                    <a href="https://www.linkedin.com/in/nimayavari/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                    <a href="https://github.com/n9e6y" target="_blank" rel="noopener noreferrer">GitHub</a>
-                    <a href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener noreferrer">Kaggle</a>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  </head>
+  <body>
+    <div class="relative flex size-full min-h-screen flex-col bg-neutral-50 group/design-root overflow-x-hidden" style='font-family: "Work Sans", "Noto Sans", sans-serif;'>
+      <div class="layout-container flex h-full grow flex-col">
+        <div class="px-40 flex flex-1 justify-center py-5">
+          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+            <h1 class="text-[#141414] tracking-light text-[32px] font-bold leading-tight px-4 text-left pb-3 pt-6">Hello, I'm Nima</h1>
+            <p class="text-neutral-500 text-sm font-normal leading-normal pb-3 pt-1 px-4">I'm a Software Engineer</p>
+            <p class="text-neutral-500 text-sm font-normal leading-normal pb-3 pt-1 px-4">I'm a Data Scientist</p>
+            <p class="text-neutral-500 text-sm font-normal leading-normal pb-3 pt-1 px-4">I'm a Graphic Designer</p>
+            <p class="text-[#141414] text-base font-normal leading-normal pb-3 pt-1 px-4">
+              About Me: I am a versatile professional with a background in software engineering, data science, and graphic design. I bring a unique blend of technical and creative
+              skills to every project, ensuring innovative and effective solutions.
+            </p>
+            <h2 class="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Featured Projects</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBzj48Oy7Dh6qQOHwKWS-C0AOiLPqEjFi25FinkULJOQdSY5x3zF7UR79CxFWYPWaPt7XgXRaFIDqqrv9g7RVkbOpegEtE_5WY4k5MElrDGIdneqLu_oTKzC0tRqyM5RkxCjr-oO38oH0LjJ2qNTZRo2sEIyljYCidAwbtr6OTkspyhR2Mu0UfyjGCKjM7hd8UEy4ZrhWS1FRL9dwKFLOQ2Yx0uTy5ppwQQJI482TunYVfGt798sTMHH5LX8VVPdeJkiPJRiXbhH3U");'
+                ></div>
+                <div>
+                  <p class="text-[#141414] text-base font-medium leading-normal">Project Alpha</p>
+                  <p class="text-neutral-500 text-sm font-normal leading-normal">Description for Project Alpha</p>
                 </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAAZbxQFVHcRkaWPcu0V69-KIKMoKLTXkrquVOgoWSkv994FwbHTJyXwsYoFQzwpL6Tc8wGsdro-di_Hd8m7s0KQAOTiyLxM4edsMekZQhyJUw6uCAxCTWk5zaHFtdh25pviYiQH63EoOhx1Vi51hfPs1EhevksGnP_fOw_KIJaZkm2z6g1ifu4kqWINNKD5FRm3_BQAfSkWu-xeC-rwaA8jSy9ywUTv5gMlAIXPIxkc758DNb9lPheKhmKO9SLA8xxNCmTDlRtrjA");'
+                ></div>
+                <div>
+                  <p class="text-[#141414] text-base font-medium leading-normal">Project Beta</p>
+                  <p class="text-neutral-500 text-sm font-normal leading-normal">Description for Project Beta</p>
+                </div>
+              </div>
             </div>
-            <div class="theme-toggle" id="theme-toggle">
-                <div class="toggle-circle"></div>
+            <h2 class="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Latest Projects</h2>
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-4">
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD33hIxJkguxBEvaCG1JxY5OxLR-yG-w--XOZBpIR62zHUGi1jCljWpNSKBlbpx9xPi5Jvk4KFWx-4OLYJupsEi4l-BM0_-PlG_79r6SocSl6kOArLsNxZRNjGDWKfaKWpVosohe5hR1MH8E82OlyCf6bWKap54DV5m0r_Q4vwFRLXXrztV50fH-I8uCoXsWJXxXYKE2cxf5Sw3FO2dYYzn575Z49z61ath5g8QTRJWcEWBgZYF5ZLXt4ZSk14ZoQXry7F51R-qEJY");'
+                ></div>
+                <div>
+                  <p class="text-[#141414] text-base font-medium leading-normal">Project Gamma</p>
+                  <p class="text-neutral-500 text-sm font-normal leading-normal">Description for Project Gamma</p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-3 pb-3">
+                <div
+                  class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl"
+                  style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBkF5DCClVWEkMOI_LM3O8Xq_GOis9l4ehQK6SNN4v_rCZPkxb9ikAMFn5rq4KNBtOhMLkyVaPb7tvOK0RIglhuGMm9ZlhGzGltaDZDy_627Wk8sRktPoBMLcm9axCJEMnsZpUS6u6g4ksBa_cGmVgvMu2GptRLLhR6hIwZt8grCdfH-sXr7nHHRyKxS9uhe-4zeBRwGlPS0MHCURosRxmgFgVjxL3a34vAxAxAThD5Co2BpYe_jISPa-2KsCVHbqFMqDhd8Xbcsf0");'
+                ></div>
+                <div>
+                  <p class="text-[#141414] text-base font-medium leading-normal">Project Delta</p>
+                  <p class="text-neutral-500 text-sm font-normal leading-normal">Description for Project Delta</p>
+                </div>
+              </div>
             </div>
+            <h2 class="text-[#141414] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Get in Touch</h2>
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col min-w-40 flex-1">
+                <input
+                  placeholder="Your Name"
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border border-[#dbdbdb] bg-neutral-50 focus:border-[#dbdbdb] h-14 placeholder:text-neutral-500 p-[15px] text-base font-normal leading-normal"
+                  value=""
+                />
+              </label>
+            </div>
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col min-w-40 flex-1">
+                <input
+                  placeholder="Your Email"
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border border-[#dbdbdb] bg-neutral-50 focus:border-[#dbdbdb] h-14 placeholder:text-neutral-500 p-[15px] text-base font-normal leading-normal"
+                  value=""
+                />
+              </label>
+            </div>
+            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+              <label class="flex flex-col min-w-40 flex-1">
+                <textarea
+                  placeholder="Your Message"
+                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#141414] focus:outline-0 focus:ring-0 border border-[#dbdbdb] bg-neutral-50 focus:border-[#dbdbdb] min-h-36 placeholder:text-neutral-500 p-[15px] text-base font-normal leading-normal"
+                ></textarea>
+              </label>
+            </div>
+            <div class="flex px-4 py-3 justify-start">
+              <button
+                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-black text-neutral-50 text-sm font-bold leading-normal tracking-[0.015em]"
+              >
+                <span class="truncate">Send</span>
+              </button>
+            </div>
+            <footer class="flex flex-col gap-6 px-5 py-10 text-center @container">
+              <div class="flex flex-wrap justify-center gap-4">
+                <a href="#">
+                  <div class="text-neutral-500" data-icon="TwitterLogo" data-size="24px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                      <path
+                        d="M247.39,68.94A8,8,0,0,0,240,64H209.57A48.66,48.66,0,0,0,168.1,40a46.91,46.91,0,0,0-33.75,13.7A47.9,47.9,0,0,0,120,88v6.09C79.74,83.47,46.81,50.72,46.46,50.37a8,8,0,0,0-13.65,4.92c-4.31,47.79,9.57,79.77,22,98.18a110.93,110.93,0,0,0,21.88,24.2c-15.23,17.53-39.21,26.74-39.47,26.84a8,8,0,0,0-3.85,11.93c.75,1.12,3.75,5.05,11.08,8.72C53.51,229.7,65.48,232,80,232c70.67,0,129.72-54.42,135.75-124.44l29.91-29.9A8,8,0,0,0,247.39,68.94Zm-45,29.41a8,8,0,0,0-2.32,5.14C196,166.58,143.28,216,80,216c-10.56,0-18-1.4-23.22-3.08,11.51-6.25,27.56-17,37.88-32.48A8,8,0,0,0,92,169.08c-.47-.27-43.91-26.34-44-96,16,13,45.25,33.17,78.67,38.79A8,8,0,0,0,136,104V88a32,32,0,0,1,9.6-22.92A30.94,30.94,0,0,1,167.9,56c12.66.16,24.49,7.88,29.44,19.21A8,8,0,0,0,204.67,80h16Z"
+                      ></path>
+                    </svg>
+                  </div>
+                </a>
+                <a href="#">
+                  <div class="text-neutral-500" data-icon="LinkedinLogo" data-size="24px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                      <path
+                        d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z"
+                      ></path>
+                    </svg>
+                  </div>
+                </a>
+                <a href="#">
+                  <div class="text-neutral-500" data-icon="GithubLogo" data-size="24px" data-weight="regular">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                      <path
+                        d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"
+                      ></path>
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              <p class="text-neutral-500 text-base font-normal leading-normal">© 2024 Nima's Portfolio. All rights reserved.</p>
+            </footer>
+          </div>
         </div>
-        
-
-        <p class="intro">
-            I'm a data enthusiast with a solid foundation in Computer Engineering. My passion lies in leveraging programming skills to extract, analyze, visualize, and model data for informed decision-making. As a junior software engineer and computer engineering student, I'm constantly exploring the intersection of data science and software development.
-        </p>
-
-        <!-- Skills Section -->
-        <div class="section">
-            <div class="section-header" data-section="skills">
-                <h2 class="section-title">Skills</h2>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="section-content active">
-                <div class="skills-category"><span>Languages:</span> Go, Python, SQL</div>
-                <div class="skills-category"><span>Libraries & Frameworks:</span> Pandas, Numpy, Seaborn, Scikit-Learn, Scrapy, Tensorflow, Scipy, Streamlit, Plotly</div>
-                <div class="skills-category"><span>Others:</span> Linux, Git, Docker, Kafka, Power BI</div>
-            </div>
-        </div>
-
-        <!-- Projects Section -->
-        <div class="section">
-            <div class="section-header" data-section="projects">
-                <h2 class="section-title">Projects</h2>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="section-content active">
-                <div class="project">
-                    <div class="project-header">
-                        <h3 class="project-title">Snappbox challenge for algorithm arena</h3>
-                        <div class="project-links">
-                            <a href="https://github.com/n9e6y/snappBoxChallengeForAlgorithmArena">GitHub</a>
-                        </div>
-                    </div>
-                    <p class="project-description">This project implements a Delivery Fare Estimation System capable of processing large volumes of GPS data to calculate fare estimates for courier deliveries. It's designed to handle big chunk of input data efficiently using concurrent processing. </p>
-                </div>
-
-                <div class="project">
-                    <div class="project-header">
-                        <h3 class="project-title">Kaggle Dataset Downloader</h3>
-                        <div class="project-links">
-                            <a href="https://github.com/n9e6y/kaggle-dataset-downloader">GitHub</a>
-                        </div>
-                    </div>
-                    <p class="project-description">Kaggle Dataset Downloader is a simple Python tool that simplifies the process of downloading and previewing Kaggle datasets. It provides a command-line interface for easy dataset retrieval and preview. </p>
-                </div>
-
-                <div class="project">
-                    <div class="project-header">
-                        <h3 class="project-title">Visualization and price prediction of Divar rents</h3>
-                        <div class="project-links">
-                            <a href="https://colab.research.google.com/drive/19xJuRLUE5bmR9b1ukwoIs5WlZQMQLx28?usp=sharing">Colab</a>
-                        </div>
-                    </div>
-                    <p class="project-description">Kaggle Dataset Downloader is a simple Python tool that simplifies the process of downloading and previewing Kaggle datasets. It provides a command-line interface for easy dataset retrieval and preview. </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Education Section -->
-        <div class="section">
-            <div class="section-header" data-section="education">
-                <h2 class="section-title">Education</h2>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="section-content active">
-                <div class="experience-item">
-                    <h3 class="experience-title">Islamic Azad University</h3>
-                    <p class="experience-subtitle">Bachelor of Computer Engineering</p>
-                    <p class="experience-date">January 2021 - December 2024, Tehran</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Experience Section -->
-        <div class="section">
-            <div class="section-header" data-section="experience">
-                <h2 class="section-title">Experience</h2>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="section-content active">
-                <div class="experience-item">
-                    <h3 class="experience-title">Fanap Training Campus</h3>
-                    <p class="experience-subtitle">Data Scientist Internship</p>
-                    <p class="experience-date">December 2023 - August 2024 (ongoing), Tehran, Remote</p>
-                </div>
-
-                <div class="experience-item">
-                    <h3 class="experience-title">Freelance, LimitLines, X Solution, AM Studio</h3>
-                    <p class="experience-subtitle">Visual Designer</p>
-                    <p class="experience-date">June 2019 - November 2021, Tehran</p>
-                    <p class="experience-description">Specialized in creating visual identities that matched target markets and brand values. I focused on understanding customer personas to develop engaging visual stories for different audiences.</p>
-                </div>
-
-                <div class="experience-item">
-                    <h3 class="experience-title">LimitLines</h3>
-                    <p class="experience-subtitle">Account Manager</p>
-                    <p class="experience-date">June 2018 - June 2019, Tehran</p>
-                    <p class="experience-description">Handled the financial and strategic parts of brand campaigns, focusing on making decisions based on data. My role included using data to create effective strategies, find useful insights, and improve results.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Certifications Section -->
-        <div class="section">
-            <div class="section-header" data-section="certifications">
-                <h2 class="section-title">Certifications</h2>
-                <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </div>
-            <div class="section-content active">
-                <div class="certification-item">Associate Data Analyst with Python - <strong>DataCamp</strong></div>
-                <div class="certification-item">Machine Learning Specialist - <strong>Rahnema College</strong></div>
-                <div class="certification-item">Data Scientist II & III - <strong>Filoger</strong></div>
-            </div>
-        </div>
-    </div> <!-- Container ends -->
-
-    <script>
-        const toggle = document.getElementById('theme-toggle');  // Theme toggle functionality
-        
-        // Check for saved theme preference
-        if (localStorage.getItem('theme') === 'dark' || 
-            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
-
-        // Handle theme toggle
-        toggle.addEventListener('click', function() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-        });
-
-        // Section toggle functionality
-        document.querySelectorAll('.section-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                const arrow = header.querySelector('.arrow');
-                
-                content.classList.toggle('active');
-                arrow.classList.toggle('active');
-                
-                // Save state to localStorage
-                const section = header.getAttribute('data-section');
-                localStorage.setItem(`section-${section}`, content.classList.contains('active'));
-            });
-
-            // Restore section states from localStorage
-            const section = header.getAttribute('data-section');
-            const isOpen = localStorage.getItem(`section-${section}`);
-            
-            if (isOpen === 'false') {
-                const content = header.nextElementSibling;
-                const arrow = header.querySelector('.arrow');
-                content.classList.remove('active');
-                arrow.classList.remove('active');
-            }
-        });
-    </script>
-</body>
+      </div>
+    </div>
+  </body>
 </html>
