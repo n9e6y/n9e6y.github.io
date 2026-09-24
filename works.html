@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>All works — Nima Yavari</title>
-<meta name="description" content="Seven projects across systems, applied ML and practical applications, each with a short introduction and a technical report." />
-<link rel="icon" href="data:," />
+<meta name="description" content="Technical reports on my projects across systems, applied ML and practical applications." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%8E%B2%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -19,57 +19,24 @@
 </script>
 <link rel="stylesheet" href="assets/subpage.css" />
 <style>
-  main { max-width: 1280px; margin: 0 auto; padding: 140px clamp(20px, 5vw, 72px) 96px; display: flex; flex-direction: column; gap: 72px; }
+  main { max-width: 1200px; margin: 0 auto; padding: 140px clamp(20px, 6vw, 96px) 96px; display: flex; flex-direction: column; gap: 56px; }
   .top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
   .top .title { display: flex; flex-direction: column; gap: 20px; }
-  .top p { margin: 0; max-width: 420px; font-size: 17px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
+  .top p { margin: 0; max-width: 380px; font-size: 17px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
 
-  .layout { display: flex; flex-wrap: wrap; gap: clamp(40px, 5vw, 72px); align-items: flex-start; }
-  .toc { position: sticky; top: 100px; flex: 1 0 220px; max-width: 260px; display: flex; flex-direction: column; gap: 28px; }
-  .toc .group { display: flex; flex-direction: column; gap: 8px; }
-  .toc .glabel { font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-  .toc .items { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-  .toc a { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 8px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--muted); }
-  .toc a:hover, .toc a.active { color: var(--fg); }
-  .toc a .n { font-family: 'Geist Mono', monospace; font-size: 12px; padding-top: 2px; }
-
-  .works { flex: 1 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 112px; }
-  .work { display: flex; flex-direction: column; gap: 36px; scroll-margin-top: 100px; }
-  .work .head { display: flex; flex-direction: column; gap: 18px; }
-  .work .meta { display: flex; justify-content: space-between; gap: 16px; font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted); }
-  .work h2 { font-size: clamp(40px, 5vw, 64px); letter-spacing: -0.045em; line-height: 1; }
-  .work .intro { margin: 0; max-width: 720px; font-size: 20px; line-height: 1.5; color: var(--muted); text-wrap: pretty; }
-
-  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line); }
-  .fact { display: flex; flex-direction: column; gap: 6px; padding: 16px 16px 16px 0; }
-  .fact:last-child { padding-right: 0; }
-  .fact .k { font-size: 12px; color: var(--muted); }
-  .fact .v { font-size: 15px; }
-  .fact .links { display: flex; flex-wrap: wrap; gap: 12px; font-size: 15px; }
-  .fact .links a { text-decoration: underline; text-underline-offset: 3px; }
-
-  .diagram { display: flex; flex-direction: column; gap: 10px; }
-  .diagram pre {
-    margin: 0; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--line-strong); border-radius: 6px;
-    background: var(--line); overflow-x: auto; font-family: 'Geist Mono', monospace; font-size: 13px; line-height: 1.55;
+  .featured {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+    gap: clamp(24px, 4vw, 56px); padding: clamp(24px, 3vw, 40px);
+    border: 1px solid var(--line-strong); border-radius: 6px;
   }
-  .diagram .cap { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted); }
-
-  .report { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-  .rrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 12px 32px; padding: 24px 0; border-bottom: 1px solid var(--line); }
-  .rrow .label { font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
-  .rrow .body { grid-column: span 2; display: flex; flex-direction: column; gap: 10px; }
-  .rrow p { margin: 0; font-size: 17px; line-height: 1.65; text-wrap: pretty; }
-  .rrow .item { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 8px; font-size: 16px; line-height: 1.55; }
-  .rrow .item .dash { color: var(--muted); }
-  .rrow .rows { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-  .rrow .kv { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
-  .rrow .kv .kk { color: var(--muted); }
-  .rrow .kv .vv { font-family: 'Geist Mono', monospace; font-size: 14px; text-align: right; }
-  @media (max-width: 640px) { .rrow .body { grid-column: auto; } }
-
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tags span { font-family: 'Geist Mono', monospace; font-size: 12px; padding: 4px 8px; border: 1px solid var(--line-strong); border-radius: 4px; }
+  .cover {
+    aspect-ratio: 16 / 10; border: 1px solid var(--line); border-radius: 4px;
+    background: repeating-linear-gradient(135deg, transparent 0 10px, var(--line) 10px 11px);
+  }
+  .featured .info { display: flex; flex-direction: column; gap: 18px; justify-content: center; }
+  .featured .meta { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted); }
+  .featured h2 { font-size: clamp(30px, 3.6vw, 46px); letter-spacing: -0.035em; line-height: 1.05; text-wrap: balance; }
+  .featured p { margin: 0; font-size: 17px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
 </style>
 </head>
 <body>
@@ -94,12 +61,16 @@
       <span class="eyebrow">Work — technical reports</span>
       <h1 class="page-title">All works</h1>
     </div>
-    <p>Seven projects across systems, applied ML and practical applications. Each one has a short introduction and a technical report on how it is built.</p>
+    <p>Technical reports on my projects across systems, applied ML and practical applications.</p>
   </div>
 
-  <div class="layout">
-    <nav class="toc" id="toc" aria-label="Projects"></nav>
-    <div class="works" id="works"></div>
+  <div class="featured">
+    <div class="cover"></div>
+    <div class="info">
+      <span class="meta">Coming soon</span>
+      <h2>I'm editing and adding works.</h2>
+      <p>This page is being reworked. Check back soon for the full reports.</p>
+    </div>
   </div>
 </main>
 
@@ -109,190 +80,5 @@
 </footer>
 
 <script src="assets/subpage.js"></script>
-<script>
-(function () {
-  var GH = 'https://github.com/n9e6y';
-  var HF = 'https://huggingface.co/n9e6y';
-  var SPACES = 'https://huggingface.co/spaces/n9e6y';
-
-  var WORKS = [
-    { id: 'gocade', group: 'Systems', title: 'GoCade', kind: 'Concurrent network server', status: 'Shipped', lang: 'Go', ui: 'Terminal over TCP',
-      intro: 'A multiplayer game server played straight from a terminal with nc host 9000. No graphical client. Tic-Tac-Toe and Tron, with bots for solo play, matchmaking and terminal rendering.',
-      links: [{ label: 'GitHub', href: GH + '/gocade' }],
-      diagramLabel: 'Fig. 1 — Every piece of mutable state has exactly one owning goroutine',
-      diagram: 'TCP client\n    │\n    ▼\nSession ── reader  (owns input decoding)\n        └─ writer  (owns socket output)\n    │\n    ▼\nLobby    (owns players and rooms)\n    │\n    ▼\nRoom     (owns its game)\n    │\n    ▼\nGame     (pure, deterministic logic)',
-      stack: ['Go', 'TCP', 'Goroutines', 'Channels', 'Fuzz testing', 'Race detector', 'Load testing', 'Benchmarks'],
-      report: [
-        { label: 'Problem', text: 'Build a small but properly engineered concurrent network server: many users, many rooms, shared real-time state, without leaning on mutexes.' },
-        { label: 'Architecture', text: 'State is owned, not locked. Sessions, the lobby and rooms each run in their own goroutine and communicate over channels, so no two goroutines ever write the same state.' },
-        { label: 'Determinism', items: ['Game logic is pure and takes an injected clock', 'Recorded inputs reproduce identical frames', 'Replay tests use those recordings as a regression oracle'] },
-        { label: 'Hardening', items: ['Buffered network output so slow clients cannot stall a room', 'Connection limits and idle timeouts', 'Input-rate limiting', 'Panic recovery to isolate a failing room'] },
-        { label: 'Testing', items: ['Fuzz testing of input handling', 'Full suite under the race detector', 'Load test with 50 concurrent rooms, measuring TCP clients, frame rate and latency', 'Benchmarks for hot paths'] }
-      ] },
-    { id: 'fare-engine', group: 'Systems', title: 'Delivery Fare Engine', kind: 'Algorithms / backend', status: 'Shipped', lang: 'Go', ui: 'CLI',
-      intro: 'A solution to an Algorithm Arena company challenge: turn raw courier GPS trajectories into a fare for every delivery, handling invalid points, idle time and day/night pricing across large inputs.',
-      links: [{ label: 'GitHub', href: GH + '/snappboxchallengeforalgorithmarena' }],
-      diagramLabel: 'Fig. 2 — Independent deliveries are priced by parallel workers',
-      diagram: 'CSV  (delivery_id, lat, lng, timestamp)\n  │\n  ▼\ninput processing ── group points by delivery\n  │\n  ├──▶ worker ─┐\n  ├──▶ worker ─┼──▶ result output  (delivery_id → fare)\n  └──▶ worker ─┘\n\nper delivery:\n  Haversine distance → speed → drop invalid jumps\n  → moving / idle (10 km/h) → day / night → price',
-      stack: ['Go', 'Worker pool', 'Haversine', 'pprof', 'go test -cover', 'CSV'],
-      report: [
-        { label: 'Problem', text: 'Reconstruct each delivery’s movement from discrete GPS observations. Coordinates are spherical, points can be impossible jumps, and the rate depends on both speed and time of day.' },
-        { label: 'Fare rules', rows: [
-          { k: 'Flag charge', v: '1.30' }, { k: 'Minimum fare', v: '3.47' },
-          { k: 'Moving, day (05:00–00:00)', v: '0.74 / km' }, { k: 'Moving, night (00:00–05:00)', v: '1.30 / km' },
-          { k: 'Idle', v: '11.90 / hour' }, { k: 'Moving threshold', v: '10 km/h' }
-        ] },
-        { label: 'Method', items: ['Haversine distance between consecutive points', 'Speed = distance / elapsed time; points implying impossible speeds are filtered', 'Segments below 10 km/h are priced as idle time', 'Each segment is priced by the day or night rate for its timestamp'] },
-        { label: 'Concurrency', text: 'Deliveries are independent, so the work is data-parallel: input is partitioned by delivery and priced by a pool of workers. This complements GoCade, where the concern is state ownership rather than throughput.' },
-        { label: 'Performance & tests', items: ['-cpuprofile and -memprofile flags built into the CLI', 'Unit tests with coverage for boundary cases: midnight crossings, 05:00, exact speed threshold, minimum fare, zero distance', 'cmd / internal / pkg project layout'] }
-      ] },
-    { id: 'persian-poetry', group: 'AI / ML', title: 'Persian Poetry Generator', kind: 'Generative NLP', status: 'Live demo', lang: 'Python', ui: 'Streamlit',
-      intro: 'GPT-2 fine-tuned on collections of classical Persian poetry, generating three traditional forms: robaee (quatrains), masnavi (rhyming couplets) and ghazal.',
-      links: [{ label: 'Live demo', href: SPACES + '/PPG' }, { label: 'Model', href: HF + '/persian-poetry-gpt2' }, { label: 'Hugging Face', href: HF }],
-      diagramLabel: 'Fig. 3 — From corpus to generated verse',
-      diagram: 'Persian poetry dataset\n        │\n        ▼\n  preprocessing\n        │\n        ▼\n GPT-2 fine-tuning\n        │\n        ▼\n persian-poetry-gpt2\n        │\n        ▼\n Streamlit application ── temperature · top-k · top-p · max length\n        │\n        ▼\n generated poem  (robaee · masnavi · ghazal)',
-      stack: ['Python', 'GPT-2', 'Transformers', 'Fine-tuning', 'Streamlit', 'Hugging Face'],
-      report: [
-        { label: 'Problem', text: 'Generate structured verse in a lower-resource, non-English language, where each form has its own rhyme and line structure.' },
-        { label: 'Pipeline', items: ['Preprocessing of classical poetry collections', 'Fine-tuning GPT-2 on the prepared corpus', 'Model published to Hugging Face as persian-poetry-gpt2'] },
-        { label: 'Interface', text: 'A Streamlit app exposes the sampling controls (temperature, top-k, top-p and maximum length) so users can see how decoding changes the output.' }
-      ] },
-    { id: 'letterboxd', group: 'AI / ML', title: 'Letterboxd Movie Recommender', kind: 'Recommender system', status: 'Live demo', lang: 'Python', ui: 'Gradio',
-      intro: 'A content-based recommender that reads a user’s Letterboxd history, builds a taste profile and suggests films that are semantically close to what they already love.',
-      links: [{ label: 'Live demo', href: SPACES + '/LMR' }, { label: 'Model', href: HF + '/letterboxd_movie_recommender' }, { label: 'Hugging Face', href: HF }],
-      diagramLabel: 'Fig. 4 — Movies and users share one embedding space',
-      diagram: 'movie metadata\n(description · tagline · genres · actors · directors · themes)\n        │\n        ▼\n   tokenize → Word2Vec (CBOW)\n        │\n        ▼\n   average word vectors → movie vector   (movie_vectors.npy)\n\nLetterboxd history → liked movies → mean vector → user taste vector\n        │\n        ▼\n   cosine similarity vs. all movies → top-N recommendations',
-      stack: ['Python', 'Gensim', 'Word2Vec', 'NumPy', 'scikit-learn', 'Gradio', 'Hugging Face Spaces'],
-      report: [
-        { label: 'Problem', text: 'Answer “what movies are similar to the things this person likes?” from content alone, without data from other users.' },
-        { label: 'Model', rows: [{ k: 'Architecture', v: 'CBOW' }, { k: 'Vector size', v: '100' }, { k: 'Context window', v: '5' }, { k: 'Min. word count', v: '2' }] },
-        { label: 'Method', items: ['Aggregate textual metadata per movie and train Word2Vec on it', 'Movie vector = mean of its word embeddings', 'User taste vector = mean of the movies they liked', 'Rank the catalogue by cosine similarity'] },
-        { label: 'Why Word2Vec', text: 'Small, fast, CPU-friendly and easy to inspect. It is a deliberate choice for a lightweight, deployable prototype.' },
-        { label: 'Limitations', items: ['Content-based only, with no collaborative signal', 'Few unexpected or serendipitous suggestions', 'Quality depends on how complete the metadata is'] }
-      ] },
-    { id: 'scsc', group: 'AI / ML', title: 'Semantic Code Search', kind: 'AI developer tooling', status: 'Early stage', lang: 'Go', ui: 'CLI',
-      intro: 'SCSC is a command-line tool for searching a codebase by meaning rather than exact text: ask “where do we authenticate users?” and get the relevant code.',
-      links: [{ label: 'GitHub', href: GH + '/scsc' }],
-      diagramLabel: 'Fig. 5 — Textual match vs. semantic match',
-      diagram: 'grep / regex\n    │\n    ▼\nexact textual match\n\n"where do we authenticate users?"\n    │\n    ▼\nsemantic embedding\n    │\n    ▼\nrelevant code',
-      stack: ['Go', 'Embeddings', 'Semantic search', 'CLI'],
-      report: [
-        { label: 'Goal', text: 'Bring semantic, AI-assisted search into a developer’s terminal.' },
-        { label: 'Status', text: 'In early development, with core code in an internal package. The architecture will be documented as it settles.' }
-      ] },
-    { id: 'time-analyzer', group: 'Applications', title: 'Time Analyzer', kind: 'Data engineering / analytics', status: 'Shipped', lang: 'Python', ui: 'Streamlit',
-      intro: 'Turns a Google Calendar .ics export into a personal dashboard that shows where the time actually goes.',
-      links: [{ label: 'GitHub', href: GH + '/time_management_panel' }],
-      diagramLabel: 'Fig. 6 — runner.py prepares the data, app.py visualises it',
-      diagram: 'Google Calendar\n      │\n      ▼\n    .ics\n      │\n      ▼\n  ICS parser\n      │\n      ▼\nrecurring-event expansion\n      │\n      ▼\ncategorisation / enrichment\n      │\n      ▼\n calendar.csv\n      │\n      ▼\n Streamlit dashboard',
-      stack: ['Python', 'Pandas', 'iCalendar', 'Plotly', 'Streamlit'],
-      report: [
-        { label: 'Problem', text: 'Calendar exports are messy: recurring events, free-text titles, no categories. They need to become structured, analysable data.' },
-        { label: 'Categories', text: 'Configurable rules read event titles as hierarchies, for example “Work: Deep Focus - Coding”, “Personal: Health - Gym”, “Study: Math - Linear Algebra”.' },
-        { label: 'Views', items: ['Time per category', 'Weekday vs. weekend', 'Hierarchical sunburst', 'Average-day breakdown', 'Activity heatmaps'] }
-      ] },
-    { id: 'telegram-bot', group: 'Applications', title: 'Telegram Task Wizard', kind: 'Workflow automation', status: 'In development', lang: 'Python', ui: 'Telegram bot',
-      intro: 'A Telegram bot that replaces a project-submission form with a guided conversation, collecting a brief, files and contact details into MongoDB.',
-      links: [{ label: 'GitHub', href: GH + '/telegram_task_wizard_bot' }],
-      diagramLabel: 'Fig. 7 — Conversation states of a submission',
-      diagram: '/start → /newproject\n   │\n   ▼\n[1] project name + summary\n   │\n   ▼\n[2] upload project brief\n   │\n   ▼\n[3] additional files?\n   │\n   ▼\n[4] contact information\n   │\n   ▼\n[5] confirmation → MongoDB',
-      stack: ['Python', 'python-telegram-bot', 'ConversationHandler', 'MongoDB', 'Logging'],
-      report: [
-        { label: 'Problem', text: 'Collect structured project submissions, including files, through a chat interface people already use.' },
-        { label: 'Structure', items: ['main.py and config.py at the root', 'database/: connection and models', 'handlers/: start, project and file handlers', 'utils/: logger and helpers'] },
-        { label: 'State', text: 'Built on ConversationHandler, so the bot is a stateful multi-step workflow rather than a set of independent commands.' },
-        { label: 'Data model', text: 'Each project stores ids, user, name, summary, contact, status, timestamps and a list of files with Telegram file id, filename, MIME type, size, local path and download status.' },
-        { label: 'Safety', items: ['File validation with a 10 MB maximum size', 'MongoDB schema validation', 'Error handling that avoids leaking internals'] }
-      ] }
-  ];
-
-  WORKS.forEach(function (w, i) { w.n = String(i + 1).padStart(2, '0'); });
-
-  // ---- Side navigation ----
-  var toc = document.getElementById('toc');
-  var groups = [];
-  WORKS.forEach(function (w) { if (groups.indexOf(w.group) < 0) groups.push(w.group); });
-  var tocLinks = {};
-  groups.forEach(function (g) {
-    var items = el('div', { class: 'items' });
-    WORKS.filter(function (w) { return w.group === g; }).forEach(function (w) {
-      var a = el('a', { href: '#' + w.id }, el('span', { class: 'n', text: w.n }), el('span', { text: w.title }));
-      tocLinks[w.id] = a;
-      items.appendChild(a);
-    });
-    toc.appendChild(el('div', { class: 'group' }, el('span', { class: 'glabel', text: g }), items));
-  });
-
-  // ---- Work sections ----
-  function fact(k, v, last) {
-    return el('div', { class: 'fact' }, el('span', { class: 'k', text: k }), el('span', { class: 'v', text: v }));
-  }
-
-  function reportRow(r) {
-    var body = el('div', { class: 'body' });
-    if (r.text) body.appendChild(el('p', { text: r.text }));
-    (r.items || []).forEach(function (it) {
-      body.appendChild(el('div', { class: 'item' }, el('span', { class: 'dash', text: '—' }), el('span', { text: it })));
-    });
-    if (r.rows) {
-      var rows = el('div', { class: 'rows' });
-      r.rows.forEach(function (row) {
-        rows.appendChild(el('div', { class: 'kv' }, el('span', { class: 'kk', text: row.k }), el('span', { class: 'vv', text: row.v })));
-      });
-      body.appendChild(rows);
-    }
-    return el('div', { class: 'rrow' }, el('span', { class: 'label', text: r.label }), body);
-  }
-
-  var container = document.getElementById('works');
-  WORKS.forEach(function (w) {
-    var links = el('div', { class: 'links' });
-    w.links.forEach(function (l) {
-      links.appendChild(el('a', { href: l.href, target: '_blank', rel: 'noopener', text: l.label + ' ↗' }));
-    });
-    var tags = el('div', { class: 'tags' });
-    w.stack.forEach(function (s) { tags.appendChild(el('span', { text: s })); });
-    var report = el('div', { class: 'report' });
-    w.report.forEach(function (r) { report.appendChild(reportRow(r)); });
-
-    container.appendChild(el('section', { class: 'work', id: w.id },
-      el('div', { class: 'head' },
-        el('div', { class: 'meta' }, el('span', { text: w.n + ' / ' + w.group }), el('span', { text: w.status })),
-        el('h2', { text: w.title }),
-        el('p', { class: 'intro', text: w.intro })
-      ),
-      el('div', { class: 'facts' },
-        fact('Domain', w.kind), fact('Language', w.lang), fact('Interface', w.ui),
-        el('div', { class: 'fact' }, el('span', { class: 'k', text: 'Links' }), links)
-      ),
-      el('div', { class: 'diagram' }, el('pre', { text: w.diagram }), el('span', { class: 'cap', text: w.diagramLabel })),
-      report,
-      tags
-    ));
-  });
-
-  // ---- Scroll spy for the side navigation ----
-  var active = null;
-  function onScroll() {
-    var current = WORKS[0].id;
-    WORKS.forEach(function (w) {
-      var s = document.getElementById(w.id);
-      if (s && s.getBoundingClientRect().top < innerHeight * 0.35) current = w.id;
-    });
-    if (current === active) return;
-    active = current;
-    Object.keys(tocLinks).forEach(function (id) { tocLinks[id].classList.toggle('active', id === current); });
-  }
-  addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', onScroll);
-  onScroll();
-
-  // Jump to a project when arriving with a hash (sections are created after load).
-  if (location.hash) {
-    var target = document.getElementById(location.hash.slice(1));
-    if (target) target.scrollIntoView();
-  }
-})();
-</script>
 </body>
 </html>
