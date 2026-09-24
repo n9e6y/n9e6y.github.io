@@ -1,0 +1,60 @@
+/* Shared styles for the secondary pages (works.html, blog.html). */
+:root {
+  --bg: #f6f6f4;
+  --fg: #0d0d0d;
+  --muted: #5a5a57;
+  --line: rgba(13, 13, 13, 0.12);
+  --line-strong: rgba(13, 13, 13, 0.28);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #0b0b0b;
+  --fg: #f1f1ee;
+  --muted: #9d9d99;
+  --line: rgba(241, 241, 238, 0.12);
+  --line-strong: rgba(241, 241, 238, 0.3);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); transition: background .3s, color .3s; }
+body { font-family: 'Geist', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--fg); text-decoration: none; }
+a:hover { color: var(--muted); }
+.mono { font-family: 'Geist Mono', ui-monospace, monospace; }
+.eyebrow { font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+h1, h2 { margin: 0; font-weight: 500; }
+
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 18px clamp(20px, 4vw, 48px);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+header .brand { font-weight: 500; letter-spacing: -0.01em; }
+header nav { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 28px); }
+header nav a { color: var(--muted); }
+header nav a:hover, header nav a.current { color: var(--fg); }
+#theme-toggle {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; margin-left: 4px;
+  border: 1px solid var(--line-strong); border-radius: 999px;
+  background: transparent; color: var(--fg); cursor: pointer; padding: 0;
+}
+#theme-toggle:hover { background: var(--line); }
+#progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--fg); }
+
+.page-title { font-size: clamp(56px, 9vw, 128px); letter-spacing: -0.055em; line-height: 0.92; }
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 24px clamp(20px, 4vw, 48px);
+  display: flex; justify-content: space-between;
+  font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted);
+}
+.site-footer a { color: var(--muted); }
+.site-footer a:hover { color: var(--fg); }
