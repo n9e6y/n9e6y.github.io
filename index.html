@@ -92,7 +92,8 @@
     mask-image: radial-gradient(ellipse at 60% 50%, #000 30%, transparent 80%);
   }
   #home .inner { position: relative; }
-  #home h1 { font-size: clamp(64px, 13vw, 184px); letter-spacing: -0.055em; line-height: 0.92; }
+  /* Negative left margin cancels the "H" side bearing so the big headline lines up with the text below. */
+  #home h1 { font-size: clamp(64px, 13vw, 184px); letter-spacing: -0.055em; line-height: 0.92; margin-left: -0.055em; }
   #home p { margin: 36px 0 0; max-width: 560px; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; color: var(--muted); }
   /* Graph playground panel */
   .play { position: absolute; right: 0; top: 50%; transform: translateY(-50%); z-index: 5; display: flex; align-items: stretch; }
