@@ -94,6 +94,40 @@
   #home .inner { position: relative; }
   #home h1 { font-size: clamp(64px, 13vw, 184px); letter-spacing: -0.055em; line-height: 0.92; }
   #home p { margin: 36px 0 0; max-width: 560px; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; color: var(--muted); }
+  /* Graph playground panel */
+  .play { position: absolute; right: 0; top: 50%; transform: translateY(-50%); z-index: 5; display: flex; align-items: stretch; }
+  .play-tab {
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    display: flex; align-items: center; gap: 10px; padding: 18px 10px;
+    border: 1px solid var(--line-strong); border-left: none; border-radius: 0 6px 6px 0;
+    background: var(--bg); color: var(--fg);
+    font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; cursor: pointer;
+  }
+  .play-tab:hover { background: var(--line); }
+  .play-panel {
+    width: min(272px, calc(100vw - 72px)); display: flex; flex-direction: column; gap: 22px; padding: 22px;
+    border: 1px solid var(--line-strong); border-right: none;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .play-panel[hidden] { display: none; }
+  .play-panel label { display: flex; flex-direction: column; gap: 10px; }
+  .play-panel .lbl { display: flex; justify-content: space-between; font-size: 13px; }
+  .play-panel .val { font-family: 'Geist Mono', monospace; color: var(--muted); }
+  .play-panel input[type="range"] { width: 100%; accent-color: var(--fg); margin: 0; }
+  .play-panel .group { display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+  .seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line-strong); border-radius: 4px; overflow: hidden; }
+  .seg button { padding: 8px 0; border: none; background: transparent; color: var(--fg); font-family: inherit; font-size: 12px; cursor: pointer; }
+  .seg button.on { background: var(--fg); color: var(--bg); }
+  .play-actions { display: flex; gap: 8px; }
+  .play-actions button {
+    flex: 1; padding: 9px 0; border: 1px solid var(--line-strong); border-radius: 4px;
+    background: transparent; color: var(--fg); font-family: inherit; font-size: 12px; cursor: pointer;
+  }
+  .play-actions button:hover { background: var(--line); }
+  .play-actions button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+  #home.pressing { user-select: none; -webkit-user-select: none; }
   .scroll-cue {
     position: absolute; left: clamp(20px, 6vw, 96px); bottom: 32px;
     display: flex; align-items: center; gap: 10px;
@@ -208,6 +242,7 @@
     <a href="#about">About</a>
     <a href="#work">Work</a>
     <a href="#journey">Journey</a>
+    <a href="#blog">Blog</a>
     <a href="#contact">Contact</a>
     <button id="theme-toggle" aria-label="Toggle dark mode">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"></path></svg>
@@ -222,6 +257,29 @@
     <p>I Like Computers and enjoy exploring data, experimenting with AI, and turning ideas into working software.
 
     </p>
+  </div>
+  <div class="play">
+    <button class="play-tab" id="play-tab" aria-expanded="false" aria-controls="play-panel">Play with the graph</button>
+    <div class="play-panel" id="play-panel" hidden>
+      <label><span class="lbl"><span>Nodes</span><span class="val" id="v-nodes"></span></span>
+        <input type="range" id="r-nodes" min="20" max="280" step="1" /></label>
+      <label><span class="lbl"><span>Reach</span><span class="val" id="v-reach"></span></span>
+        <input type="range" id="r-reach" min="40" max="260" step="1" /></label>
+      <label><span class="lbl"><span>Speed</span><span class="val" id="v-speed"></span></span>
+        <input type="range" id="r-speed" min="0" max="5" step="0.1" /></label>
+      <div class="group">
+        <span>On click</span>
+        <div class="seg" id="seg-cursor">
+          <button data-mode="connect">None</button>
+          <button data-mode="attract">Attract</button>
+          <button data-mode="repel">Repel</button>
+        </div>
+      </div>
+      <div class="play-actions">
+        <button class="primary" id="btn-scatter">Scatter</button>
+        <button id="btn-reset">Reset</button>
+      </div>
+    </div>
   </div>
   <a href="#about" class="scroll-cue"><span class="line"></span>Scroll</a>
 </section>
@@ -364,44 +422,105 @@
     try { localStorage.setItem('nima-theme', next); } catch (e) {}
   });
 
-  // ---- Hero network canvas ----
+  // ---- Hero network canvas + playground ----
+  var DEF = { nodes: 110, reach: 140, speed: 1, cursor: 'connect' };
+  var S = { nodes: DEF.nodes, reach: DEF.reach, speed: DEF.speed, cursor: DEF.cursor };
   var canvas = document.getElementById('net');
   var ctx = canvas.getContext('2d');
   var w = 0, h = 0, nodes = [];
   var mouse = { x: -1e4, y: -1e4 };
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var DENSITY = 1.3; // nodes per ~13000px^2, tune to taste
-  var raf;
 
   function build() {
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var r = canvas.parentElement.getBoundingClientRect();
-    w = r.width; h = r.height;
+    var nw = r.width, nh = r.height;
+    // Keep the constellation's shape on resize: rescale positions instead of clamping,
+    // otherwise nodes pile up along the edges (shrink) or leave empty space (grow).
+    if (w > 0 && h > 0) {
+      var sx = nw / w, sy = nh / h;
+      nodes.forEach(function (p) { p.x *= sx; p.y *= sy; });
+    }
+    w = nw; h = nh;
     canvas.width = w * dpr; canvas.height = h * dpr;
     canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var n = Math.min(240, Math.round((w * h) / 13000 * DENSITY));
-    nodes = Array.from({ length: n }, function () {
-      return {
-        x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
-        r: Math.random() * 1.4 + 0.7,
-      };
+  }
+
+  function spawn() {
+    return {
+      x: Math.random() * w, y: Math.random() * h,
+      a: Math.random() * Math.PI * 2,            // heading
+      s: Math.random() * 0.25 + 0.08,            // cruising speed
+      ix: 0, iy: 0,                              // impulse velocity (cursor, scatter), decays
+      r: Math.random() * 1.4 + 0.7,
+    };
+  }
+
+  function scatter() {
+    nodes.forEach(function (p) {
+      var dx = p.x - w / 2, dy = p.y - h / 2, d = Math.hypot(dx, dy) || 1;
+      var f = 6 + Math.random() * 10;
+      p.ix += dx / d * f; p.iy += dy / d * f;
     });
   }
 
-  function frame() {
+  // Shortest signed angle from a to b.
+  function angleDiff(a, b) {
+    var d = (b - a) % (Math.PI * 2);
+    if (d > Math.PI) d -= Math.PI * 2;
+    if (d < -Math.PI) d += Math.PI * 2;
+    return d;
+  }
+
+  var last = 0, running = false, onScreen = true, pressed = false;
+
+  function frame(now) {
+    if (!running) return;
+    // Frame-rate independent time step (1 = one 60fps frame); clamp so a tab switch doesn't teleport nodes.
+    var dt = last ? Math.min(3, (now - last) / 16.667) : 1;
+    last = now;
+
     ctx.clearRect(0, 0, w, h);
+    while (nodes.length < S.nodes) nodes.push(spawn());
+    if (nodes.length > S.nodes) nodes.length = S.nodes;
     var rgb = getComputedStyle(document.documentElement).getPropertyValue('--fg-rgb').trim() || '13,13,13';
-    var D = 140;
+    var D = S.reach, sp = reduce ? 0 : S.speed;
+    var decay = Math.pow(0.94, dt);
+    var margin = Math.min(90, Math.min(w, h) * 0.2);
+
     for (var k = 0; k < nodes.length; k++) {
       var p = nodes[k];
-      if (!reduce) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
+
+      // Click-and-hold force, smooth falloff.
+      if (pressed && S.cursor !== 'connect') {
+        var cx = mouse.x - p.x, cy = mouse.y - p.y, cd = Math.hypot(cx, cy);
+        if (cd < 220 && cd > 1) {
+          var f = (1 - cd / 220) * (S.cursor === 'attract' ? 0.12 : -0.35) * dt;
+          p.ix += cx / cd * f; p.iy += cy / cd * f;
+        }
       }
+
+      // Gentle wander so paths curve instead of running in straight lines.
+      p.a += (Math.random() - 0.5) * 0.12 * dt;
+
+      // Soft edges: near a border, steer the heading back toward the middle (no hard bounce).
+      var ex = Math.max(0, margin - p.x, p.x - (w - margin)) / margin;
+      var ey = Math.max(0, margin - p.y, p.y - (h - margin)) / margin;
+      var edge = Math.max(ex, ey);
+      if (edge > 0) {
+        p.a += angleDiff(p.a, Math.atan2(h / 2 - p.y, w / 2 - p.x)) * Math.min(1, edge * 0.08 * dt);
+      }
+
+      p.ix *= decay; p.iy *= decay;
+      p.x += (Math.cos(p.a) * p.s * sp + p.ix) * dt;
+      p.y += (Math.sin(p.a) * p.s * sp + p.iy) * dt;
+
+      // Safety net for big impulses: absorb at the border.
+      if (p.x < 0 || p.x > w) { p.x = Math.max(0, Math.min(w, p.x)); p.ix *= -0.5; p.a = Math.PI - p.a; }
+      if (p.y < 0 || p.y > h) { p.y = Math.max(0, Math.min(h, p.y)); p.iy *= -0.5; p.a = -p.a; }
     }
+
     for (var i = 0; i < nodes.length; i++) {
       var a = nodes[i];
       for (var j = i + 1; j < nodes.length; j++) {
@@ -420,18 +539,98 @@
       ctx.fillStyle = 'rgba(' + rgb + ',0.55)';
       ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
     }
-    raf = requestAnimationFrame(frame);
+    requestAnimationFrame(frame);
   }
+
+  function start() {
+    if (running || !onScreen || document.hidden) return;
+    running = true; last = 0;
+    requestAnimationFrame(frame);
+  }
+  function stop() { running = false; }
 
   window.addEventListener('mousemove', function (e) {
     var r = canvas.getBoundingClientRect();
     mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
   });
   document.addEventListener('mouseleave', function () { mouse.x = mouse.y = -1e4; });
-  window.addEventListener('resize', build);
 
+  // Attract / Repel act on click (hold to keep pulling or pushing), not on hover.
+  var hero = canvas.parentElement;
+  function release() { pressed = false; hero.classList.remove('pressing'); }
+  hero.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0 || e.target.closest('a, button, input, .play')) return;
+    var r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    pressed = true; hero.classList.add('pressing');
+    // Instant kick so a single click is visible, not just a hold.
+    if (S.cursor !== 'connect') {
+      var sign = S.cursor === 'attract' ? 1 : -1;
+      nodes.forEach(function (p) {
+        var dx = mouse.x - p.x, dy = mouse.y - p.y, d = Math.hypot(dx, dy);
+        if (d < 220 && d > 1) { var f = (1 - d / 220) * 3 * sign; p.ix += dx / d * f; p.iy += dy / d * f; }
+      });
+    }
+  });
+  window.addEventListener('pointerup', release);
+  window.addEventListener('pointercancel', release);
+  window.addEventListener('blur', release);
+
+  // Track the hero's real size (window resize, panel/layout changes, mobile toolbars).
+  if (window.ResizeObserver) new ResizeObserver(build).observe(canvas.parentElement);
+  else window.addEventListener('resize', build);
+
+  // Don't burn CPU when the hero is scrolled away or the tab is hidden.
+  if (window.IntersectionObserver) {
+    new IntersectionObserver(function (entries) {
+      onScreen = entries[0].isIntersecting;
+      onScreen ? start() : stop();
+    }).observe(canvas.parentElement);
+  }
+  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+
+  // ---- Playground panel ----
+  var tab = document.getElementById('play-tab');
+  var panel = document.getElementById('play-panel');
+  var inputs = {
+    nodes: document.getElementById('r-nodes'),
+    reach: document.getElementById('r-reach'),
+    speed: document.getElementById('r-speed'),
+  };
+  var labels = {
+    nodes: document.getElementById('v-nodes'),
+    reach: document.getElementById('v-reach'),
+    speed: document.getElementById('v-speed'),
+  };
+  var segButtons = document.querySelectorAll('#seg-cursor button');
+
+  function syncUI() {
+    inputs.nodes.value = S.nodes; labels.nodes.textContent = S.nodes;
+    inputs.reach.value = S.reach; labels.reach.textContent = S.reach + 'px';
+    inputs.speed.value = S.speed; labels.speed.textContent = S.speed.toFixed(1) + '×';
+    segButtons.forEach(function (b) { b.classList.toggle('on', b.dataset.mode === S.cursor); });
+  }
+  function setOpen(open) {
+    panel.hidden = !open;
+    tab.setAttribute('aria-expanded', String(open));
+    tab.textContent = open ? 'Close ×' : 'Play with the graph';
+  }
+
+  tab.addEventListener('click', function () { setOpen(panel.hidden); });
+  Object.keys(inputs).forEach(function (k) {
+    inputs[k].addEventListener('input', function (e) { S[k] = +e.target.value; syncUI(); });
+  });
+  segButtons.forEach(function (b) {
+    b.addEventListener('click', function () { S.cursor = b.dataset.mode; syncUI(); });
+  });
+  document.getElementById('btn-scatter').addEventListener('click', scatter);
+  document.getElementById('btn-reset').addEventListener('click', function () {
+    S.nodes = DEF.nodes; S.reach = DEF.reach; S.speed = DEF.speed; S.cursor = DEF.cursor; syncUI();
+  });
+
+  syncUI();
   build();
-  frame();
+  start();
 })();
 </script>
 </body>
