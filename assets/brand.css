@@ -1,0 +1,7 @@
+.ney { display: inline-flex; align-items: baseline; white-space: nowrap; }
+.ney-x { display: inline-grid; grid-template-columns: 0fr; opacity: 0;
+         transition: grid-template-columns .7s cubic-bezier(.65,0,.35,1), opacity .3s ease; }
+.ney-x > span { overflow: hidden; min-width: 0; }
+.ney.open .ney-x { grid-template-columns: 1fr; opacity: 1;
+         transition: grid-template-columns .7s cubic-bezier(.65,0,.35,1), opacity .45s ease .25s; }
+@media (prefers-reduced-motion: reduce) { .ney-x, .ney.open .ney-x { transition: none; } }
