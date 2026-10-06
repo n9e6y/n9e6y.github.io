@@ -5,3 +5,27 @@
 .ney.open .ney-x { grid-template-columns: 1fr; opacity: 1;
          transition: grid-template-columns .7s cubic-bezier(.65,0,.35,1), opacity .45s ease .25s; }
 @media (prefers-reduced-motion: reduce) { .ney-x, .ney.open .ney-x { transition: none; } }
+
+/* Header: keep the brand from being squeezed, collapse nav into a menu on phones. */
+header .brand { flex-shrink: 0; }
+.nav-links { display: contents; }
+.menu-btn { display: none; }
+@media (max-width: 720px) {
+  header { gap: 12px; }
+  header nav { gap: 8px; }
+  .menu-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; padding: 0; cursor: pointer;
+    border: 1px solid var(--line-strong); border-radius: 999px;
+    background: transparent; color: var(--fg);
+  }
+  .menu-btn:hover { background: var(--line); }
+  #theme-toggle { margin-left: 0; }
+  .nav-links {
+    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; padding: 8px clamp(20px, 4vw, 48px) 16px;
+    background: var(--bg); border-bottom: 1px solid var(--line);
+  }
+  header.menu-open .nav-links { display: flex; }
+  .nav-links a { padding: 12px 0; font-size: 16px; }
+}

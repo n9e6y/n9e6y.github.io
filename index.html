@@ -177,8 +177,8 @@
   /* Work */
   #work .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 24px; margin-bottom: 48px; }
   #work .title { display: flex; flex-direction: column; gap: 20px; }
-  .more { font-size: 14px; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--line-strong); padding-bottom: 8px; }
-  .more:hover { color: var(--fg); text-decoration-color: var(--fg); }
+  .works-link { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; text-decoration-color: var(--line-strong); transition: text-decoration-color .2s; }
+  .works-link:hover { color: var(--fg); text-decoration-color: var(--fg); }
   #work h2 { font-size: clamp(40px, 5vw, 64px); }
   .cards {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
@@ -256,13 +256,18 @@
 <header>
   <a href="#home" class="brand" aria-label="NEY"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
   <nav>
+    <span class="nav-links" id="nav-links">
     <a href="#about">About</a>
     <a href="#work">Work</a>
     <a href="#journey">Journey</a>
     <a href="blog.html">Blog</a>
     <a href="#contact">Contact</a>
+    </span>
     <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"></path></svg>
+    </button>
+    <button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"></path></svg>
     </button>
   </nav>
 </header>
@@ -334,9 +339,8 @@
     <div class="head">
       <div class="title">
         <span class="eyebrow">02 — Work</span>
-        <h2>Selected works</h2>
+        <h2>Selected <a data-umami-event="view-more-works" href="works.html" class="works-link">Works</a></h2>
       </div>
-      <a data-umami-event="view-more-works" href="works.html" class="more">View more</a>
     </div>
     <div class="cards">
       <a data-umami-event="project-gocade" href="https://github.com/n9e6y/gocade" target="_blank" rel="noopener" class="card">
@@ -449,10 +453,10 @@
   });
 
   // ---- Hero network canvas + playground ----
-  // Default node count scales with screen width: 50 on phones, 110 from ~1000px up.
+  // Default node count scales with screen width: 25 on phones (<=720px), 110 from ~1000px up.
   function autoNodes() {
-    var t = Math.min(1, Math.max(0, (window.innerWidth - 600) / 400));
-    return Math.round(50 + t * 60);
+    var t = Math.min(1, Math.max(0, (window.innerWidth - 720) / 280));
+    return Math.round(25 + t * 85);
   }
   var DEF = { nodes: autoNodes(), reach: 140, speed: 1, cursor: 'connect' };
   var nodesTouched = false;
