@@ -116,22 +116,42 @@ header.site nav { display: flex; align-items: center; gap: 4px; font-size: 15px;
   #theme-toggle { margin-left: 0; width: 44px; height: 44px; padding: 0; justify-content: center; }
   #theme-toggle .half { width: 12px; height: 12px; }
   #theme-toggle .label { display: none; }
+  /* Same outlined style as the theme toggle, so it follows the theme. */
   .menu-btn {
     display: block; height: 44px; padding: 0 16px; cursor: pointer;
-    background: var(--ink); color: var(--paper); border: 0; border-radius: 4px;
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--line2); border-radius: 999px;
     font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: background .2s;
   }
+  .menu-btn:hover, header.site.menu-open .menu-btn { background: var(--line); }
+
+  /* Dropdown wipes down from the header; links rise in one after another. Closing reverses without the stagger. */
   .nav-links {
-    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    display: flex; position: absolute; top: 100%; left: 0; right: 0;
     flex-direction: column; padding: 8px var(--pad) 32px;
     background: var(--paper); border-bottom: 1px solid var(--line);
+    visibility: hidden; clip-path: inset(0 0 100% 0);
+    transition: clip-path .45s var(--ease), visibility 0s linear .45s;
   }
-  header.site.menu-open .nav-links { display: flex; }
+  header.site.menu-open .nav-links {
+    visibility: visible; clip-path: inset(0 0 -1px 0);
+    transition: clip-path .5s var(--ease), visibility 0s;
+  }
   .nav-links a {
     display: flex; justify-content: space-between; align-items: baseline;
     padding: 10px 0; border-radius: 0; border-bottom: 1px solid var(--line);
     font-size: 44px; font-weight: 600; letter-spacing: -0.045em; line-height: 1.2;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity .2s ease, transform .3s var(--ease);
   }
+  header.site.menu-open .nav-links a {
+    opacity: 1; transform: none;
+    transition: opacity .4s ease, transform .5s var(--ease);
+  }
+  header.site.menu-open .nav-links a:nth-child(2) { transition-delay: .05s; }
+  header.site.menu-open .nav-links a:nth-child(3) { transition-delay: .1s; }
+  header.site.menu-open .nav-links a:nth-child(4) { transition-delay: .15s; }
   .nav-links a:last-child { border-bottom: 0; }
   .nav-links a:hover { background: transparent; }
   .nav-links a .n { display: inline; font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: 0; color: var(--muted); }
