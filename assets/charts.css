@@ -1,0 +1,115 @@
+/* Figures and long-form layout: figure wrapper, charts, data table, tooltip, stat strip,
+   report (project write-up) and article columns. Loaded only by pages that have figures. */
+
+/* ---- Figure wrapper ---- */
+.fig { margin: 48px 0 0; min-width: 0; }
+.fig.w-text { max-width: 680px; }
+.fig.w-wide { max-width: 960px; }
+.fig-head .eyebrow { display: flex; justify-content: space-between; gap: 16px; }
+.fig-head .h3 { margin-top: 8px; text-wrap: balance; }
+.fig-head p { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: var(--muted); }
+.fig-body { position: relative; margin-top: 24px; }
+.fig-chart { overflow-x: auto; }
+.fig-chart svg { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+.fig-chart text { fill: var(--muted); }
+.fig-chart text.ink, .fig-chart .diagram text { fill: var(--ink); }
+.fig-chart text.halo { stroke: var(--paper); stroke-width: 4px; paint-order: stroke; stroke-linejoin: round; }
+.fig-chart [tabindex] { outline: none; }
+.fig-chart [tabindex]:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.fig figcaption {
+  margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px;
+  font-family: var(--mono); font-size: 12px; line-height: 1.5; color: var(--muted);
+}
+.fig-tools { display: flex; gap: 6px; }
+.fig-tools button {
+  padding: 4px 10px; border: 1px solid var(--line2); border-radius: 4px;
+  background: transparent; color: var(--ink); font: 12px var(--mono); cursor: pointer; transition: background .2s;
+}
+.fig-tools button:hover { background: var(--line); }
+.fig-tools button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* Draw in once when scrolled into view: lines trace left to right, bars grow up. */
+.js .fig svg.draw { clip-path: inset(-40px 100% -40px -40px); transition: clip-path .7s var(--ease); }
+.js .fig svg.draw.up { clip-path: inset(100% -400px -40px -40px); }
+.js .fig.drawn svg.draw { clip-path: inset(-40px -400px -40px -40px); }
+
+/* Data view: the table is the chart's source and its accessible alternative. */
+.fig-table { overflow-x: auto; }
+.fig-data { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.fig-data th, .fig-data td { padding: 8px 16px 8px 0; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.fig-data th:first-child, .fig-data td:first-child { text-align: left; }
+.fig-data thead th { font-size: 11px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-bottom-color: var(--line2); }
+.js .fig[data-chart] .fig-table { display: none; }
+.js .fig.show-data .fig-table { display: block; }
+.js .fig.show-data .fig-chart { display: none; }
+
+.fig-tip {
+  position: absolute; z-index: 5; pointer-events: none;
+  transform: translate(-50%, calc(-100% - 10px));
+  padding: 6px 8px; border-radius: 3px; background: var(--ink); color: var(--paper);
+  font: 12px/1.4 var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.fig-tip[hidden] { display: none; }
+
+svg.spark { vertical-align: -3px; overflow: visible; }
+
+/* ---- Stat strip ---- */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); border-top: 1px solid var(--ink); }
+.stat { padding: 20px 24px 24px 0; border-bottom: 1px solid var(--line); }
+.stat .v { margin-top: 12px; font-size: clamp(52px, 6vw, 80px); font-weight: 600; letter-spacing: -0.05em; line-height: 0.95; font-variant-numeric: tabular-nums; }
+.stat .v small { font-size: 0.5em; }
+.stat .d { margin-top: 10px; font-family: var(--mono); font-size: 12px; }
+
+/* ---- Code + output pair ---- */
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px; align-items: start; }
+.pair .fig { margin-top: 0; }
+
+/* ---- Report: sticky contents on the left (desktop) ---- */
+.report { margin-top: 96px; display: flex; gap: 48px; align-items: flex-start; }
+.report > article { flex: 1; min-width: 0; }
+.report section + section { margin-top: 96px; }
+.report section { scroll-margin-top: 88px; }
+.report .h2 { margin-top: 12px; }
+.report .prose p { margin: 24px 0 0; }
+nav.toc { flex: 0 0 200px; position: sticky; top: 96px; display: flex; flex-direction: column; }
+nav.toc .eyebrow { font-size: 11px; margin-bottom: 12px; }
+nav.toc a {
+  display: flex; gap: 12px; padding: 6px 0 6px 12px; font-size: 14px; text-decoration: none;
+  color: var(--muted); border-left: 2px solid var(--line); transition: color .2s, border-color .2s;
+}
+nav.toc a span { font-family: var(--mono); font-size: 11px; padding-top: 3px; }
+nav.toc a[aria-current="true"] { color: var(--ink); border-left-color: var(--ink); }
+@media (max-width: 900px) { nav.toc { display: none; } }
+
+.meta-ledger { margin-top: 48px; border-top: 1px solid var(--line2); display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); column-gap: 48px; }
+.meta-ledger > div { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
+.meta-ledger .k { flex: 0 0 72px; padding-top: 2px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.meta-ledger .m { font-family: var(--mono); font-size: 14px; }
+
+.pager { margin-top: 128px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); border-top: 1px solid var(--ink); }
+.pager a { padding: 24px 24px 24px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s; }
+.pager a + a { padding: 24px 0 24px 24px; text-align: right; }
+.pager a:hover { background: var(--line); }
+.pager b { display: block; margin-top: 8px; font-size: 28px; font-weight: 500; letter-spacing: -0.025em; }
+
+/* ---- Article: 680px column, sidenotes in the right margin, figures break out ---- */
+.article { --col: 968px; }
+.article .measure { max-width: var(--col); margin-left: auto; margin-right: auto; }
+.article .para { display: grid; grid-template-columns: minmax(0, 680px) 240px; gap: 48px; align-items: start; }
+.article .para + .para { margin-top: 20px; }
+.article .para p { margin: 0; font-size: 19px; line-height: 1.7; text-wrap: pretty; }
+.article h2.h2 { max-width: 680px; margin: 64px 0 20px; font-size: clamp(32px, 4vw, 44px); letter-spacing: -0.035em; line-height: 1.05; }
+.article sup { font-family: var(--mono); font-size: 11px; padding: 0 2px; }
+.sidenote { margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 12px; line-height: 1.6; color: var(--muted); }
+.sidenote b, .footnotes b { font-weight: 400; color: var(--ink); }
+.footnotes { display: none; max-width: 680px; margin: 48px auto 0; padding-top: 16px; border-top: 1px solid var(--line2); font-size: 15px; color: var(--muted); }
+.footnotes ol { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 12px; }
+.article .fig.w-wide { max-width: 960px; margin: 64px auto 0; }
+.article .fig.w-full { max-width: 1440px; margin: 64px auto 0; }
+.article .fig.w-full .fig-head, .article .fig.w-full figcaption { max-width: var(--col); margin-left: auto; margin-right: auto; }
+@media (max-width: 1080px) {
+  .article .para { grid-template-columns: minmax(0, 680px); }
+  .article .sidenote { display: none; }
+  .footnotes { display: block; }
+}

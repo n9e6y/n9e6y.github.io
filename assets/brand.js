@@ -45,6 +45,21 @@
     window.addEventListener('resize', function () { if (window.innerWidth > 720) setOpen(false); });
   }
 
+  // ---- Table of contents: mark the section being read ----
+  var tocLinks = document.querySelectorAll('nav.toc a[href^="#"]');
+  if (tocLinks.length) {
+    var spy = function () {
+      var cur = tocLinks[0];
+      tocLinks.forEach(function (a) {
+        var sec = document.getElementById(a.getAttribute('href').slice(1));
+        if (sec && sec.getBoundingClientRect().top < 160) cur = a;
+      });
+      tocLinks.forEach(function (a) { a.setAttribute('aria-current', a === cur ? 'true' : 'false'); });
+    };
+    window.addEventListener('scroll', spy, { passive: true });
+    spy();
+  }
+
   // ---- Scroll reveals (once) ----
   var items = document.querySelectorAll('[data-reveal]');
   if (!window.IntersectionObserver || matchMedia('(prefers-reduced-motion: reduce)').matches) {
