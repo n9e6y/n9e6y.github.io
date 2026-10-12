@@ -1,16 +1,60 @@
+// Shared behaviour for every page: theme toggle, logo, mobile menu, scroll reveals.
 (function () {
-  var ney = document.querySelector('.ney');
-  if (ney) setInterval(function () { ney.classList.toggle('open'); }, 5000);
+  var root = document.documentElement;
+  root.classList.add('js');
+  if (!root.dataset.theme) root.dataset.theme = 'light';
 
-  var header = document.querySelector('header');
-  var btn = document.querySelector('.menu-btn');
-  if (!header || !btn) return;
-  function setOpen(open) {
-    header.classList.toggle('menu-open', open);
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  // ---- Theme toggle ----
+  var toggle = document.getElementById('theme-toggle');
+  function syncToggle() {
+    var label = toggle && toggle.querySelector('.label');
+    if (label) label.textContent = root.dataset.theme === 'dark' ? 'Light' : 'Dark';
   }
-  btn.addEventListener('click', function () { setOpen(!header.classList.contains('menu-open')); });
-  header.querySelectorAll('.nav-links a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
-  window.addEventListener('resize', function () { if (window.innerWidth > 720) setOpen(false); });
+  if (toggle) toggle.addEventListener('click', function () {
+    var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('nima-theme', next); } catch (e) {}
+    syncToggle();
+  });
+  syncToggle();
+
+  // ---- Logo: NEY opens to N9E6Y on first load and on hover ----
+  var ney = document.querySelector('.ney');
+  var brand = ney && ney.closest('a');
+  if (ney) {
+    setTimeout(function () { ney.classList.add('open'); }, 300);
+    setTimeout(function () { if (!brand.matches(':hover')) ney.classList.remove('open'); }, 2000);
+    brand.addEventListener('mouseenter', function () { ney.classList.add('open'); });
+    brand.addEventListener('mouseleave', function () { ney.classList.remove('open'); });
+    brand.addEventListener('focus', function () { ney.classList.add('open'); });
+    brand.addEventListener('blur', function () { ney.classList.remove('open'); });
+  }
+
+  // ---- Mobile menu ----
+  var header = document.querySelector('header.site');
+  var btn = document.querySelector('.menu-btn');
+  if (header && btn) {
+    var setOpen = function (open) {
+      header.classList.toggle('menu-open', open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.textContent = open ? 'Close' : 'Menu';
+    };
+    btn.addEventListener('click', function () { setOpen(!header.classList.contains('menu-open')); });
+    header.querySelectorAll('.nav-links a').forEach(function (a) { a.addEventListener('click', function () { setOpen(false); }); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setOpen(false); });
+    window.addEventListener('resize', function () { if (window.innerWidth > 720) setOpen(false); });
+  }
+
+  // ---- Scroll reveals (once) ----
+  var items = document.querySelectorAll('[data-reveal]');
+  if (!window.IntersectionObserver || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    items.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15 });
+    items.forEach(function (el) { io.observe(el); });
+  }
 })();
