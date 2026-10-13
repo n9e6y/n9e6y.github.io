@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Writing — Nima Yavari</title>
 <meta name="description" content="Notes on Go, language models and what I learn building things in public." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d0d0d'/%3E%3Ctext x='36' y='68' font-family='Geist,system-ui,-apple-system,sans-serif' font-weight='700' font-size='64' text-anchor='middle' fill='%23f1f1ee'%3E9%3C/text%3E%3Ctext x='0' y='0' font-family='Geist,system-ui,-apple-system,sans-serif' font-weight='700' font-size='64' text-anchor='middle' fill='%23888' transform='translate(64 32) rotate(180)'%3E9%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet" />
 <script>
   (function () {
     try {
@@ -17,76 +17,76 @@
     } catch (e) {}
   })();
 </script>
-<link rel="stylesheet" href="assets/subpage.css" />
+<link rel="stylesheet" href="/assets/brand.css" />
 <style>
-  main { max-width: 1200px; margin: 0 auto; padding: 140px clamp(20px, 6vw, 96px) 96px; display: flex; flex-direction: column; gap: 56px; }
-  .top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
-  .top .title { display: flex; flex-direction: column; gap: 20px; }
-  .top p { margin: 0; max-width: 380px; font-size: 17px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
-
-  .featured {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
-    gap: clamp(24px, 4vw, 56px); padding: clamp(24px, 3vw, 40px);
-    border: 1px solid var(--line-strong); border-radius: 6px;
-  }
-  .cover {
-    aspect-ratio: 16 / 10; border: 1px solid var(--line); border-radius: 4px;
-    background: repeating-linear-gradient(135deg, transparent 0 10px, var(--line) 10px 11px);
-  }
-  .featured .info { display: flex; flex-direction: column; gap: 18px; justify-content: center; }
-  .featured .meta { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted); }
-  .featured h2 { font-size: clamp(30px, 3.6vw, 46px); letter-spacing: -0.035em; line-height: 1.05; text-wrap: balance; }
-  .featured p { margin: 0; font-size: 17px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
+  .empty { margin-top: 48px; position: relative; min-height: 420px; overflow: hidden; display: flex; align-items: flex-end; border: 1px dashed var(--line2); border-radius: 6px; }
+  .empty canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0.7; }
+  .empty .msg { position: relative; width: 100%; padding: 32px; display: flex; flex-wrap: wrap; gap: 16px 48px; justify-content: space-between; align-items: flex-end; background: var(--paper); border-top: 1px solid var(--line); }
+  .empty .t { margin-top: 8px; font-size: clamp(32px, 4vw, 48px); font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
+  .empty p { margin: 12px 0 0; font-size: 17px; color: var(--muted); max-width: 46ch; }
 </style>
-<link rel="stylesheet" href="assets/brand.css">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430"></script>
 </head>
 <body>
 
-<header>
-  <a href="index.html" class="brand" aria-label="NEY"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
-  <nav>
-    <span class="nav-links" id="nav-links">
-    <a href="index.html#about">About</a>
-    <a href="works.html">Work</a>
-    <a href="index.html#journey">Journey</a>
-    <a href="blog.html" class="current">Blog</a>
-    <a href="index.html#contact">Contact</a>
-    </span>
-    <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"></path></svg>
-    </button>
-    <button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"></path></svg>
-    </button>
-  </nav>
+<header class="site">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
+    <nav aria-label="Main">
+      <span class="nav-links" id="nav-links">
+        <a href="/works.html">Work</a>
+        <a href="/blog.html" aria-current="page">Writing</a>
+        <a href="/about.html">About</a>
+      </span>
+      <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    </nav>
+  </div>
 </header>
 
-<main>
-  <div class="top">
-    <div class="title">
-      <span class="eyebrow">Blog</span>
-      <h1 class="page-title">Writing</h1>
+<main class="page">
+  <div class="wrap">
+    <div class="page-head" data-reveal>
+      <div class="eyebrow">Writing</div>
+      <h1 class="h1">Writing</h1>
+      <p class="intro">Notes on Go, language models and other things that i find interesting.</p>
     </div>
-    <p>Notes on Go, language models and what I learn building things in public.</p>
-  </div>
+    <hr class="rule" />
 
-  <div class="featured">
-    <div class="cover"></div>
-    <div class="info">
-      <span class="meta">Coming soon</span>
-      <h2>I'm working on it.</h2>
-      <p>The first post is in progress. Check back soon.</p>
+    <div class="empty">
+      <canvas data-graph="wander" aria-hidden="true"></canvas>
+      <div class="msg">
+        <div>
+          <div class="eyebrow">No posts yet</div>
+          <div class="t">First post coming soon.</div>
+          <p>It’s in progress. Until then, the projects say most of it.</p>
+        </div>
+        <a class="link-thick" data-umami-event="writing-see-work" href="/works.html">See the work →</a>
+      </div>
     </div>
   </div>
 </main>
 
-<footer class="site-footer">
-  <span>© 2026 Nima Yavari</span>
-  <a href="index.html">Home ↗</a>
-</footer>
-
-<script src="assets/subpage.js"></script>
-<script src="assets/brand.js"></script>
+<section id="contact" class="contact">
+  <div class="inner">
+    <div class="eyebrow">Contact</div>
+    <h2 class="display">Let's talk</h2>
+    <p class="lede">Research, code, ideas — Feel free to say Hi.</p>
+    <div class="pills">
+      <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+      <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="LinkedIn"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="GitHub"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="X"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="Kaggle"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%２０0％２０２４％２０２４％２７％３Ｅ％３Ｃpath％２０d％３Ｄ％２７M5％２０3h3.２v7.２L14.６％２０3h4.１l-7％２０8.１L19％２０ twenty-oneh-4.１l-5.４-7.３-1.３％２０1.５V twenty-oneH5z％２７％２Ｆ％３C％２Fsvg％３E) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-huggingface" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="Hugging Face"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span></a>
+    </div>
+  </div>
+  <footer class="site-foot">
+    <span class="sig"><span class="mono-mark" aria-hidden="true"><span>9</span><span>9</span></span>© 2026 Nima Yavari</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</section>
+<script src="/assets/graph.js"></script>
+<script src="/assets/brand.js"></script>
 </body>
 </html>

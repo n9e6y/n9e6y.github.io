@@ -5,12 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Nima Yavari — Portfolio</title>
 <meta name="description" content="Nima — computer engineer building LLM applications, retrieval pipelines and concurrent backend systems in Python and Go." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d0d0d'/%3E%3Ctext x='36' y='68' font-family='Geist,system-ui,-apple-system,sans-serif' font-weight='700' font-size='64' text-anchor='middle' fill='%23f1f1ee'%3E9%3C/text%3E%3Ctext x='0' y='0' font-family='Geist,system-ui,-apple-system,sans-serif' font-weight='700' font-size='64' text-anchor='middle' fill='%23888' transform='translate(64 32) rotate(180)'%3E9%3C/text%3E%3C/svg%3E" />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet" />
 <script>
-  // Set theme before first paint to avoid a flash of the wrong theme.
   (function () {
     try {
       var t = localStorage.getItem('nima-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
@@ -18,662 +17,146 @@
     } catch (e) {}
   })();
 </script>
+<link rel="stylesheet" href="/assets/brand.css" />
 <style>
-  :root {
-    --bg: #f6f6f4;
-    --fg: #0d0d0d;
-    --fg-rgb: 13, 13, 13;
-    --muted: #5a5a57;
-    --line: rgba(13, 13, 13, 0.12);
-    --line-strong: rgba(13, 13, 13, 0.28);
-    color-scheme: light;
-  }
-  :root[data-theme="dark"] {
-    --bg: #0b0b0b;
-    --fg: #f1f1ee;
-    --fg-rgb: 241, 241, 238;
-    --muted: #9d9d99;
-    --line: rgba(241, 241, 238, 0.12);
-    --line-strong: rgba(241, 241, 238, 0.3);
-    color-scheme: dark;
-  }
-
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); }
-  body {
-    font-family: 'Geist', system-ui, -apple-system, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    transition: background .3s, color .3s;
-  }
-  a { color: var(--fg); text-decoration: none; }
-  a:hover { color: var(--muted); }
-  .mono { font-family: 'Geist Mono', ui-monospace, monospace; }
-
-  header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 20;
-    display: flex; align-items: center; justify-content: space-between; gap: 24px;
-    padding: 18px clamp(20px, 4vw, 48px);
-    background: color-mix(in srgb, var(--bg) 78%, transparent);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
-    font-size: 14px;
-  }
-  header .brand { font-weight: 500; letter-spacing: -0.01em; }
-  nav { display: flex; align-items: center; gap: clamp(14px, 2.4vw, 28px); color: var(--muted); }
-  nav a { color: var(--muted); }
-  nav a:hover { color: var(--fg); }
-  #theme-toggle {
-    display: flex; align-items: center; justify-content: center;
-    width: 32px; height: 32px; margin-left: 4px;
-    border: 1px solid var(--line-strong); border-radius: 999px;
-    background: transparent; color: var(--fg); cursor: pointer; padding: 0;
-  }
-  #theme-toggle:hover { background: var(--line); }
-
-  section {
-    position: relative;
-    min-height: 100svh;
-    padding: 120px clamp(20px, 6vw, 96px) 80px;
-  }
-  section + section { border-top: 1px solid var(--line); }
-  .wrap { max-width: 1200px; width: 100%; margin: 0 auto; }
-  .eyebrow {
-    font-family: 'Geist Mono', monospace; font-size: 12px;
-    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
-  }
-  h1, h2, h3 { margin: 0; letter-spacing: -0.04em; font-weight: 500; line-height: 1; }
-
   /* Hero */
-  #home { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+  #home {
+    position: relative; overflow: hidden;
+    min-height: max(560px, calc(100svh - 65px));
+    display: flex; flex-direction: column;
+  }
   #home canvas {
     position: absolute; inset: 0; pointer-events: none;
     -webkit-mask-image: radial-gradient(ellipse at 60% 50%, #000 30%, transparent 80%);
     mask-image: radial-gradient(ellipse at 60% 50%, #000 30%, transparent 80%);
   }
-  #home .inner { position: relative; }
+  #home .inner { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 var(--pad); }
   /* Negative left margin cancels the "H" side bearing so the big headline lines up with the text below. */
-  #home h1 { font-size: clamp(64px, 13vw, 184px); letter-spacing: -0.055em; line-height: 0.92; margin-left: -0.055em; }
-  #home p { margin: 36px 0 0; max-width: 560px; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.5; color: var(--muted); }
-  /* Graph playground panel */
-  .play {
-    --pw: min(272px, calc(100vw - 72px));
-    position: absolute; right: 0; top: 50%; z-index: 5; display: flex; align-items: stretch;
-    transform: translate(var(--pw), -50%);
-    transition: transform .6s cubic-bezier(.65,0,.35,1);
-  }
-  .play.open { transform: translate(0, -50%); }
-  @media (prefers-reduced-motion: reduce) { .play { transition: none; } }
-  .play-tab {
-    writing-mode: vertical-rl; transform: rotate(180deg);
-    display: flex; align-items: center; justify-content: center; gap: 8px; padding: 18px 10px;
-    border: 1px solid var(--line-strong); border-left: none; border-radius: 0 6px 6px 0;
-    background: var(--bg); color: var(--fg);
-    font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.1em;
-    text-transform: uppercase; cursor: pointer;
-  }
-  .play-tab svg { width: 12px; height: 12px; flex: none; fill: currentColor; stroke: currentColor; }
-  .play-tab:hover { background: var(--line); }
-  .play-panel {
-    width: var(--pw); box-sizing: border-box; display: flex; flex-direction: column; gap: 22px; padding: 22px;
-    border: 1px solid var(--line-strong); border-right: none;
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  }
-  .play:not(.open) .play-panel { visibility: hidden; transition: visibility 0s .6s; }
-  .play-panel label { display: flex; flex-direction: column; gap: 10px; }
-  .play-panel .lbl { display: flex; justify-content: space-between; font-size: 13px; }
-  .play-panel .val { font-family: 'Geist Mono', monospace; color: var(--muted); }
-  .play-panel input[type="range"] { width: 100%; accent-color: var(--fg); margin: 0; }
-  .play-panel .group { display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
-  .seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line-strong); border-radius: 4px; overflow: hidden; }
-  .seg button { padding: 8px 0; border: none; background: transparent; color: var(--fg); font-family: inherit; font-size: 12px; cursor: pointer; }
-  .seg button.on { background: var(--fg); color: var(--bg); }
-  .play-actions { display: flex; gap: 8px; }
-  .play-actions button {
-    flex: 1; padding: 9px 0; border: 1px solid var(--line-strong); border-radius: 4px;
-    background: transparent; color: var(--fg); font-family: inherit; font-size: 12px; cursor: pointer;
-  }
-  .play-actions button:hover { background: var(--line); }
-  .play-actions button.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-  #home.pressing { user-select: none; -webkit-user-select: none; }
-  .scroll-cue {
-    position: absolute; left: clamp(20px, 6vw, 96px); bottom: 32px;
-    display: flex; align-items: center; gap: 10px;
-    font-family: 'Geist Mono', monospace; font-size: 12px; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--muted);
-  }
-  .scroll-cue span.line { display: block; width: 28px; height: 1px; background: var(--line-strong); }
+  #home h1 { margin: 24px 0 0 -0.055em; }
+  #home .lede { margin: 32px 0 0; max-width: 30ch; }
 
-  /* About */
-  #about .grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
-    gap: clamp(40px, 6vw, 96px); align-items: center;
-    max-width: 1200px; width: 100%; margin: 0 auto;
-  }
-  #about .photo {
-    aspect-ratio: 4 / 5; max-width: 440px; width: 100%;
-    border: 1px solid var(--line-strong); border-radius: 4px;
-    overflow: hidden; background: var(--line);
-  }
-  #about .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #about .copy { display: flex; flex-direction: column; gap: 32px; }
-  #about h2 { font-size: clamp(40px, 5vw, 64px); }
-  #about p { margin: 0; font-size: 18px; line-height: 1.6; max-width: 560px; }
-  .interests { display: flex; flex-direction: column; gap: 14px; }
-  .interests .label { font-size: 14px; color: var(--muted); }
-  .interests .list { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-  .interests .list div { padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 16px; }
-  .socials { display: flex; flex-wrap: wrap; gap: 10px; }
-  .icon-btn {
-    display: flex; align-items: center; justify-content: center;
-    width: 44px; height: 44px; border: 1px solid var(--line-strong); border-radius: 999px;
-  }
-  .icon-btn:hover { background: var(--line); }
-  .icon-btn .glyph {
-    display: block; width: 18px; height: 18px; background: var(--fg);
-  }
+  /* "I like ___." The word slides up and out while the next slides in; the box eases to the new
+     word's width so the full stop follows. */
+  .rotator { display: inline-block; position: relative; height: 1.4em; overflow: hidden; vertical-align: bottom; white-space: nowrap; transition: width .6s var(--ease); }
+  .rotator .rw { position: absolute; left: 0; top: 0; opacity: 0; transform: translateY(80%); transition: transform .6s var(--ease), opacity .45s ease; }
+  .rotator .rw.in { position: relative; opacity: 1; transform: none; }
+  .rotator .rw.out { opacity: 0; transform: translateY(-80%); }
 
-  /* Work */
-  #work .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px 24px; margin-bottom: 48px; }
-  #work .title { display: flex; flex-direction: column; gap: 20px; }
-  .works-link { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 8px; text-decoration-color: var(--line-strong); transition: text-decoration-color .2s; }
-  .works-link:hover { color: var(--fg); text-decoration-color: var(--fg); }
-  #work h2 { font-size: clamp(40px, 5vw, 64px); }
-  .cards {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
-    gap: 16px;
-  }
-  .card {
-    display: flex; flex-direction: column; gap: 14px; padding: 28px;
-    border: 1px solid var(--line-strong); border-radius: 6px; color: var(--fg);
-    min-height: 280px; transition: background .2s;
-  }
-  .card:hover { background: var(--line); color: var(--fg); }
-  .card.wip { border-style: dashed; }
-  .card .row { display: flex; justify-content: space-between; font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted); }
-  .card h3 { margin: 8px 0 0; font-size: 24px; letter-spacing: -0.02em; }
-  .card p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--muted); }
-  .card code { font-family: 'Geist Mono', monospace; font-size: 13px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 8px; }
-  .tags span { font-family: 'Geist Mono', monospace; font-size: 12px; padding: 4px 8px; border: 1px solid var(--line-strong); border-radius: 4px; }
+  #home canvas { width: 100%; height: 100%; }
 
-  /* Journey + Stack */
-  #journey .grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
-    gap: clamp(48px, 6vw, 96px);
-    max-width: 1200px; width: 100%; margin: 0 auto;
+  /* One ledger row replaces the old middle sections. */
+  .hero-index { position: relative; padding: 0 var(--pad) 24px; }
+  .hero-index .wrap {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); column-gap: 24px;
+    border-top: 1px solid var(--line2); background: var(--paper);
   }
-  #journey .col { display: flex; flex-direction: column; gap: 36px; }
-  #journey h2 { font-size: clamp(40px, 5vw, 64px); }
-  .timeline { display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-  .timeline .row { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); }
-  .timeline .when { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted); padding-top: 4px; }
-  .timeline .what { display: flex; flex-direction: column; gap: 4px; }
-  .timeline .what .title { font-size: 17px; font-weight: 500; }
-  .timeline .what .sub { font-size: 14px; color: var(--muted); line-height: 1.5; }
-  .head.split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; }
-  .legend { display: flex; gap: 20px; font-size: 13px; color: var(--muted); padding-bottom: 8px; }
-  .legend .dot { display: flex; align-items: center; gap: 8px; }
-  .legend .dot span { width: 10px; height: 10px; border-radius: 999px; }
-  .legend .dot.on span { background: var(--fg); }
-  .legend .dot.off span { border: 1px solid var(--line-strong); }
-  .stack-row { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); }
-  .stack-row .label { font-size: 14px; color: var(--muted); padding-top: 5px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chip { padding: 5px 11px; border-radius: 999px; font-size: 13px; background: var(--fg); color: var(--bg); }
-  .chip.outline { padding: 4px 10px; background: transparent; color: var(--fg); border: 1px solid var(--line-strong); }
+  .hero-index a {
+    display: flex; align-items: baseline; gap: 12px; padding: 16px 0;
+    border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s;
+  }
+  .hero-index a:hover { background: var(--line); }
+  .hero-index .go { font-family: var(--mono); font-size: 12px; }
+  .hero-index .t { flex: 1; font-size: 16px; line-height: 1.4; }
+  .hero-index .t b { font-weight: 500; }
+  .hero-index .t span { color: var(--muted); }
 
-  /* Contact */
-  #contact {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 32px; text-align: center; padding-bottom: 100px;
-  }
-  #contact h2 { font-size: clamp(64px, 12vw, 168px); letter-spacing: -0.055em; line-height: 0.92; }
-  #contact > p { margin: 0; max-width: 520px; font-size: clamp(17px, 1.6vw, 20px); line-height: 1.5; color: var(--muted); }
-  .contact-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
-  .pill {
-    display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px;
-    border: 1px solid var(--line-strong); border-radius: 999px; font-size: 14px;
-  }
-  .pill:hover { background: var(--line); color: var(--fg); }
-  .pill .glyph { display: block; width: 16px; height: 16px; background: var(--fg); }
-  footer {
-    position: absolute; left: clamp(20px, 4vw, 48px); right: clamp(20px, 4vw, 48px); bottom: 24px;
-    display: flex; justify-content: space-between;
-    font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-  }
+  /* Home contact is a full screen of its own. */
+  #contact { margin-top: 0; min-height: 100svh; padding-top: 96px; }
 </style>
-<link rel="stylesheet" href="assets/brand.css">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430"></script>
 </head>
 <body>
 
-<header>
-  <a href="#home" class="brand" aria-label="NEY"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
-  <nav>
-    <span class="nav-links" id="nav-links">
-    <a href="#about">About</a>
-    <a href="#work">Work</a>
-    <a href="#journey">Journey</a>
-    <a href="blog.html">Blog</a>
-    <a href="#contact">Contact</a>
-    </span>
-    <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"></path></svg>
-    </button>
-    <button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"></path></svg>
-    </button>
-  </nav>
+<header class="site">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
+    <nav aria-label="Main">
+      <span class="nav-links" id="nav-links">
+        <a href="/works.html">Work</a>
+        <a href="/blog.html">Writing</a>
+        <a href="/about.html">About</a>
+      </span>
+      <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    </nav>
+  </div>
 </header>
 
+<main>
 <section id="home">
-  <canvas id="net"></canvas>
-  <div class="inner wrap">
-    <h1>Hi, I'm Nima.</h1>
-    <p>I Like Computers, Data & Algorithms.
-
-    </p>
-  </div>
-  <div class="play">
-    <button data-umami-event="playground-open" class="play-tab" id="play-tab" aria-expanded="false" aria-controls="play-panel"><svg class="i-play" viewBox="0 0 10 10" aria-hidden="true"><path d="M9 1 1 5l8 4z" stroke="none"/></svg>Play</button>
-    <div class="play-panel" id="play-panel">
-      <label><span class="lbl"><span>Nodes</span><span class="val" id="v-nodes"></span></span>
-        <input type="range" id="r-nodes" min="20" max="280" step="1" /></label>
-      <label><span class="lbl"><span>Reach</span><span class="val" id="v-reach"></span></span>
-        <input type="range" id="r-reach" min="40" max="260" step="1" /></label>
-      <label><span class="lbl"><span>Speed</span><span class="val" id="v-speed"></span></span>
-        <input type="range" id="r-speed" min="0" max="5" step="0.1" /></label>
-      <div class="group">
-        <span>On click</span>
-        <div class="seg" id="seg-cursor">
-          <button data-mode="connect">None</button>
-          <button data-mode="attract">Attract</button>
-          <button data-mode="repel">Repel</button>
-        </div>
-      </div>
-      <div class="play-actions">
-        <button class="primary" id="btn-scatter">Scatter</button>
-        <button id="btn-reset">Reset</button>
-      </div>
+  <canvas id="tree" aria-hidden="true"></canvas>
+  <div class="inner">
+    <div class="wrap">
+      <h1 class="display">Hi, I'm<br>Nima.</h1>
+      <p class="lede" id="likes">I like <span class="rotator"><span class="rw in">computers</span></span>.</p>
     </div>
   </div>
-  <a href="#about" class="scroll-cue"><span class="line"></span>Scroll</a>
+  <nav class="hero-index" aria-label="Index">
+    <div class="wrap">
+      <a data-umami-event="home-index-work" href="/works.html"><span class="t"><b>Work</b> <span>— some of my projects</span></span><span class="go">↗</span></a>
+      <a data-umami-event="home-index-writing" href="/blog.html"><span class="t"><b>Writing</b> <span>— First post coming soon</span></span><span class="go">↗</span></a>
+      <a data-umami-event="home-index-about" href="/about.html"><span class="t"><b>About</b> <span>— me, interests and tools.</span></span><span class="go">↗</span></a>
+    </div>
+  </nav>
 </section>
+</main>
 
-<section id="about">
-  <div class="grid">
-    <div class="photo">
-      <img src="img/profile_picture/1.jpeg" alt="Portrait of Nima" />
-    </div>
-    <div class="copy">
-      <span class="eyebrow">01 — About</span>
-      <h2>About</h2>
-      <p>I’m a computer engineer focused on software engineering, applied AI, and machine learning. I enjoy exploring data, finding the patterns and stories hidden in it, and building software around what I learn. I build LLM applications, AI pipelines, and backend systems.</p>
-      <div class="interests">
-        <span class="label">Interested in</span>
-        <div class="list">
-          <div>Retrieval-augmented generation and AI agents</div>
-          <div>Natural language processing</div>
-          <div>Recommender systems and representation learning</div>
-          <div>Reinforcement learning</div>
-        </div>
-      </div>
-      <div class="socials">
-        <a data-umami-event="social-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" aria-label="GitHub" class="icon-btn"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
-        <a data-umami-event="social-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" aria-label="X" class="icon-btn"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
-        <a data-umami-event="social-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" aria-label="Kaggle" class="icon-btn"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat"></span></a>
-        <a data-umami-event="social-hugging-face" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" aria-label="Hugging Face" class="icon-btn"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span></a>
-      </div>
+<section id="contact" class="contact">
+  <div class="inner">
+    <div class="eyebrow">Contact</div>
+    <h2 class="display">Let's talk</h2>
+    <p class="lede">Research, code, ideas — Feel free to say Hi.</p>
+    <div class="pills">
+      <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+      <!-- <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="LinkedIn"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a> -->
+      <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="GitHub"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="X"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="Kaggle"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%２０viewBox%3D%２７0％２０0％２０２４％２０２４％２７％３Ｅ％３Ｃpath％２０d％３Ｄ％２７M5％２０3h3.２v7.２L14.６％２０3h4.１l-7％２０8.１L19％２０ twenty-oneh-4.１l-5.４-7.３-1.３％２０1.５V twenty-oneH5z％２７％２Ｆ％３C％２Fsvg％３E) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-huggingface" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="Hugging Face"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span></a>
     </div>
   </div>
-</section>
-
-<section id="work">
-  <div class="wrap">
-    <div class="head">
-      <div class="title">
-        <span class="eyebrow">02 — Work</span>
-        <h2>Selected <a data-umami-event="view-more-works" href="works.html" class="works-link">Works</a></h2>
-      </div>
-    </div>
-    <div class="cards">
-      <a data-umami-event="project-gocade" href="https://github.com/n9e6y/gocade" target="_blank" rel="noopener" class="card">
-        <div class="row"><span>01</span><span>↗</span></div>
-        <h3>GoCade</h3>
-        <p>Multiplayer TCP game server you play with <code>nc host 9000</code>. Tic-Tac-Toe, Snake  and Tron with bots and matchmaking, built on single-owner goroutines over channels, with replay, fuzz and load tests.</p>
-        <div class="tags"><span>Go</span><span>TCP</span><span>Concurrency</span></div>
-      </a>
-      <a data-umami-event="project-snappboxchallengeforalgorithmarena" href="https://github.com/n9e6y/snappboxchallengeforalgorithmarena" target="_blank" rel="noopener" class="card">
-        <div class="row"><span>02</span><span>↗</span></div>
-        <h3>Delivery Fare Engine</h3>
-        <p>Turns  raw GPS CSV into per-delivery fares: Haversine distance, speed-based invalid-point filtering, day and night rates, flag charge and minimum fare. Concurrent pipeline, profiled with pprof.</p>
-        <div class="tags"><span>Go</span><span>Concurrency</span><span>pprof</span><span>Testing</span></div>
-      </a>
-      <a data-umami-event="project-PPG" href="https://huggingface.co/spaces/n9e6y/PPG" target="_blank" rel="noopener" class="card">
-        <div class="row"><span>03</span><span>↗</span></div>
-        <h3>Persian Poetry Generator</h3>
-        <p>GPT-2 fine-tuned on classical Persian poetry, generating ghazal, masnavi and robaee. Streamlit app with sampling controls; model and Space hosted on Hugging Face.</p>
-        <div class="tags"><span>Python</span><span>GPT-2</span><span>Transformers</span><span>Streamlit</span></div>
-      </a>
-      <a data-umami-event="project-LMR" href="https://huggingface.co/spaces/n9e6y/LMR" target="_blank" rel="noopener" class="card">
-        <div class="row"><span>04</span><span>↗</span></div>
-        <h3>Letterboxd Recommender</h3>
-        <p>Content-based movie recommender: Word2Vec embeddings of movie metadata averaged into a user taste vector and ranked by cosine similarity. Deployed on Hugging Face Spaces.</p>
-        <div class="tags"><span>Python</span><span>Gensim</span><span>Word2Vec</span><span>Gradio</span></div>
-      </a>
-      <a data-umami-event="project-time_management_panel" href="https://github.com/n9e6y/time_management_panel" target="_blank" rel="noopener" class="card">
-        <div class="row"><span>05</span><span>↗</span></div>
-        <h3>Time Analyzer</h3>
-        <p>Parses Google Calendar exports, expands recurring events, sorts them with hierarchical rules and shows where the time goes in a Streamlit dashboard.</p>
-        <div class="tags"><span>Python</span><span>Pandas</span><span>Plotly</span><span>Streamlit</span></div>
-      </a>
-      <a data-umami-event="project-scsc" href="https://github.com/n9e6y/scsc" target="_blank" rel="noopener" class="card wip">
-        <div class="row"><span>06</span><span>In progress</span></div>
-        <h3>Semantic Code Search</h3>
-        <p>A command-line tool for searching codebases by meaning instead of keywords, growing into a RAG and agent system.</p>
-        <div class="tags"><span>Go</span><span>Embeddings</span><span>RAG</span><span>CLI</span></div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<section id="journey">
-  <div class="grid">
-    <div class="col">
-      <div class="head">
-        <div>
-          <span class="eyebrow">03 — Journey</span>
-          <h2>Journey</h2>
-        </div>
-      </div>
-      <div class="timeline">
-        <!-- <div class="row"><span class="when">2025 — Now</span><div class="what"><span class="title">Independent engineering</span><span class="sub">Building GoCade, SCSC and open ML projects.</span></div></div> -->
-        <div class="row"><span class="when">December 2023 — August 2024</span><div class="what"><span class="title">Machine Learning Training Program</span><span class="sub">Fanap Campus · Remote</span></div></div>
-        <div class="row"><span class="when">2021 — 2025</span><div class="what"><span class="title">B.Sc. Computer Engineering</span><span class="sub">IAU</span></div></div>
-        <div class="row"><span class="when">June 2019 — November 2021</span><div class="what"><span class="title">Graphic Designer</span><span class="sub">Freelance and agencies · Brand identities, customer personas</span></div></div>
-        <div class="row"><span class="when">June 2018 — June 2019</span><div class="what"><span class="title">Account Manager</span><span class="sub">Limitlines · Campaign budgets, data-informed decisions</span></div></div>
-      </div>
-    </div>
-
-    <div class="col">
-      <div class="head split">
-        <div>
-          <span class="eyebrow">04 — Stack</span>
-          <h2>Stack</h2>
-        </div>
-        <div class="legend">
-          <span class="dot on"><span></span>Daily use</span>
-          <span class="dot off"><span></span>Working knowledge</span>
-        </div>
-      </div>
-      <div class="timeline">
-        <div class="stack-row"><span class="label">Languages</span><div class="chips"><span class="chip">Python</span><span class="chip">SQL</span><span class="chip outline">Go</span></div></div>
-        <div class="stack-row"><span class="label">LLM &amp; agents</span><div class="chips"><span class="chip">LLM integration</span><span class="chip">RAG pipelines</span><span class="chip">AI agents</span><span class="chip">LangChain</span><span class="chip outline">Hugging Face Transformers</span></div></div>
-        <div class="stack-row"><span class="label">ML &amp; data</span><div class="chips"><span class="chip">Pandas</span><span class="chip">NumPy</span><span class="chip">scikit-learn</span><span class="chip outline">PyTorch</span><span class="chip outline">SciPy</span><span class="chip outline">Gensim</span><span class="chip outline">Plotly</span><span class="chip outline">Seaborn</span></div></div>
-        <div class="stack-row"><span class="label">Apps &amp; APIs</span><div class="chips"><span class="chip">FastAPI</span><span class="chip">Streamlit</span><span class="chip outline">Gradio</span></div></div>
-        <div class="stack-row"><span class="label">Databases</span><div class="chips"><span class="chip">PostgreSQL</span><span class="chip">MySQL</span><span class="chip">SQLite</span><span class="chip outline">MongoDB</span></div></div>
-        <div class="stack-row"><span class="label">Tools</span><div class="chips"><span class="chip">Git</span><span class="chip outline">Docker</span><span class="chip outline">Linux</span><span class="chip outline">pprof</span></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="contact">
-  <h2>Let's talk</h2>
-  <p>Research, code, ideas — i'm all ears.
-</p>
-  <div class="contact-links">
-    <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>Email</a>
-    <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span>LinkedIn</a>
-    <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" class="pill"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span>GitHub</a>
-    <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" class="pill"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span>X</a>
-    <a data-umami-event="contact-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" class="pill"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat"></span>Kaggle</a>
-    <a data-umami-event="contact-huggingface" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" class="pill"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span>Hugging Face</a>
-  </div>
-  <footer>
-    <span>© 2026 Nima Yavari</span>
-    <a href="#home">Back to top ↑</a>
+  <footer class="site-foot">
+    <span class="sig"><span class="mono-mark" aria-hidden="true"><span>9</span><span>9</span></span>© 2026 Nima Yavari</span>
+    <a href="#top">Back to top ↑</a>
   </footer>
 </section>
 
+<script src="/assets/hero-tree.js"></script>
 <script>
 (function () {
-  // ---- Theme toggle ----
-  if (!document.documentElement.dataset.theme) document.documentElement.dataset.theme = 'light';
-  document.getElementById('theme-toggle').addEventListener('click', function () {
-    var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-    document.documentElement.dataset.theme = next;
-    try { localStorage.setItem('nima-theme', next); } catch (e) {}
-  });
-
-  // ---- Hero network canvas + playground ----
-  // Default node count scales with screen width: 25 on phones (<=720px), 110 from ~1000px up.
-  function autoNodes() {
-    var t = Math.min(1, Math.max(0, (window.innerWidth - 720) / 280));
-    return Math.round(25 + t * 85);
-  }
-  var DEF = { nodes: autoNodes(), reach: 140, speed: 1, cursor: 'connect' };
-  var nodesTouched = false;
-  var S = { nodes: DEF.nodes, reach: DEF.reach, speed: DEF.speed, cursor: DEF.cursor };
-  var canvas = document.getElementById('net');
-  var ctx = canvas.getContext('2d');
-  var w = 0, h = 0, nodes = [];
-  var mouse = { x: -1e4, y: -1e4 };
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function build() {
-    if (!nodesTouched) { DEF.nodes = S.nodes = autoNodes(); if (inputs) syncUI(); }
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var r = canvas.parentElement.getBoundingClientRect();
-    var nw = r.width, nh = r.height;
-    // Keep the constellation's shape on resize: rescale positions instead of clamping,
-    // otherwise nodes pile up along the edges (shrink) or leave empty space (grow).
-    if (w > 0 && h > 0) {
-      var sx = nw / w, sy = nh / h;
-      nodes.forEach(function (p) { p.x *= sx; p.y *= sy; });
-    }
-    w = nw; h = nh;
-    canvas.width = w * dpr; canvas.height = h * dpr;
-    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  function spawn() {
-    return {
-      x: Math.random() * w, y: Math.random() * h,
-      a: Math.random() * Math.PI * 2,            // heading
-      s: Math.random() * 0.25 + 0.08,            // cruising speed
-      ix: 0, iy: 0,                              // impulse velocity (cursor, scatter), decays
-      r: Math.random() * 1.4 + 0.7,
-    };
-  }
-
-  function scatter() {
-    nodes.forEach(function (p) {
-      var dx = p.x - w / 2, dy = p.y - h / 2, d = Math.hypot(dx, dy) || 1;
-      var f = 6 + Math.random() * 10;
-      p.ix += dx / d * f; p.iy += dy / d * f;
-    });
-  }
-
-  // Shortest signed angle from a to b.
-  function angleDiff(a, b) {
-    var d = (b - a) % (Math.PI * 2);
-    if (d > Math.PI) d -= Math.PI * 2;
-    if (d < -Math.PI) d += Math.PI * 2;
-    return d;
-  }
-
-  var last = 0, running = false, onScreen = true, pressed = false;
-
-  function frame(now) {
-    if (!running) return;
-    // Frame-rate independent time step (1 = one 60fps frame); clamp so a tab switch doesn't teleport nodes.
-    var dt = last ? Math.min(3, (now - last) / 16.667) : 1;
-    last = now;
-
-    ctx.clearRect(0, 0, w, h);
-    while (nodes.length < S.nodes) nodes.push(spawn());
-    if (nodes.length > S.nodes) nodes.length = S.nodes;
-    var rgb = getComputedStyle(document.documentElement).getPropertyValue('--fg-rgb').trim() || '13,13,13';
-    var D = S.reach, sp = reduce ? 0 : S.speed;
-    var decay = Math.pow(0.94, dt);
-    var margin = Math.min(90, Math.min(w, h) * 0.2);
-
-    for (var k = 0; k < nodes.length; k++) {
-      var p = nodes[k];
-
-      // Click-and-hold force, smooth falloff.
-      if (pressed && S.cursor !== 'connect') {
-        var cx = mouse.x - p.x, cy = mouse.y - p.y, cd = Math.hypot(cx, cy);
-        if (cd < 220 && cd > 1) {
-          var f = (1 - cd / 220) * (S.cursor === 'attract' ? 0.12 : -0.35) * dt;
-          p.ix += cx / cd * f; p.iy += cy / cd * f;
-        }
-      }
-
-      // Gentle wander so paths curve instead of running in straight lines.
-      p.a += (Math.random() - 0.5) * 0.12 * dt;
-
-      // Soft edges: near a border, steer the heading back toward the middle (no hard bounce).
-      var ex = Math.max(0, margin - p.x, p.x - (w - margin)) / margin;
-      var ey = Math.max(0, margin - p.y, p.y - (h - margin)) / margin;
-      var edge = Math.max(ex, ey);
-      if (edge > 0) {
-        p.a += angleDiff(p.a, Math.atan2(h / 2 - p.y, w / 2 - p.x)) * Math.min(1, edge * 0.08 * dt);
-      }
-
-      p.ix *= decay; p.iy *= decay;
-      p.x += (Math.cos(p.a) * p.s * sp + p.ix) * dt;
-      p.y += (Math.sin(p.a) * p.s * sp + p.iy) * dt;
-
-      // Safety net for big impulses: absorb at the border.
-      if (p.x < 0 || p.x > w) { p.x = Math.max(0, Math.min(w, p.x)); p.ix *= -0.5; p.a = Math.PI - p.a; }
-      if (p.y < 0 || p.y > h) { p.y = Math.max(0, Math.min(h, p.y)); p.iy *= -0.5; p.a = -p.a; }
-    }
-
-    for (var i = 0; i < nodes.length; i++) {
-      var a = nodes[i];
-      for (var j = i + 1; j < nodes.length; j++) {
-        var b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d = dx * dx + dy * dy;
-        if (d < D * D) {
-          ctx.strokeStyle = 'rgba(' + rgb + ',' + ((1 - Math.sqrt(d) / D) * 0.22) + ')';
-          ctx.lineWidth = 1;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-        }
-      }
-      var mx = a.x - mouse.x, my = a.y - mouse.y, md = Math.sqrt(mx * mx + my * my);
-      if (md < 180) {
-        ctx.strokeStyle = 'rgba(' + rgb + ',' + ((1 - md / 180) * 0.5) + ')';
-        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-      }
-      ctx.fillStyle = 'rgba(' + rgb + ',0.55)';
-      ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
-    }
-    requestAnimationFrame(frame);
-  }
-
-  function start() {
-    if (running || !onScreen || document.hidden) return;
-    running = true; last = 0;
-    requestAnimationFrame(frame);
-  }
-  function stop() { running = false; }
-
-  window.addEventListener('mousemove', function (e) {
-    var r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
-  });
-  document.addEventListener('mouseleave', function () { mouse.x = mouse.y = -1e4; });
-
-  // Attract / Repel act on click (hold to keep pulling or pushing), not on hover.
-  var hero = canvas.parentElement;
-  function release() { pressed = false; hero.classList.remove('pressing'); }
-  hero.addEventListener('pointerdown', function (e) {
-    if (e.button !== 0 || e.target.closest('a, button, input, .play')) return;
-    var r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
-    pressed = true; hero.classList.add('pressing');
-    // Instant kick so a single click is visible, not just a hold.
-    if (S.cursor !== 'connect') {
-      var sign = S.cursor === 'attract' ? 1 : -1;
-      nodes.forEach(function (p) {
-        var dx = mouse.x - p.x, dy = mouse.y - p.y, d = Math.hypot(dx, dy);
-        if (d < 220 && d > 1) { var f = (1 - d / 220) * 3 * sign; p.ix += dx / d * f; p.iy += dy / d * f; }
-      });
-    }
-  });
-  window.addEventListener('pointerup', release);
-  window.addEventListener('pointercancel', release);
-  window.addEventListener('blur', release);
-
-  // Track the hero's real size (window resize, panel/layout changes, mobile toolbars).
-  if (window.ResizeObserver) new ResizeObserver(build).observe(canvas.parentElement);
-  else window.addEventListener('resize', build);
-
-  // Don't burn CPU when the hero is scrolled away or the tab is hidden.
-  if (window.IntersectionObserver) {
-    new IntersectionObserver(function (entries) {
-      onScreen = entries[0].isIntersecting;
-      onScreen ? start() : stop();
-    }).observe(canvas.parentElement);
-  }
-  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
-
-  // ---- Playground panel ----
-  var tab = document.getElementById('play-tab');
-  var panel = document.getElementById('play-panel');
-  var play = panel.parentElement;
-  var inputs = {
-    nodes: document.getElementById('r-nodes'),
-    reach: document.getElementById('r-reach'),
-    speed: document.getElementById('r-speed'),
+  // ---- "I like ___" rotation. Tune here. ----
+  var LIKES = {
+    words: ['computers', 'data', 'algorithms', 'chess', 'ML', 'Hearthstone'],
+    every: 3500,      // ms each word stays
+    hoverEvery: 1300  // ms each word stays while the pointer is on the line
   };
-  var labels = {
-    nodes: document.getElementById('v-nodes'),
-    reach: document.getElementById('v-reach'),
-    speed: document.getElementById('v-speed'),
-  };
-  var segButtons = document.querySelectorAll('#seg-cursor button');
-
-  function syncUI() {
-    inputs.nodes.value = S.nodes; labels.nodes.textContent = S.nodes;
-    inputs.reach.value = S.reach; labels.reach.textContent = S.reach + 'px';
-    inputs.speed.value = S.speed; labels.speed.textContent = S.speed.toFixed(1) + '×';
-    segButtons.forEach(function (b) { b.classList.toggle('on', b.dataset.mode === S.cursor); });
+  var line = document.getElementById('likes');
+  if (!line) return;
+  var box = line.querySelector('.rotator'), i = 0, timer = null, hovering = false;
+  var spans = LIKES.words.map(function (w, k) {
+    if (k === 0) { var first = box.querySelector('.rw'); first.textContent = w; return first; }
+    var el = document.createElement('span'); el.className = 'rw'; el.textContent = w; box.appendChild(el); return el;
+  });
+  function fit() { box.style.width = spans[i].offsetWidth + 'px'; }
+  function next() {
+    var cur = spans[i];
+    i = (i + 1) % spans.length;
+    var nxt = spans[i];
+    nxt.classList.remove('out'); nxt.style.transition = 'none'; nxt.offsetWidth; nxt.style.transition = '';
+    cur.classList.remove('in'); cur.classList.add('out');
+    nxt.classList.add('in');
+    fit();
+    schedule();
   }
-  // The tab is rotated 180deg, so the play triangle is drawn pointing left to end up pointing right.
-  var ICON_PLAY = '<svg class="i-play" viewBox="0 0 10 10" aria-hidden="true"><path d="M9 1 1 5l8 4z" stroke="none"/></svg>';
-  var ICON_CLOSE = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1l8 8M9 1 1 9" fill="none" stroke-width="1.4" stroke-linecap="round"/></svg>';
-  function setOpen(open) {
-    play.classList.toggle('open', open);
-    tab.setAttribute('aria-expanded', String(open));
-    tab.innerHTML = open ? ICON_CLOSE + 'Close' : ICON_PLAY + 'Play';
-  }
-
-  tab.addEventListener('click', function () { setOpen(!play.classList.contains('open')); });
-  Object.keys(inputs).forEach(function (k) {
-    inputs[k].addEventListener('input', function (e) { if (k === 'nodes') nodesTouched = true; S[k] = +e.target.value; syncUI(); });
-  });
-  segButtons.forEach(function (b) {
-    b.addEventListener('click', function () { S.cursor = b.dataset.mode; syncUI(); });
-  });
-  document.getElementById('btn-scatter').addEventListener('click', scatter);
-  document.getElementById('btn-reset').addEventListener('click', function () {
-    nodesTouched = false; DEF.nodes = autoNodes(); S.nodes = DEF.nodes; S.reach = DEF.reach; S.speed = DEF.speed; S.cursor = DEF.cursor; syncUI();
-  });
-
-  syncUI();
-  build();
-  start();
+  function schedule() { clearTimeout(timer); timer = setTimeout(next, hovering ? LIKES.hoverEvery : LIKES.every); }
+  line.addEventListener('pointerenter', function () { hovering = true; schedule(); });
+  line.addEventListener('pointerleave', function () { hovering = false; schedule(); });
+  fit();
+  if (document.fonts) document.fonts.ready.then(fit);
+  window.addEventListener('resize', fit);
+  schedule();
 })();
 </script>
-<script src="assets/brand.js"></script>
+<script src="/assets/brand.js"></script>
 </body>
 </html>

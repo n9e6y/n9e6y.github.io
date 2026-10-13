@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>About — Nima Yavari</title>
+<meta name="description" content="Computer engineer, formerly a graphic designer: interests, journey and stack." />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('nima-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="/assets/brand.css" />
+<style>
+  .bio { margin-top: 64px; display: flex; flex-wrap: wrap; gap: 48px 64px; align-items: center; }
+  /* Source is a 640px square; crop to 4:5 (trims only the empty wall at the sides) and keep it
+     small enough that 640px stays sharp on 2x screens. */
+  .portrait { flex: 0 1 400px; max-width: 400px; margin: 0; padding: 10px; border: 1px solid var(--line2); }
+  .portrait img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 100%; filter: grayscale(1); }
+  @media (max-width: 720px) { .portrait { flex-basis: 100%; max-width: 320px; } }
+  .bio .copy { flex: 1 1 380px; min-width: 0; }
+  .bio .big-p { margin: 0; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.3; letter-spacing: -0.02em; max-width: 28ch; text-wrap: pretty; }
+  .bio .prose p { margin: 24px 0 0; max-width: 60ch; }
+  .split { margin-top: 128px; display: flex; flex-wrap: wrap; gap: 24px 48px; }
+  .split > .eyebrow { flex: 1 1 200px; max-width: 280px; }
+  .split > .body { flex: 999 1 520px; min-width: 0; }
+  .ledger .big { font-size: clamp(22px, 2.4vw, 28px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; }
+  .ledger > div { padding: 20px 0; }
+
+  .timeline { margin-top: 40px; }
+  .timeline .axis { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .timeline .axis span { padding: 0 0 6px 4px; border-left: 1px solid var(--line2); }
+  .tl-row { padding: 20px 0; border-bottom: 1px solid var(--line); }
+  .tl-row .track { position: relative; height: 12px; }
+  .tl-row .track span { position: absolute; top: 0; bottom: 0; }
+  .js .timeline[data-reveal] .track span { transform: scaleX(0); transform-origin: left; transition: transform .7s var(--ease); }
+  .js .timeline[data-reveal].in .track span { transform: none; }
+  .tl-row .what { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; }
+  .tl-row .what b { font-size: 18px; font-weight: 500; }
+  .tl-row .what span { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  @media (max-width: 720px) { .tl-row .what { margin-left: 0 !important; } }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 24px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: 12px; }
+  .legend span { display: flex; align-items: center; gap: 8px; }
+  .dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--ink); border: 1.5px solid var(--ink); }
+  .dot.off { background: transparent; }
+  .stack-row { display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .stack-row .k { flex: 0 0 140px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .stack-row .items { flex: 1 1 360px; display: flex; flex-wrap: wrap; gap: 10px 24px; }
+  .stack-row .items span { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; }
+  /* Name line: "Nima Yavari" opens to "Nima · NEY · Yavari", then "Nima · N9E6Y · Yavari", then folds back. Each part slides
+     open by animating its grid column from 0fr to 1fr (same trick as the header logo). */
+  .name-line {
+    display: block; margin: 0 0 20px; cursor: default; white-space: nowrap;
+    font-size: clamp(28px, 4.4vw, 52px); font-weight: 600; letter-spacing: -0.04em; line-height: 1.05;
+  }
+  .name-line .hn-handle { color: var(--muted); }
+  .hn { display: inline-grid; grid-template-columns: 0fr; opacity: 0; vertical-align: bottom;
+        transition: grid-template-columns .8s var(--ease), opacity .4s ease; }
+  .hn > span { overflow: hidden; min-width: 0; white-space: pre; }
+  .name-line.show-handle .hn-handle, .name-line.show-digits .hn-d {
+    grid-template-columns: 1fr; opacity: 1;
+    transition: grid-template-columns .8s var(--ease), opacity .5s ease .2s;
+  }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430"></script>
+</head>
+<body>
+
+<header class="site">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
+    <nav aria-label="Main">
+      <span class="nav-links" id="nav-links">
+        <a href="/works.html">Work</a>
+        <a href="/blog.html">Writing</a>
+        <a href="/about.html" aria-current="page">About</a>
+      </span>
+      <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="wrap">
+    <div class="page-head" data-reveal>
+      <div class="eyebrow">About</div>
+      <h1 class="h1">About</h1>
+      <p class="intro">I find the pattern in the data, then build around it.</p>
+    </div>
+    <hr class="rule" />
+
+    <div class="bio">
+      <figure class="portrait"><img src="/img/profile_picture/1.jpeg" alt="Portrait of Nima Yavari" width="640" height="640" /></figure>
+      <div class="copy">
+        <h2 class="name-line" id="name-line"><span>Nima<span class="hn hn-handle"><span>&nbsp;·&nbsp;N<span class="hn hn-d"><span>9</span></span>E<span class="hn hn-d"><span>6</span></span>Y&nbsp;·</span></span>&nbsp;Yavari</span></h2>
+        <p class="big-p">I build LLM applications, AI pipelines and the backend systems behind them.</p>
+        <div class="prose">
+          <p>I'm a ce working in applied AI and machine learning. I'm most comfortable somewhere between a messy dataset and a system that no longer needs me to watch it</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="split">
+      <div class="eyebrow">Interested in</div>
+      <div class="body ledger">
+        <div><span class="big">RAG and AI agents</span></div>
+        <div><span class="big">NLP</span></div>
+        <div><span class="big">Recommender systems and representation learning</span></div>
+        <div><span class="big">Reinforcement learning</span></div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="eyebrow">Journey</div>
+      <div class="body">
+        <h2 class="h2">Design, then engineering.</h2>
+        <div class="timeline" data-reveal>
+          <div class="axis" aria-hidden="true"><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span></div>
+        <div class="tl-row">
+          <div class="track"><span style="left:5.2%;width:12.5%;background:var(--g4)"></span></div>
+          <div class="what" style="margin-left:min(5.2%, calc(100% - 300px))"><b>Account Manager, Limitlines</b><span>Jun 2018 – Jun 2019</span></div>
+        </div>
+        <div class="tl-row">
+          <div class="track"><span style="left:17.7%;width:30.2%;background:var(--g4)"></span></div>
+          <div class="what" style="margin-left:min(17.7%, calc(100% - 300px))"><b>Graphic Designer, freelance &amp; agencies</b><span>Jun 2019 – Nov 2021</span></div>
+        </div>
+        <div class="tl-row">
+          <div class="track"><span style="left:37.5%;width:50.0%;background:var(--ink)"></span></div>
+          <div class="what" style="margin-left:min(37.5%, calc(100% - 300px))"><b>B.Sc. Computer Engineering, IAU</b><span>2021 – 2025</span></div>
+        </div>
+        <div class="tl-row">
+          <div class="track"><span style="left:74.0%;width:8.3%;background:var(--ink)"></span></div>
+          <div class="what" style="margin-left:min(74.0%, calc(100% - 300px))"><b>ML Training Program, Fanap Campus</b><span>Dec 2023 – Aug 2024</span></div>
+        </div>
+        </div>
+        <div class="eyebrow" style="margin-top:12px;text-transform:none;letter-spacing:0">Gray = design and client work · ink = engineering</div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div class="eyebrow">Stack</div>
+      <div class="body">
+        <div class="legend"><span><i class="dot"></i>daily use</span><span><i class="dot off"></i>working knowledge</span></div>
+        <div class="stack-row"><span class="k">Languages</span><span class="items"><span><i class="dot"></i>Python</span><span><i class="dot"></i>SQL</span><span><i class="dot off"></i>Go</span></span></div>
+        <div class="stack-row"><span class="k">LLM &amp; agents</span><span class="items"><span><i class="dot"></i>LLM integration</span><span><i class="dot"></i>RAG pipelines</span><span><i class="dot"></i>AI agents</span><span><i class="dot"></i>LangChain</span><span><i class="dot off"></i>Hugging Face Transformers</span></span></div>
+        <div class="stack-row"><span class="k">ML &amp; data</span><span class="items"><span><i class="dot"></i>Pandas</span><span><i class="dot"></i>NumPy</span><span><i class="dot"></i>scikit-learn</span><span><i class="dot off"></i>PyTorch</span><span><i class="dot off"></i>SciPy</span><span><i class="dot off"></i>Gensim</span><span><i class="dot off"></i>Plotly</span><span><i class="dot off"></i>Seaborn</span></span></div>
+        <div class="stack-row"><span class="k">Apps &amp; APIs</span><span class="items"><span><i class="dot"></i>FastAPI</span><span><i class="dot"></i>Streamlit</span><span><i class="dot off"></i>Gradio</span></span></div>
+        <div class="stack-row"><span class="k">Databases</span><span class="items"><span><i class="dot"></i>PostgreSQL</span><span><i class="dot"></i>MySQL</span><span><i class="dot"></i>SQLite</span><span><i class="dot off"></i>MongoDB</span></span></div>
+        <div class="stack-row"><span class="k">Tools</span><span class="items"><span><i class="dot"></i>Git</span><span><i class="dot off"></i>Docker</span><span><i class="dot off"></i>Linux</span><span><i class="dot off"></i>pprof</span></span></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<section id="contact" class="contact">
+  <div class="inner">
+    <div class="eyebrow">Contact</div>
+    <h2 class="display">Let's talk</h2>
+    <p class="lede">Research, code, ideas — Feel free to say Hi.</p>
+    <div class="pills">
+      <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+      <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="LinkedIn"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="GitHub"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="X"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="Kaggle"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20２４％２０２４％２７％３Ｅ％３Ｃpath％２０d％３Ｄ％２７M5％２０3h3.２v7.２L14.６％２０3h4.１l-7％２０8.１L19％２０ twenty-oneh-4.１l-5.４-7.３-1.３％２０1.５V twenty-oneH5z％２７％２Ｆ％３C％２Fsvg％３E) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-huggingface" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="Hugging Face"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span></a>
+    </div>
+  </div>
+  <footer class="site-foot">
+    <span class="sig"><span class="mono-mark" aria-hidden="true"><span>9</span><span>9</span></span>© 2026 Nima Yavari</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</section>
+<script>
+(function () {
+  // ---- Name line timing (ms). Tune here. ----
+  var NAME = {
+    digitsAfter: 900,    // after NEY opens, wait this long before 9 and 6 slide in
+    collapseAfter: 2400, // from the start, when N9E6Y folds away back to "Nima Yavari"
+    idle: 8000,          // play on its own after this long without a hover
+    leaveDelay: 400      // if the pointer leaves mid-sequence, wait this long before folding back
+  };
+  var el = document.getElementById('name-line');
+  if (!el) return;
+  var timers = [], idleTimer = null, hovering = false;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function clear() { timers.forEach(clearTimeout); timers = []; }
+  function set(handle, digits) {
+    el.classList.toggle('show-handle', handle);
+    el.classList.toggle('show-digits', digits);
+  }
+  // Nima Yavari -> Nima · NEY · Yavari -> Nima · N9E6Y · Yavari -> Nima Yavari
+  function play() {
+    clear();
+    set(true, false);
+    later(function () { set(true, true); }, NAME.digitsAfter);
+    later(rest, NAME.collapseAfter);
+  }
+  function rest() { clear(); set(false, false); armIdle(); }
+  function armIdle() {
+    clearTimeout(idleTimer);
+    if (!reduce) idleTimer = setTimeout(function () { if (!hovering && !document.hidden) play(); else armIdle(); }, NAME.idle);
+  }
+  el.addEventListener('pointerenter', function () { hovering = true; clearTimeout(idleTimer); play(); });
+  el.addEventListener('pointerleave', function () { hovering = false; if (timers.length) later(rest, NAME.leaveDelay); else armIdle(); });
+  armIdle();
+})();
+</script>
+<script src="/assets/brand.js"></script>
+</body>
+</html>

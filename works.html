@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>All works — Nima Yavari</title>
-<meta name="description" content="Technical reports on my projects across systems, applied ML and practical applications." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d0d0d'/%3E%3Ctext x='36' y='68' font-family='Geist,system-ui,-apple-system,sans-serif' font-weight='700' font-size='64' text-anchor='middle' fill='%23f1f1ee'%3E9%3C/text%3E%3Ctext x='0' y='0' font-family='Geist,system-ui,-apple-system,sans-serif' font-weight='700' font-size='64' text-anchor='middle' fill='%23888' transform='translate(64 32) rotate(180)'%3E9%3C/text%3E%3C/svg%3E" />
+<title>Work — Nima Yavari</title>
+<meta name="description" content="Six projects across systems, applied ML and tools, mostly in Go and Python." />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet" />
 <script>
   (function () {
     try {
@@ -17,76 +17,222 @@
     } catch (e) {}
   })();
 </script>
-<link rel="stylesheet" href="assets/subpage.css" />
+<link rel="stylesheet" href="/assets/brand.css" />
 <style>
-  main { max-width: 1200px; margin: 0 auto; padding: 140px clamp(20px, 6vw, 96px) 96px; display: flex; flex-direction: column; gap: 56px; }
-  .top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; }
-  .top .title { display: flex; flex-direction: column; gap: 20px; }
-  .top p { margin: 0; max-width: 380px; font-size: 17px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
+  .toolbar { padding: 16px 0; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; }
+  .toolbar .rule { margin: 0; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filters .c { opacity: 0.6; }
+  .views { display: flex; border: 1px solid var(--ink); border-radius: 4px; overflow: hidden; }
+  .views button {
+    min-height: 40px; padding: 8px 14px; border: 0; background: transparent; color: var(--ink); cursor: pointer;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .views button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  [hidden] { display: none !important; }
 
-  .featured {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
-    gap: clamp(24px, 4vw, 56px); padding: clamp(24px, 3vw, 40px);
-    border: 1px solid var(--line-strong); border-radius: 6px;
+  /* Index view: ledger table */
+  .proj-table { border-top: 1px solid var(--ink); }
+  .proj-table .cols, .proj-row {
+    display: grid; grid-template-columns: minmax(0, 2.4fr) minmax(0, 1fr) minmax(0, 1.4fr) 132px; gap: 16px; align-items: baseline;
   }
-  .cover {
-    aspect-ratio: 16 / 10; border: 1px solid var(--line); border-radius: 4px;
-    background: repeating-linear-gradient(135deg, transparent 0 10px, var(--line) 10px 11px);
+  .proj-table .cols { padding: 10px 0; border-bottom: 1px solid var(--line2); font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .proj-row { padding: 20px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s; }
+  .proj-row:hover { background: var(--line); }
+  .proj-row .name b { display: block; font-size: 24px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+  .proj-row .name span { display: block; margin-top: 4px; font-size: 15px; line-height: 1.5; color: var(--muted); }
+  .proj-row .dom, .proj-row .stack, .proj-row .st { font-family: var(--mono); font-size: 13px; }
+  .proj-row .stack { color: var(--muted); }
+  .proj-table .cols :last-child, .proj-row .st { text-align: right; }
+  code { font-family: var(--mono); font-size: 0.9em; }
+  @media (max-width: 720px) {
+    .proj-table .cols { display: none; }
+    .proj-row { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 18px 0; }
+    .proj-row .name b { font-size: 21px; }
+    .proj-row .dom, .proj-row .stack { display: none; }
+    .proj-row .st { text-align: left; font-size: 12px; color: var(--muted); }
   }
-  .featured .info { display: flex; flex-direction: column; gap: 18px; justify-content: center; }
-  .featured .meta { font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--muted); }
-  .featured h2 { font-size: clamp(30px, 3.6vw, 46px); letter-spacing: -0.035em; line-height: 1.05; text-wrap: balance; }
-  .featured p { margin: 0; font-size: 17px; line-height: 1.55; color: var(--muted); text-wrap: pretty; }
+
+  /* Grid view: cards (dashed = in progress) */
+  .cards { margin-top: 8px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .card {
+    min-height: 300px; padding: 24px; display: flex; flex-direction: column; gap: 12px;
+    border: 1px solid var(--line2); border-radius: 6px; text-decoration: none; transition: background .2s;
+  }
+  .card.wip { border-style: dashed; }
+  .card:hover { background: var(--line); }
+  .card .top { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .card b { margin-top: auto; font-size: 28px; font-weight: 500; letter-spacing: -0.025em; line-height: 1.1; }
+  .card .one { font-size: 15px; line-height: 1.45; color: var(--muted); }
+  .card .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .card .st { font-family: var(--mono); font-size: 12px; }
 </style>
-<link rel="stylesheet" href="assets/brand.css">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430"></script>
 </head>
 <body>
 
-<header>
-  <a href="index.html" class="brand" aria-label="NEY"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
-  <nav>
-    <span class="nav-links" id="nav-links">
-    <a href="index.html#about">About</a>
-    <a href="works.html" class="current">Work</a>
-    <a href="index.html#journey">Journey</a>
-    <a href="blog.html">Blog</a>
-    <a href="index.html#contact">Contact</a>
-    </span>
-    <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"></path></svg>
-    </button>
-    <button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h16M4 16h16"></path></svg>
-    </button>
-  </nav>
+<header class="site">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
+    <nav aria-label="Main">
+      <span class="nav-links" id="nav-links">
+        <a href="/works.html" aria-current="page">Work</a>
+        <a href="/blog.html">Writing</a>
+        <a href="/about.html">About</a>
+      </span>
+      <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    </nav>
+  </div>
 </header>
 
-<main>
-  <div class="top">
-    <div class="title">
-      <span class="eyebrow">Work — technical reports</span>
-      <h1 class="page-title">All works</h1>
+<main class="page">
+  <div class="wrap">
+    <div class="page-head" data-reveal>
+      <div class="eyebrow">Work</div>
+      <h1 class="h1">Work</h1>
+      <p class="intro">Six things I built to learn how something works. Mostly Go and Python.</p>
     </div>
-    <p>Technical reports on my projects across systems, applied ML and practical applications.</p>
-  </div>
+    <hr class="rule" />
 
-  <div class="featured">
-    <div class="cover"></div>
-    <div class="info">
-      <span class="meta">Coming soon</span>
-      <h2>I'm editing and adding works.</h2>
-      <p>This page is being reworked. Check back soon for the full reports.</p>
+    <div class="toolbar">
+      <div class="filters" role="group" aria-label="Filter by domain">
+        <button class="chip" data-filter="All" data-umami-event="filter-all" aria-pressed="true">All <span class="c">6</span></button>
+        <button class="chip" data-filter="Systems" data-umami-event="filter-systems" aria-pressed="false">Systems <span class="c">2</span></button>
+        <button class="chip" data-filter="Applied ML" data-umami-event="filter-applied-ml" aria-pressed="false">Applied ML <span class="c">2</span></button>
+        <button class="chip" data-filter="Tools" data-umami-event="filter-tools" aria-pressed="false">Tools <span class="c">2</span></button>
+      </div>
+      <div class="views" role="group" aria-label="View">
+        <button data-view="index" data-umami-event="view-index" aria-pressed="true">Index</button>
+        <button data-view="grid" data-umami-event="view-grid" aria-pressed="false">Grid</button>
+      </div>
+    </div>
+
+    <div id="view-index" class="proj-table">
+      <div class="cols" aria-hidden="true"><span>Project</span><span>Domain</span><span>Stack</span><span>Status ↗</span></div>
+      <a class="proj-row" data-dom="Systems" data-umami-event="project-gocade" href="https://github.com/n9e6y/gocade" target="_blank" rel="noopener">
+        <span class="name"><b>GoCade</b><span>A multiplayer TCP game server you play with <code>nc host 9000</code>.</span></span>
+        <span class="dom">Systems</span>
+        <span class="stack">Go · TCP · concurrency</span>
+        <span class="st">● Shipped ↗</span>
+      </a>
+      <a class="proj-row" data-dom="Systems" data-umami-event="project-snappboxchallengeforalgorithmarena" href="https://github.com/n9e6y/snappboxchallengeforalgorithmarena" target="_blank" rel="noopener">
+        <span class="name"><b>Delivery Fare Engine</b><span>Raw GPS CSV to per-delivery fares. A concurrent pipeline, profiled with pprof.</span></span>
+        <span class="dom">Systems</span>
+        <span class="stack">Go · pprof</span>
+        <span class="st">● Shipped ↗</span>
+      </a>
+      <a class="proj-row" data-dom="Applied ML" data-umami-event="project-PPG" href="https://huggingface.co/spaces/n9e6y/PPG" target="_blank" rel="noopener">
+        <span class="name"><b>Persian Poetry Generator</b><span>GPT-2 fine-tuned on classical Persian poetry.</span></span>
+        <span class="dom">Applied ML</span>
+        <span class="stack">Python · Transformers · Streamlit</span>
+        <span class="st">● Shipped ↗</span>
+      </a>
+      <a class="proj-row" data-dom="Applied ML" data-umami-event="project-LMR" href="https://huggingface.co/spaces/n9e6y/LMR" target="_blank" rel="noopener">
+        <span class="name"><b>Letterboxd Recommender</b><span>Content-based movie recommendations from Word2Vec.</span></span>
+        <span class="dom">Applied ML</span>
+        <span class="stack">Python · Gensim · Gradio</span>
+        <span class="st">● Shipped ↗</span>
+      </a>
+      <a class="proj-row" data-dom="Tools" data-umami-event="project-time_management_panel" href="https://github.com/n9e6y/time_management_panel" target="_blank" rel="noopener">
+        <span class="name"><b>Time Analyzer</b><span>Where your Google Calendar time actually goes.</span></span>
+        <span class="dom">Tools</span>
+        <span class="stack">Python · Pandas · Plotly</span>
+        <span class="st">● Shipped ↗</span>
+      </a>
+      <a class="proj-row" data-dom="Tools" data-umami-event="project-scsc" href="https://github.com/n9e6y/scsc" target="_blank" rel="noopener">
+        <span class="name"><b>Semantic Code Search</b><span>A CLI that searches code by meaning. Growing into RAG and agents.</span></span>
+        <span class="dom">Tools</span>
+        <span class="stack">Go · embeddings</span>
+        <span class="st">◌ In progress ↗</span>
+      </a>
+    </div>
+
+    <div id="view-grid" class="cards" hidden>
+      <a class="card" data-dom="Systems" data-umami-event="project-gocade" href="https://github.com/n9e6y/gocade" target="_blank" rel="noopener">
+        <span class="top"><span>Systems</span><span>↗</span></span>
+        <b>GoCade</b>
+        <span class="one">A multiplayer TCP game server you play with <code>nc host 9000</code>.</span>
+        <span class="tags"><span class="tag">Go</span><span class="tag">TCP</span><span class="tag">Concurrency</span></span>
+        <span class="st">● Shipped</span>
+      </a>
+      <a class="card" data-dom="Systems" data-umami-event="project-snappboxchallengeforalgorithmarena" href="/work/delivery-fare-engine.html">
+        <span class="top"><span>Systems</span><span>↗</span></span>
+        <b>Delivery Fare Engine</b>
+        <span class="one">Raw GPS CSV to per-delivery fares. A concurrent pipeline, profiled with pprof.</span>
+        <span class="tags"><span class="tag">Go</span><span class="tag">Concurrency</span><span class="tag">pprof</span></span>
+        <span class="st">● Shipped</span>
+      </a>
+      <a class="card" data-dom="Applied ML" data-umami-event="project-PPG" href="https://huggingface.co/spaces/n9e6y/PPG" target="_blank" rel="noopener">
+        <span class="top"><span>Applied ML</span><span>↗</span></span>
+        <b>Persian Poetry Generator</b>
+        <span class="one">GPT-2 fine-tuned on classical Persian poetry.</span>
+        <span class="tags"><span class="tag">Python</span><span class="tag">Transformers</span><span class="tag">Streamlit</span></span>
+        <span class="st">● Shipped</span>
+      </a>
+      <a class="card" data-dom="Applied ML" data-umami-event="project-LMR" href="https://huggingface.co/spaces/n9e6y/LMR" target="_blank" rel="noopener">
+        <span class="top"><span>Applied ML</span><span>↗</span></span>
+        <b>Letterboxd Recommender</b>
+        <span class="one">Content-based movie recommendations from Word2Vec.</span>
+        <span class="tags"><span class="tag">Python</span><span class="tag">Gensim</span><span class="tag">Gradio</span></span>
+        <span class="st">● Shipped</span>
+      </a>
+      <a class="card" data-dom="Tools" data-umami-event="project-time_management_panel" href="https://github.com/n9e6y/time_management_panel" target="_blank" rel="noopener">
+        <span class="top"><span>Tools</span><span>↗</span></span>
+        <b>Time Analyzer</b>
+        <span class="one">Where your Google Calendar time actually goes.</span>
+        <span class="tags"><span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Plotly</span></span>
+        <span class="st">● Shipped</span>
+      </a>
+      <a class="card wip" data-dom="Tools" data-umami-event="project-scsc" href="https://github.com/n9e6y/scsc" target="_blank" rel="noopener">
+        <span class="top"><span>Tools</span><span>↗</span></span>
+        <b>Semantic Code Search</b>
+        <span class="one">A CLI that searches code by meaning. Growing into RAG and agents.</span>
+        <span class="tags"><span class="tag">Go</span><span class="tag">Embeddings</span></span>
+        <span class="st">◌ In progress</span>
+      </a>
     </div>
   </div>
 </main>
 
-<footer class="site-footer">
-  <span>© 2026 Nima Yavari</span>
-  <a href="index.html">Home ↗</a>
-</footer>
-
-<script src="assets/subpage.js"></script>
-<script src="assets/brand.js"></script>
+<section id="contact" class="contact">
+  <div class="inner">
+    <div class="eyebrow">Contact</div>
+    <h2 class="display">Let's talk</h2>
+    <p class="lede">Research, code, ideas — Feel free to say Hi.</p>
+    <div class="pills">
+      <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+      <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="LinkedIn"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="GitHub"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="X"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="Kaggle"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%２０２４％２０２４％２７％３Ｅ％３Ｃpath％２０d％３Ｄ％２７M5％２０3h3.２v7.２L14.６％２０3h4.１l-7％２０8.１L19％２０ twenty-oneh-4.１l-5.４-7.３-1.３％２０1.５V twenty-oneH5z％２７％２Ｆ％３C％２Fsvg％３E) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-huggingface" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="Hugging Face"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span></a>
+    </div>
+  </div>
+  <footer class="site-foot">
+    <span class="sig"><span class="mono-mark" aria-hidden="true"><span>9</span><span>9</span></span>© 2026 Nima Yavari</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</section>
+<script>
+(function () {
+  // Filter chips and Index/Grid toggle.
+  var items = document.querySelectorAll('[data-dom]');
+  document.querySelectorAll('[data-filter]').forEach(function (b, _, all) {
+    b.addEventListener('click', function () {
+      all.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      items.forEach(function (it) { it.hidden = b.dataset.filter !== 'All' && it.dataset.dom !== b.dataset.filter; });
+    });
+  });
+  document.querySelectorAll('[data-view]').forEach(function (b, _, all) {
+    b.addEventListener('click', function () {
+      all.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      document.getElementById('view-index').hidden = b.dataset.view !== 'index';
+      document.getElementById('view-grid').hidden = b.dataset.view !== 'grid';
+    });
+  });
+})();
+</script>
+<script src="/assets/brand.js"></script>
 </body>
 </html>

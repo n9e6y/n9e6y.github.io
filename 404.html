@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Not found — Nima Yavari</title>
+<meta name="description" content="This page wandered off." />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('nima-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="/assets/brand.css" />
+<style>
+  .nf { position: relative; min-height: max(560px, calc(100svh - 65px)); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .nf canvas {
+    position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,0.15) 0%, #000 80%);
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,0.15) 0%, #000 80%);
+  }
+  .nf .inner { position: relative; display: flex; flex-direction: column; align-items: center; padding: 0 24px; text-align: center; }
+  .nf .mono-mark { margin-top: 24px; font-size: clamp(120px, 22vw, 240px); font-weight: 600; }
+  .nf h1 { margin-top: 40px; }
+  .nf .btn { margin-top: 32px; }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430"></script>
+</head>
+<body>
+
+<header class="site">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
+    <nav aria-label="Main">
+      <span class="nav-links" id="nav-links">
+        <a href="/works.html">Work</a>
+        <a href="/blog.html">Writing</a>
+        <a href="/about.html">About</a>
+      </span>
+      <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    </nav>
+  </div>
+</header>
+
+<main class="nf">
+  <canvas data-graph="drift" aria-hidden="true"></canvas>
+  <div class="inner">
+    <div class="eyebrow">404 — Not found</div>
+    <div class="mono-mark" aria-hidden="true"><span>9</span><span>9</span></div>
+    <h1 class="h2">This page wandered off.</h1>
+    <a class="btn" data-umami-event="404-home" href="/">← Back home</a>
+  </div>
+</main>
+<script src="/assets/graph.js"></script>
+<script src="/assets/brand.js"></script>
+</body>
+</html>
