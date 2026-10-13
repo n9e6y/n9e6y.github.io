@@ -20,7 +20,6 @@
 <link rel="stylesheet" href="/assets/brand.css" />
 <link rel="stylesheet" href="/assets/charts.css" />
 <style>
-  .report-title .num { font-family: var(--mono); font-weight: 400; font-size: 0.28em; letter-spacing: 0; vertical-align: top; color: var(--muted); margin-right: 0.3em; }
   .crumbs { display: flex; flex-wrap: wrap; gap: 8px 24px; }
   .crumbs a { color: var(--ink); text-decoration: none; }
   .results-pair { margin-top: 64px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 48px; }
@@ -36,10 +35,10 @@
     <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
     <nav aria-label="Main">
       <span class="nav-links" id="nav-links">
-        <a href="/works.html" aria-current="page">Work<span class="n">01</span></a>
-        <a href="/blog.html">Writing<span class="n">02</span></a>
-        <a href="/about.html">About<span class="n">03</span></a>
-        <a href="#contact">Contact<span class="n">04</span></a>
+        <a href="/works.html" aria-current="page">Work</a>
+        <a href="/blog.html">Writing</a>
+        <a href="/about.html">About</a>
+        <a href="#contact">Contact</a>
       </span>
       <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
       <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
@@ -50,8 +49,8 @@
 <main class="page">
   <div class="wrap">
     <div class="page-head" data-reveal>
-      <div class="eyebrow crumbs"><a href="/works.html">← Work</a><span>02 — Systems</span></div>
-      <h1 class="h1 report-title"><span class="num">02</span>Delivery Fare Engine</h1>
+      <div class="eyebrow crumbs"><a href="/works.html">← Work</a><span>Systems</span></div>
+      <h1 class="h1 report-title">Delivery Fare Engine</h1>
       <p class="intro">Raw GPS CSV to per-delivery fares. A concurrent pipeline, profiled with pprof.</p>
     </div>
     <div class="meta-ledger">
@@ -73,29 +72,29 @@
     <div class="report">
       <nav class="toc" aria-label="Contents">
         <div class="eyebrow">Contents</div>
-        <a href="#problem"><span>01</span>Problem</a>
-        <a href="#approach"><span>02</span>Approach</a>
-        <a href="#architecture"><span>03</span>Architecture</a>
-        <a href="#results"><span>04</span>Results</a>
-        <a href="#next"><span>05</span>What I’d do next</a>
+        <a href="#problem">Problem</a>
+        <a href="#approach">Approach</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#results">Results</a>
+        <a href="#next">What I’d do next</a>
       </nav>
       <article>
         <section id="problem">
-          <div class="eyebrow">01 — Problem</div>
+          <div class="eyebrow">Problem</div>
           <h2 class="h2">Raw GPS in, a fare per delivery out.</h2>
           <div class="prose"><p>The input is a CSV of raw GPS points. The output is a fare for each delivery, using Haversine distance, day and night rates, a flag charge and a minimum fare. Some points are invalid and have to be filtered out by speed first.</p></div>
         </section>
         <section id="approach">
-          <div class="eyebrow">02 — Approach</div>
+          <div class="eyebrow">Approach</div>
           <h2 class="h2">Stream it, then profile.</h2>
           <div class="prose"><p>The engine is a concurrent pipeline, profiled with pprof. A fuller account of the decisions is coming with the write-up.</p></div>
         </section>
         <section id="architecture">
-          <div class="eyebrow">03 — Architecture</div>
+          <div class="eyebrow">Architecture</div>
           <h2 class="h2">Five stages, two channels.</h2>
           <figure class="fig">
             <div class="fig-head">
-              <div class="eyebrow"><span>FIG. 01</span><span>Placeholder</span></div>
+              <div class="eyebrow"><span>Figure</span><span>Placeholder</span></div>
               <h3 class="h3">Fare workers share one channel in, one channel out.</h3>
               <p>Boxes = goroutines, arrows = channels, dashed = files</p>
             </div>
@@ -132,12 +131,12 @@
           </figure>
         </section>
         <section id="results">
-          <div class="eyebrow">04 — Results</div>
+          <div class="eyebrow">Results</div>
           <h2 class="h2">Results go here.</h2>
           <div class="prose"><p>Benchmarks and distributions will go here once they’re measured. The figures below show the layout with sample data.</p></div>
 <figure class="fig" data-chart="dumbbell" data-opts='{"unit":"s","ratio":"speed-up","minW":600}'>
   <div class="fig-head">
-    <div class="eyebrow"><span>FIG. 02</span><span>Placeholder</span></div>
+    <div class="eyebrow"><span>Figure</span><span>Placeholder</span></div>
     <h3 class="h3">Fan-out cut processing time 4.2×.</h3>
     <p>Wall time per stage, seconds · serial vs 8 workers · median of 5 runs</p>
   </div>
@@ -158,7 +157,7 @@
           <div class="results-pair">
 <figure class="fig" data-chart="bars" data-opts='{"hi":[0,7],"every":4,"vline":{"at":6.29,"text":"median 3.1 km"}}'>
   <div class="fig-head">
-    <div class="eyebrow"><span>FIG. 03</span><span>Placeholder</span></div>
+    <div class="eyebrow"><span>Figure</span><span>Placeholder</span></div>
     <h3 class="h3">Two in three deliveries are under 4 km.</h3>
     <p>Trip distance, km · n = 4,812</p>
   </div>
@@ -198,7 +197,7 @@
 </figure>
 <figure class="fig" data-chart="bars" data-opts='{"hi":[18,21],"every":6,"y":{"pre":"$"},"note":{"i":19,"text":"18:00–21:00"}}'>
   <div class="fig-head">
-    <div class="eyebrow"><span>FIG. 04</span><span>Placeholder</span></div>
+    <div class="eyebrow"><span>Figure</span><span>Placeholder</span></div>
     <h3 class="h3">Evening fares run highest.</h3>
     <p>Mean fare by pickup hour, $ · n = 4,812</p>
   </div>
@@ -239,18 +238,18 @@
           </div>
         </section>
         <section id="next">
-          <div class="eyebrow">05 — What I’d do next</div>
+          <div class="eyebrow">What I’d do next</div>
           <h2 class="h2">Coming with the write-up.</h2>
           <div class="ledger next-list">
-            <div><span class="k">01</span><span>To be written.</span></div>
+            <div><span>To be written.</span></div>
           </div>
         </section>
       </article>
     </div>
 
     <nav class="pager" aria-label="More projects">
-      <a data-umami-event="project-prev" href="https://github.com/n9e6y/gocade" target="_blank" rel="noopener"><span class="eyebrow">← Previous · 01</span><b>GoCade</b></a>
-      <a data-umami-event="project-next" href="https://huggingface.co/spaces/n9e6y/PPG" target="_blank" rel="noopener"><span class="eyebrow">Next · 03 →</span><b>Persian Poetry Generator</b></a>
+      <a data-umami-event="project-prev" href="https://github.com/n9e6y/gocade" target="_blank" rel="noopener"><span class="eyebrow">← Previous</span><b>GoCade</b></a>
+      <a data-umami-event="project-next" href="https://huggingface.co/spaces/n9e6y/PPG" target="_blank" rel="noopener"><span class="eyebrow">Next →</span><b>Persian Poetry Generator</b></a>
     </nav>
   </div>
 </main>

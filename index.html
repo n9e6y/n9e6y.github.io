@@ -34,7 +34,7 @@
   /* Negative left margin cancels the "H" side bearing so the big headline lines up with the text below. */
   #home h1 { margin: 24px 0 0 -0.055em; }
   #home .lede { margin: 32px 0 0; max-width: 30ch; }
-  #home.pressing { user-select: none; -webkit-user-select: none; }
+  #home canvas { width: 100%; height: 100%; }
 
   /* One ledger row replaces the old middle sections. */
   .hero-index { position: relative; padding: 0 var(--pad) 24px; }
@@ -47,52 +47,10 @@
     border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s;
   }
   .hero-index a:hover { background: var(--line); }
-  .hero-index .k, .hero-index .go { font-family: var(--mono); font-size: 12px; }
-  .hero-index .k { color: var(--muted); }
+  .hero-index .go { font-family: var(--mono); font-size: 12px; }
   .hero-index .t { flex: 1; font-size: 16px; line-height: 1.4; }
   .hero-index .t b { font-weight: 500; }
   .hero-index .t span { color: var(--muted); }
-
-  /* Graph playground panel */
-  .play {
-    --pw: min(272px, calc(100vw - 72px));
-    position: absolute; right: 0; top: 50%; z-index: 5; display: flex; align-items: stretch;
-    transform: translate(var(--pw), -50%);
-    transition: transform .6s var(--ease);
-  }
-  .play.open { transform: translate(0, -50%); }
-  .play-tab {
-    writing-mode: vertical-rl; transform: rotate(180deg);
-    display: flex; align-items: center; justify-content: center; gap: 8px; padding: 18px 10px;
-    border: 1px solid var(--line2); border-left: none; border-radius: 0 6px 6px 0;
-    background: var(--paper); color: var(--ink);
-    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
-    text-transform: uppercase; cursor: pointer;
-  }
-  .play-tab svg { width: 12px; height: 12px; flex: none; fill: currentColor; stroke: currentColor; }
-  .play-tab:hover { background: var(--line); }
-  .play-panel {
-    width: var(--pw); display: flex; flex-direction: column; gap: 22px; padding: 22px;
-    border: 1px solid var(--line2); border-right: none;
-    background: color-mix(in srgb, var(--paper) 88%, transparent);
-    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  }
-  .play:not(.open) .play-panel { visibility: hidden; transition: visibility 0s .6s; }
-  .play-panel label { display: flex; flex-direction: column; gap: 10px; }
-  .play-panel .lbl { display: flex; justify-content: space-between; font-size: 13px; }
-  .play-panel .val { font-family: var(--mono); color: var(--muted); }
-  .play-panel input[type="range"] { width: 100%; accent-color: var(--ink); margin: 0; }
-  .play-panel .group { display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
-  .seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line2); border-radius: 4px; overflow: hidden; }
-  .seg button { padding: 8px 0; border: none; background: transparent; color: var(--ink); font-family: inherit; font-size: 12px; cursor: pointer; }
-  .seg button.on { background: var(--ink); color: var(--paper); }
-  .play-actions { display: flex; gap: 8px; }
-  .play-actions button {
-    flex: 1; padding: 9px 0; border: 1px solid var(--line2); border-radius: 4px;
-    background: transparent; color: var(--ink); font-family: inherit; font-size: 12px; cursor: pointer;
-  }
-  .play-actions button:hover { background: var(--line); }
-  .play-actions button.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
   /* Home contact is a full screen of its own. */
   #contact { margin-top: 0; min-height: 100svh; padding-top: 96px; }
@@ -106,10 +64,10 @@
     <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
     <nav aria-label="Main">
       <span class="nav-links" id="nav-links">
-        <a href="/works.html">Work<span class="n">01</span></a>
-        <a href="/blog.html">Writing<span class="n">02</span></a>
-        <a href="/about.html">About<span class="n">03</span></a>
-        <a href="#contact">Contact<span class="n">04</span></a>
+        <a href="/works.html">Work</a>
+        <a href="/blog.html">Writing</a>
+        <a href="/about.html">About</a>
+        <a href="#contact">Contact</a>
       </span>
       <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
       <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
@@ -119,7 +77,7 @@
 
 <main>
 <section id="home">
-  <canvas id="net" aria-hidden="true"></canvas>
+  <canvas id="tree" aria-hidden="true"></canvas>
   <div class="inner">
     <div class="wrap">
       <div class="eyebrow">Nima Yavari · n9e6y</div>
@@ -129,42 +87,19 @@
   </div>
   <nav class="hero-index" aria-label="Index">
     <div class="wrap">
-      <a data-umami-event="home-index-work" href="/works.html"><span class="k">01</span><span class="t"><b>Work</b> <span>— 6 projects</span></span><span class="go">↗</span></a>
-      <a data-umami-event="home-index-writing" href="/blog.html"><span class="k">02</span><span class="t"><b>Writing</b> <span>— First post coming soon</span></span><span class="go">↗</span></a>
-      <a data-umami-event="home-index-about" href="/about.html"><span class="k">03</span><span class="t"><b>About</b> <span>— currently building Semantic Code Search</span></span><span class="go">↗</span></a>
+      <a data-umami-event="home-index-work" href="/works.html"><span class="t"><b>Work</b> <span>— 6 projects</span></span><span class="go">↗</span></a>
+      <a data-umami-event="home-index-writing" href="/blog.html"><span class="t"><b>Writing</b> <span>— First post coming soon</span></span><span class="go">↗</span></a>
+      <a data-umami-event="home-index-about" href="/about.html"><span class="t"><b>About</b> <span>— currently building Semantic Code Search</span></span><span class="go">↗</span></a>
     </div>
   </nav>
-  <div class="play">
-    <button data-umami-event="playground-open" class="play-tab" id="play-tab" aria-expanded="false" aria-controls="play-panel"><svg class="i-play" viewBox="0 0 10 10" aria-hidden="true"><path d="M9 1 1 5l8 4z" stroke="none"/></svg>Play</button>
-    <div class="play-panel" id="play-panel">
-      <label><span class="lbl"><span>Nodes</span><span class="val" id="v-nodes"></span></span>
-        <input type="range" id="r-nodes" min="20" max="280" step="1" /></label>
-      <label><span class="lbl"><span>Reach</span><span class="val" id="v-reach"></span></span>
-        <input type="range" id="r-reach" min="40" max="260" step="1" /></label>
-      <label><span class="lbl"><span>Speed</span><span class="val" id="v-speed"></span></span>
-        <input type="range" id="r-speed" min="0" max="5" step="0.1" /></label>
-      <div class="group">
-        <span>On click</span>
-        <div class="seg" id="seg-cursor">
-          <button data-umami-event="play-mode-none" data-mode="connect">None</button>
-          <button data-umami-event="play-mode-attract" data-mode="attract">Attract</button>
-          <button data-umami-event="play-mode-repel" data-mode="repel">Repel</button>
-        </div>
-      </div>
-      <div class="play-actions">
-        <button data-umami-event="play-scatter" class="primary" id="btn-scatter">Scatter</button>
-        <button data-umami-event="play-reset" id="btn-reset">Reset</button>
-      </div>
-    </div>
-  </div>
 </section>
 </main>
 
 <section id="contact" class="contact">
   <div class="inner">
-    <div class="eyebrow">02 — Contact</div>
+    <div class="eyebrow">Contact</div>
     <h2 class="display">Let's talk</h2>
-    <p class="lede">Research, code, ideas — I'm all ears.</p>
+    <p class="lede">Research, code, ideas — Feel free to say Hi.</p>
     <div class="pills">
       <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>Email</a>
       <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span>LinkedIn</a>
@@ -180,230 +115,7 @@
   </footer>
 </section>
 
-<script>
-(function () {
-  // ---- Hero network canvas + playground ----
-  // Default node count scales with screen width: 25 on phones (<=720px), 110 from ~1000px up.
-  function autoNodes() {
-    var t = Math.min(1, Math.max(0, (window.innerWidth - 720) / 280));
-    return Math.round(25 + t * 85);
-  }
-  var DEF = { nodes: autoNodes(), reach: 140, speed: 1, cursor: 'connect' };
-  var nodesTouched = false;
-  var S = { nodes: DEF.nodes, reach: DEF.reach, speed: DEF.speed, cursor: DEF.cursor };
-  var canvas = document.getElementById('net');
-  var ctx = canvas.getContext('2d');
-  var w = 0, h = 0, nodes = [];
-  var mouse = { x: -1e4, y: -1e4 };
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function build() {
-    if (!nodesTouched) { DEF.nodes = S.nodes = autoNodes(); if (inputs) syncUI(); }
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    var r = canvas.parentElement.getBoundingClientRect();
-    var nw = r.width, nh = r.height;
-    // Keep the constellation's shape on resize: rescale positions instead of clamping,
-    // otherwise nodes pile up along the edges (shrink) or leave empty space (grow).
-    if (w > 0 && h > 0) {
-      var sx = nw / w, sy = nh / h;
-      nodes.forEach(function (p) { p.x *= sx; p.y *= sy; });
-    }
-    w = nw; h = nh;
-    canvas.width = w * dpr; canvas.height = h * dpr;
-    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
-
-  function spawn() {
-    return {
-      x: Math.random() * w, y: Math.random() * h,
-      a: Math.random() * Math.PI * 2,            // heading
-      s: Math.random() * 0.25 + 0.08,            // cruising speed
-      ix: 0, iy: 0,                              // impulse velocity (cursor, scatter), decays
-      r: Math.random() * 1.4 + 0.7,
-    };
-  }
-
-  function scatter() {
-    nodes.forEach(function (p) {
-      var dx = p.x - w / 2, dy = p.y - h / 2, d = Math.hypot(dx, dy) || 1;
-      var f = 6 + Math.random() * 10;
-      p.ix += dx / d * f; p.iy += dy / d * f;
-    });
-  }
-
-  // Shortest signed angle from a to b.
-  function angleDiff(a, b) {
-    var d = (b - a) % (Math.PI * 2);
-    if (d > Math.PI) d -= Math.PI * 2;
-    if (d < -Math.PI) d += Math.PI * 2;
-    return d;
-  }
-
-  var last = 0, running = false, onScreen = true, pressed = false;
-
-  function frame(now) {
-    if (!running) return;
-    // Frame-rate independent time step (1 = one 60fps frame); clamp so a tab switch doesn't teleport nodes.
-    var dt = last ? Math.min(3, (now - last) / 16.667) : 1;
-    last = now;
-
-    ctx.clearRect(0, 0, w, h);
-    while (nodes.length < S.nodes) nodes.push(spawn());
-    if (nodes.length > S.nodes) nodes.length = S.nodes;
-    var rgb = getComputedStyle(document.documentElement).getPropertyValue('--fg-rgb').trim() || '13,13,13';
-    var D = S.reach, sp = reduce ? 0 : S.speed;
-    var decay = Math.pow(0.94, dt);
-    var margin = Math.min(90, Math.min(w, h) * 0.2);
-
-    for (var k = 0; k < nodes.length; k++) {
-      var p = nodes[k];
-
-      // Click-and-hold force, smooth falloff.
-      if (pressed && S.cursor !== 'connect') {
-        var cx = mouse.x - p.x, cy = mouse.y - p.y, cd = Math.hypot(cx, cy);
-        if (cd < 220 && cd > 1) {
-          var f = (1 - cd / 220) * (S.cursor === 'attract' ? 0.12 : -0.35) * dt;
-          p.ix += cx / cd * f; p.iy += cy / cd * f;
-        }
-      }
-
-      // Gentle wander so paths curve instead of running in straight lines.
-      p.a += (Math.random() - 0.5) * 0.12 * dt;
-
-      // Soft edges: near a border, steer the heading back toward the middle (no hard bounce).
-      var ex = Math.max(0, margin - p.x, p.x - (w - margin)) / margin;
-      var ey = Math.max(0, margin - p.y, p.y - (h - margin)) / margin;
-      var edge = Math.max(ex, ey);
-      if (edge > 0) {
-        p.a += angleDiff(p.a, Math.atan2(h / 2 - p.y, w / 2 - p.x)) * Math.min(1, edge * 0.08 * dt);
-      }
-
-      p.ix *= decay; p.iy *= decay;
-      p.x += (Math.cos(p.a) * p.s * sp + p.ix) * dt;
-      p.y += (Math.sin(p.a) * p.s * sp + p.iy) * dt;
-
-      // Safety net for big impulses: absorb at the border.
-      if (p.x < 0 || p.x > w) { p.x = Math.max(0, Math.min(w, p.x)); p.ix *= -0.5; p.a = Math.PI - p.a; }
-      if (p.y < 0 || p.y > h) { p.y = Math.max(0, Math.min(h, p.y)); p.iy *= -0.5; p.a = -p.a; }
-    }
-
-    for (var i = 0; i < nodes.length; i++) {
-      var a = nodes[i];
-      for (var j = i + 1; j < nodes.length; j++) {
-        var b = nodes[j], dx = a.x - b.x, dy = a.y - b.y, d = dx * dx + dy * dy;
-        if (d < D * D) {
-          ctx.strokeStyle = 'rgba(' + rgb + ',' + ((1 - Math.sqrt(d) / D) * 0.22) + ')';
-          ctx.lineWidth = 1;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-        }
-      }
-      var mx = a.x - mouse.x, my = a.y - mouse.y, md = Math.sqrt(mx * mx + my * my);
-      if (md < 180) {
-        ctx.strokeStyle = 'rgba(' + rgb + ',' + ((1 - md / 180) * 0.5) + ')';
-        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-      }
-      ctx.fillStyle = 'rgba(' + rgb + ',0.55)';
-      ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2); ctx.fill();
-    }
-    requestAnimationFrame(frame);
-  }
-
-  function start() {
-    if (running || !onScreen || document.hidden) return;
-    running = true; last = 0;
-    requestAnimationFrame(frame);
-  }
-  function stop() { running = false; }
-
-  window.addEventListener('mousemove', function (e) {
-    var r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
-  });
-  document.addEventListener('mouseleave', function () { mouse.x = mouse.y = -1e4; });
-
-  // Attract / Repel act on click (hold to keep pulling or pushing), not on hover.
-  var hero = canvas.parentElement;
-  function release() { pressed = false; hero.classList.remove('pressing'); }
-  hero.addEventListener('pointerdown', function (e) {
-    if (e.button !== 0 || e.target.closest('a, button, input, .play')) return;
-    var r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
-    pressed = true; hero.classList.add('pressing');
-    // Instant kick so a single click is visible, not just a hold.
-    if (S.cursor !== 'connect') {
-      var sign = S.cursor === 'attract' ? 1 : -1;
-      nodes.forEach(function (p) {
-        var dx = mouse.x - p.x, dy = mouse.y - p.y, d = Math.hypot(dx, dy);
-        if (d < 220 && d > 1) { var f = (1 - d / 220) * 3 * sign; p.ix += dx / d * f; p.iy += dy / d * f; }
-      });
-    }
-  });
-  window.addEventListener('pointerup', release);
-  window.addEventListener('pointercancel', release);
-  window.addEventListener('blur', release);
-
-  // Track the hero's real size (window resize, panel/layout changes, mobile toolbars).
-  if (window.ResizeObserver) new ResizeObserver(build).observe(canvas.parentElement);
-  else window.addEventListener('resize', build);
-
-  // Don't burn CPU when the hero is scrolled away or the tab is hidden.
-  if (window.IntersectionObserver) {
-    new IntersectionObserver(function (entries) {
-      onScreen = entries[0].isIntersecting;
-      onScreen ? start() : stop();
-    }).observe(canvas.parentElement);
-  }
-  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
-
-  // ---- Playground panel ----
-  var tab = document.getElementById('play-tab');
-  var panel = document.getElementById('play-panel');
-  var play = panel.parentElement;
-  var inputs = {
-    nodes: document.getElementById('r-nodes'),
-    reach: document.getElementById('r-reach'),
-    speed: document.getElementById('r-speed'),
-  };
-  var labels = {
-    nodes: document.getElementById('v-nodes'),
-    reach: document.getElementById('v-reach'),
-    speed: document.getElementById('v-speed'),
-  };
-  var segButtons = document.querySelectorAll('#seg-cursor button');
-
-  function syncUI() {
-    inputs.nodes.value = S.nodes; labels.nodes.textContent = S.nodes;
-    inputs.reach.value = S.reach; labels.reach.textContent = S.reach + 'px';
-    inputs.speed.value = S.speed; labels.speed.textContent = S.speed.toFixed(1) + '×';
-    segButtons.forEach(function (b) { b.classList.toggle('on', b.dataset.mode === S.cursor); });
-  }
-  // The tab is rotated 180deg, so the play triangle is drawn pointing left to end up pointing right.
-  var ICON_PLAY = '<svg class="i-play" viewBox="0 0 10 10" aria-hidden="true"><path d="M9 1 1 5l8 4z" stroke="none"/></svg>';
-  var ICON_CLOSE = '<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M1 1l8 8M9 1 1 9" fill="none" stroke-width="1.4" stroke-linecap="round"/></svg>';
-  function setOpen(open) {
-    play.classList.toggle('open', open);
-    tab.setAttribute('aria-expanded', String(open));
-    tab.innerHTML = open ? ICON_CLOSE + 'Close' : ICON_PLAY + 'Play';
-  }
-
-  tab.addEventListener('click', function () { setOpen(!play.classList.contains('open')); });
-  Object.keys(inputs).forEach(function (k) {
-    inputs[k].addEventListener('input', function (e) { if (k === 'nodes') nodesTouched = true; S[k] = +e.target.value; syncUI(); });
-  });
-  segButtons.forEach(function (b) {
-    b.addEventListener('click', function () { S.cursor = b.dataset.mode; syncUI(); });
-  });
-  document.getElementById('btn-scatter').addEventListener('click', scatter);
-  document.getElementById('btn-reset').addEventListener('click', function () {
-    nodesTouched = false; DEF.nodes = autoNodes(); S.nodes = DEF.nodes; S.reach = DEF.reach; S.speed = DEF.speed; S.cursor = DEF.cursor; syncUI();
-  });
-
-  syncUI();
-  build();
-  start();
-})();
-</script>
+<script src="/assets/hero-tree.js"></script>
 <script src="/assets/brand.js"></script>
 </body>
 </html>

@@ -78,7 +78,6 @@ nav.toc a {
   display: flex; gap: 12px; padding: 6px 0 6px 12px; font-size: 14px; text-decoration: none;
   color: var(--muted); border-left: 2px solid var(--line); transition: color .2s, border-color .2s;
 }
-nav.toc a span { font-family: var(--mono); font-size: 11px; padding-top: 3px; }
 nav.toc a[aria-current="true"] { color: var(--ink); border-left-color: var(--ink); }
 @media (max-width: 900px) { nav.toc { display: none; } }
 
