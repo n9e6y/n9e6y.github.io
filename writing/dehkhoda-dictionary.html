@@ -53,6 +53,10 @@
   .ledger li { font-size: 18px; line-height: 1.6; }
   .ledger li b { font-weight: 600; }
 
+  /* Both figures wipe in with the same slow, soft timing. */
+  .report { --wipe-time: 1.8s; --wipe-ease: cubic-bezier(.4, 0, .2, 1); }
+  .js .report .fig svg.draw { transition: clip-path var(--wipe-time) var(--wipe-ease); }
+
   /* Figure: alphabet order. Right to left, wipes in from the right. */
   .abc { overflow-x: auto; }
   .abc-in { min-width: 600px; }
@@ -65,7 +69,6 @@
   .abc .row span.off { background: var(--signal); color: #0d0d0d; }
   .abc .row span.on { background: var(--ink); color: var(--paper); }
   .abc .note { margin-top: 8px; font-family: var(--mono); font-size: 12px; }
-  .abc { --wipe-time: 1.8s; --wipe-ease: cubic-bezier(.4, 0, .2, 1); }
   .js .fig .abc-in { clip-path: inset(0 0 0 100%); transition: clip-path var(--wipe-time) var(--wipe-ease); }
   .js .fig.drawn .abc-in { clip-path: inset(-20px); }
 
@@ -140,7 +143,7 @@
 
 <figure class="fig" data-chart="split" data-opts='{"focus":"Compound sub-entries"}'>
   <div class="fig-head">
-    <div class="eyebrow"><span>Figure</span></div>
+    <div class="eyebrow"><span>Figure · Where senses live</span></div>
     <h3 class="h3">15% of senses sit inside compound sub-entries.</h3>
     <p>All 566,654 senses, split by where they live</p>
   </div>
@@ -197,7 +200,7 @@
 
           <figure class="fig" style="margin-top:56px; max-width:880px">
             <div class="fig-head">
-              <div class="eyebrow"><span>Figure</span><span>Schematic</span></div>
+              <div class="eyebrow"><span>Figure · Entry order</span><span>Schematic</span></div>
               <h3 class="h3">About 3,900 <span lang="fa">م</span> entries sat after <span lang="fa">ی</span>.</h3>
               <p>Order of entries by first letter · reads right to left · schematic, not to scale</p>
             </div>

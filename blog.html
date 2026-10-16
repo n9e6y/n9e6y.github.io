@@ -19,8 +19,19 @@
 </script>
 <link rel="stylesheet" href="/assets/brand.css" />
 <style>
-  /* Post list: ledger rows, date on the left. */
-  .posts { border-top: 1px solid var(--ink); margin-top: 48px; }
+  .toolbar { margin-top: 48px; padding: 16px 0; border-top: 1px solid var(--line2); display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filters .c { opacity: 0.6; }
+  .views { display: flex; border: 1px solid var(--ink); border-radius: 4px; overflow: hidden; }
+  .views button {
+    min-height: 40px; padding: 8px 14px; border: 0; background: transparent; color: var(--ink); cursor: pointer;
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .views button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+  [hidden] { display: none !important; }
+
+  /* Index view: ledger rows, date on the left. */
+  .posts { border-top: 1px solid var(--ink); }
   .post-row { display: grid; grid-template-columns: 132px minmax(0, 1fr) auto; gap: 16px; align-items: baseline; padding: 20px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s; }
   .post-row:hover { background: var(--line); }
   .post-row .date { font-family: var(--mono); font-size: 13px; color: var(--muted); }
@@ -32,6 +43,20 @@
     .post-row b { font-size: 21px; }
     .post-row .tags { justify-content: flex-start; margin-top: 8px; }
   }
+
+  /* Grid view: cards as on the work page; cards in a row share row tracks (subgrid). */
+  .cards { margin-top: 8px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); grid-auto-rows: auto minmax(140px, auto) auto; gap: 16px; }
+  .card {
+    grid-row: span 3; display: grid; grid-template-rows: subgrid; row-gap: 12px;
+    padding: 24px; border: 1px solid var(--line2); border-radius: 6px; text-decoration: none; transition: background .2s;
+  }
+  .card:hover { background: var(--line); }
+  .card .top { display: flex; justify-content: space-between; margin-bottom: 28px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .card .hd { display: flex; flex-direction: column; gap: 12px; }
+  .card b { font-size: 28px; font-weight: 500; letter-spacing: -0.025em; line-height: 1.1; }
+  .card .one { font-size: 15px; line-height: 1.45; color: var(--muted); }
+  .card .tags { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 6px; padding-top: 12px; }
+  @media (max-width: 720px) { .cards { grid-auto-rows: auto auto auto; } }
 </style>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430"></script>
 </head>
@@ -59,10 +84,30 @@
       <h1 class="h1">Writing</h1>
       <p class="intro">Notes on ml, language models and other things that i find interesting.</p>
     </div>
-    <div class="posts">
-      <a class="post-row" data-umami-event="post-dehkhoda-dictionary" href="/writing/dehkhoda-dictionary.html">
+    <div class="toolbar">
+      <div class="filters" role="group" aria-label="Filter by tag">
+        <button class="chip" data-filter="All" data-umami-event="writing-filter-all" aria-pressed="true">All <span class="c">1</span></button>
+        <button class="chip" data-filter="Dataset" data-umami-event="writing-filter-dataset" aria-pressed="false">Dataset <span class="c">1</span></button>
+        <button class="chip" data-filter="Persian NLP" data-umami-event="writing-filter-persian-nlp" aria-pressed="false">Persian NLP <span class="c">1</span></button>
+      </div>
+      <div class="views" role="group" aria-label="View">
+        <button data-view="index" data-umami-event="writing-view-index" aria-pressed="true">Index</button>
+        <button data-view="grid" data-umami-event="writing-view-grid" aria-pressed="false">Grid</button>
+      </div>
+    </div>
+
+    <div id="view-index" class="posts">
+      <a class="post-row" data-tags="Dataset|Persian NLP" data-umami-event="post-dehkhoda-dictionary" href="/writing/dehkhoda-dictionary.html">
         <span class="date">16 Oct 2026</span>
         <span><b>Turning the Dehkhoda Dictionary into Structured Data</b><span class="one">The Persian Dehkhoda Dictionary is now an open dataset on Hugging Face and Kaggle.</span></span>
+        <span class="tags"><span class="tag">Dataset</span><span class="tag">Persian NLP</span></span>
+      </a>
+    </div>
+
+    <div id="view-grid" class="cards" hidden>
+      <a class="card" data-tags="Dataset|Persian NLP" data-umami-event="post-dehkhoda-dictionary" href="/writing/dehkhoda-dictionary.html">
+        <span class="top"><span>16 Oct 2026</span><span>↗</span></span>
+        <span class="hd"><b>Turning the Dehkhoda Dictionary into Structured Data</b><span class="one">The Persian Dehkhoda Dictionary is now an open dataset on Hugging Face and Kaggle.</span></span>
         <span class="tags"><span class="tag">Dataset</span><span class="tag">Persian NLP</span></span>
       </a>
     </div>
@@ -88,6 +133,25 @@
     <a href="#top">Back to top ↑</a>
   </footer>
 </section>
+<script>
+(function () {
+  // Tag chips and Index/Grid toggle. A post can carry several tags (data-tags, "|"-separated).
+  var items = document.querySelectorAll('[data-tags]');
+  document.querySelectorAll('[data-filter]').forEach(function (b, _, all) {
+    b.addEventListener('click', function () {
+      all.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      items.forEach(function (it) { it.hidden = b.dataset.filter !== 'All' && it.dataset.tags.split('|').indexOf(b.dataset.filter) < 0; });
+    });
+  });
+  document.querySelectorAll('[data-view]').forEach(function (b, _, all) {
+    b.addEventListener('click', function () {
+      all.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      document.getElementById('view-index').hidden = b.dataset.view !== 'index';
+      document.getElementById('view-grid').hidden = b.dataset.view !== 'grid';
+    });
+  });
+})();
+</script>
 <script src="/assets/brand.js"></script>
 </body>
 </html>
