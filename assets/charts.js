@@ -1,6 +1,6 @@
 // Figures: draws an SVG chart from the <table> inside each <figure class="fig" data-chart="...">.
 // The table stays as the accessible "Data" view and is the source for Copy CSV.
-// Options go in data-opts as JSON. Chart kinds: bars, hbar, dumbbell, line, heatmap.
+// Options go in data-opts as JSON. Chart kinds: bars, hbar, split, dumbbell, line, heatmap.
 (function () {
   var NS = 'http://www.w3.org/2000/svg';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -127,6 +127,25 @@
       text(svg, x(v) + 8, yy + rowH / 2 + 4, r[1], { ink: on, bold: on });
       point(b, r[0] + ' · ' + r[1], tip);
     });
+  };
+
+  // Part-to-whole: one bar split into its rows, labels above, total below. o.focus names the part drawn in ink.
+  // Drawn at the container's width so the labels stay legible; below 560px each label gets its own line.
+  CHARTS.split = function (svg, d, o, tip) {
+    var W = o.w || Math.max(300, Math.round(svg.parentNode.clientWidth) || 680), stack = W < 560;
+    var vals = d.rows.map(function (r) { return num(r[1]); }), top = stack ? vals.length * 20 + 8 : 28, H = top + 76;
+    var total = vals.reduce(function (a, b) { return a + b; }, 0), x = scale(0, total, 0, W), at = 0;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    vals.forEach(function (v, i) {
+      var r = d.rows[i], on = r[0] === o.focus, last = i === vals.length - 1, gap = last ? 0 : 2;
+      var pct = fmt(v / total * 100, { dp: 1, suf: '%' }), label = r[0] + ' · ' + r[1] + ' · ' + pct;
+      var b = el('rect', { x: r1(x(at)), y: top, width: r1(Math.max(1, x(v) - gap)), height: 48, style: 'fill:var(' + (on ? '--ink' : '--g4') + ')' }, svg);
+      text(svg, last ? W : x(at), stack ? 16 + i * 20 : 16, label, { anchor: last ? 'end' : null, ink: on, bold: on });
+      point(b, label, tip);
+      at += v;
+    });
+    text(svg, 0, H - 6, '0', { size: 11 });
+    text(svg, W, H - 6, total.toLocaleString('en-US'), { anchor: 'end', size: 11 });
   };
 
   // Before/after dumbbell. Columns: label, before, after. The row with the biggest ratio gets Signal.
