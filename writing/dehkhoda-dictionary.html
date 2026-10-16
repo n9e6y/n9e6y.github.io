@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Turning the Dehkhoda Dictionary into Structured Data — Nima Yavari</title>
+<meta name="description" content="The Persian Dehkhoda Dictionary is now an open, structured dataset on Hugging Face and Kaggle." />
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&family=Vazirmatn:wght@300..700&display=swap" rel="stylesheet" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('nima-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="/assets/brand.css" />
+<link rel="stylesheet" href="/assets/charts.css" />
+<style>
+  /* Persian text: Vazirmatn, also as the fallback inside code. */
+  [lang="fa"] { font-family: 'Vazirmatn', sans-serif; }
+  .code pre { font-family: 'Geist Mono', 'Vazirmatn', ui-monospace, monospace; }
+  .code .pn { color: var(--muted); }
+  .code .code-head { align-items: center; padding: 8px 8px 8px 16px; }
+  .code .code-head button {
+    padding: 4px 10px; border: 1px solid var(--line2); border-radius: 4px;
+    background: transparent; color: var(--ink); font: 12px var(--mono); cursor: pointer; transition: background .2s;
+  }
+  .code .code-head button:hover { background: var(--line); }
+  .prose code, .ledger code { font-family: var(--mono), 'Vazirmatn'; font-size: 0.86em; background: var(--line); padding: 1px 6px; border-radius: 3px; }
+
+  .art-head .eyebrow { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
+  .art-head .eyebrow a { color: var(--ink); text-decoration: none; }
+  .art-head h1 { margin-top: 24px; font-size: clamp(52px, 8vw, 96px); letter-spacing: -0.045em; line-height: 0.95; max-width: 14ch; text-wrap: balance; }
+  .art-head .deck { margin: 24px 0 0; font-size: clamp(20px, 2.2vw, 24px); line-height: 1.45; max-width: 40ch; color: var(--muted); }
+  .art-head .deck span { color: var(--ink); }
+
+  .report { margin-top: 64px; }
+  .report .h2 { margin-top: 0; font-size: clamp(32px, 4vw, 44px); letter-spacing: -0.035em; line-height: 1.05; }
+  .report .prose p:first-child { margin-top: 24px; }
+  .report .stats { margin-top: 32px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .report .stat .v { font-size: clamp(44px, 4.2vw, 64px); }
+  .stat .d.long { font-family: inherit; font-size: 15px; line-height: 1.45; color: var(--muted); }
+  .stat .d.long b { font-weight: 600; color: var(--ink); }
+  .stat .d.long [lang="fa"] { color: var(--ink); }
+
+  /* Steps and limitations: ledger rows, no numbers. */
+  ol.ledger, ul.ledger { list-style: none; margin: 32px 0 0; padding: 0; max-width: 760px; }
+  ul.ledger { border-top-color: var(--line2); }
+  .ledger li { font-size: 18px; line-height: 1.6; }
+  .ledger li b { font-weight: 600; }
+
+  /* Figure: alphabet order. Right to left, wipes in from the right. */
+  .abc { overflow-x: auto; }
+  .abc-in { min-width: 600px; }
+  .abc .k { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; }
+  .abc .k + .row { margin-top: 8px; }
+  .abc .note + .k { margin-top: 32px; }
+  .abc .row { display: flex; gap: 2px; }
+  .abc .row span { flex: 1 1 0; min-width: 16px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--g2); font-size: 14px; font-weight: 500; }
+  .abc .row span.wide { flex-grow: 1.4; }
+  .abc .row span.off { background: var(--signal); color: #0d0d0d; }
+  .abc .row span.on { background: var(--ink); color: var(--paper); }
+  .abc .note { margin-top: 8px; font-family: var(--mono); font-size: 12px; }
+  .abc { --wipe-time: 1.8s; --wipe-ease: cubic-bezier(.4, 0, .2, 1); }
+  .js .fig .abc-in { clip-path: inset(0 0 0 100%); transition: clip-path var(--wipe-time) var(--wipe-ease); }
+  .js .fig.drawn .abc-in { clip-path: inset(-20px); }
+
+  /* Dataset links: cards as on the work page. */
+  .cards { margin-top: 24px; max-width: 880px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+  .card {
+    min-height: 200px; padding: 24px; display: flex; flex-direction: column; gap: 12px;
+    border: 1px solid var(--line2); border-radius: 6px; text-decoration: none; transition: background .2s;
+  }
+  .card:hover { background: var(--line); }
+  .card .top { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .card b { margin-top: auto; font-size: 28px; font-weight: 500; letter-spacing: -0.025em; line-height: 1.1; }
+  .card .u { font-family: var(--mono); font-size: 12px; color: var(--muted); word-break: break-all; }
+
+  .closing { margin: 40px 0 0; max-width: 680px; padding-top: 24px; border-top: 1px solid var(--ink); font-size: clamp(22px, 2.4vw, 28px); line-height: 1.35; letter-spacing: -0.02em; text-wrap: pretty; }
+  .post-foot { margin-top: 96px; max-width: 760px; padding-top: 16px; border-top: 1px solid var(--line2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-family: var(--mono); font-size: 12px; }
+  .post-foot a { text-decoration: none; }
+  .post-foot a:hover { text-decoration: underline; }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430"></script>
+</head>
+<body>
+
+<header class="site">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
+    <nav aria-label="Main">
+      <span class="nav-links" id="nav-links">
+        <a href="/works.html">Work</a>
+        <a href="/blog.html" aria-current="page">Writing</a>
+        <a href="/about.html">About</a>
+      </span>
+      <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="wrap">
+    <header class="art-head" style="padding-top:clamp(48px,8vw,96px)" data-reveal>
+      <div class="eyebrow"><a href="/blog.html">← Writing</a><span class="tag">Dataset</span><span class="tag">Persian NLP</span><span>16 Oct 2026</span><span>6 min read</span></div>
+      <h1>Turning the Dehkhoda Dictionary into Structured Data</h1>
+      <p class="deck">Persian Dehkhoda Dictionary (<span lang="fa" dir="rtl">لغت‌نامهٔ دهخدا</span>) is now an open dataset on Hugging Face and Kaggle.</p>
+      <hr class="rule" />
+    </header>
+
+    <div class="report">
+      <nav class="toc" aria-label="Contents">
+        <div class="eyebrow">Contents</div>
+        <a href="#inside">What's inside</a>
+        <a href="#built">How I built it</a>
+        <a href="#limits">Limitations</a>
+        <a href="#try">Try it</a>
+        <a href="#uses">What it could be used for</a>
+        <a href="#data">Get the data</a>
+        <a href="#thanks">Acknowledgements</a>
+      </nav>
+      <article>
+        <div class="prose">
+          <p style="margin-top:0">The <em>Loghatnameh</em> of Ali Akbar Dehkhoda is the largest encyclopedic dictionary of the Persian language. It took a lifetime of work from Dehkhoda and his collaborators, and it holds centuries of Persian vocabulary, poetry, geography, history and science. It is also hard to use in code. Online it's a collection of HTML fragments and PDF files, which is fine for reading one word at a time and awkward for anything else.</p>
+          <p>I wanted to change that, so I built a cleaned, structured version of the whole dictionary.</p>
+        </div>
+
+        <section id="inside">
+          <h2 class="h2">What's inside</h2>
+          <div class="stats" data-reveal>
+            <div class="stat"><div class="eyebrow">Entries</div><div class="v">343,316</div><div class="d long">covering <b>240,810 distinct headwords</b></div></div>
+            <div class="stat"><div class="eyebrow">Senses</div><div class="v">566,654</div><div class="d long">of which 83,849 belong to compound sub-entries (phrases like <span lang="fa" dir="rtl">از جلو کسی درآمدن</span> under the headword <span lang="fa" dir="rtl">جلو</span>)</div></div>
+            <div class="stat"><div class="eyebrow">Source citations</div><div class="v">841,986</div><div class="d long">drawn from <b>855 distinct sources</b></div></div>
+          </div>
+
+<figure class="fig" data-chart="split" data-opts='{"focus":"Compound sub-entries"}'>
+  <div class="fig-head">
+    <div class="eyebrow"><span>Figure</span></div>
+    <h3 class="h3">15% of senses sit inside compound sub-entries.</h3>
+    <p>All 566,654 senses, split by where they live</p>
+  </div>
+  <div class="fig-body">
+    <div class="fig-chart"></div>
+      <div class="fig-table"><table class="fig-data">
+        <thead><tr><th>Where</th><th>Senses</th></tr></thead>
+        <tbody>
+        <tr><td>Headword senses</td><td>482,805</td></tr>
+        <tr><td>Compound sub-entries</td><td>83,849</td></tr>
+        </tbody>
+      </table></div>
+  </div>
+  <figcaption><span>Source: the dataset's senses table. Ink = compound sub-entries.</span><span class="fig-tools"></span></figcaption>
+</figure>
+
+          <div class="prose">
+            <p style="margin-top:56px">Every entry is a single JSON object with its pronunciation, part of speech, individual senses, compound sub-entries and cited sources nested inside it. Entries are sorted in Persian alphabetical order, and each one also keeps a diacritic-free <code>headword_plain</code> field for search and the original <code>raw_html</code> for reference.</p>
+            <p>Here's what the structure looks like for a single entry:</p>
+          </div>
+
+          <div class="code" style="margin-top:24px; max-width:760px">
+            <div class="code-head"><span>entry.json</span><button type="button" data-copy="code-json" data-umami-event="code-copy-json">Copy</button></div>
+<pre><code id="code-json"><span class="pn">{</span>
+  <span class="kw">"headword"</span><span class="pn">:</span> "<bdi>اویزه</bdi>"<span class="pn">,</span>
+  <span class="kw">"pronunciation"</span><span class="pn">:</span> "<bdi>اَ زَ / زِ</bdi>"<span class="pn">,</span>
+  <span class="kw">"pos"</span><span class="pn">:</span> "<bdi>اِ</bdi>"<span class="pn">,</span>
+  <span class="kw">"is_proper_noun"</span><span class="pn">:</span> false<span class="pn">,</span>
+  <span class="kw">"senses"</span><span class="pn">: [</span>
+    <span class="pn">{</span>
+      <span class="kw">"sense_no"</span><span class="pn">:</span> 1<span class="pn">,</span>
+      <span class="kw">"text"</span><span class="pn">:</span> "<bdi>شراب انگور و می. (ناظم الاطباء) (برهان).</bdi>"<span class="pn">,</span>
+      <span class="kw">"sources"</span><span class="pn">: [</span>
+        <span class="pn">{</span><span class="kw">"citation"</span><span class="pn">:</span> "<bdi>(ناظم الاطباء)</bdi>"<span class="pn">,</span> <span class="kw">"source"</span><span class="pn">:</span> "<bdi>ناظم الاطباء</bdi>"<span class="pn">},</span>
+        <span class="pn">{</span><span class="kw">"citation"</span><span class="pn">:</span> "<bdi>(برهان)</bdi>"<span class="pn">,</span> <span class="kw">"source"</span><span class="pn">:</span> "<bdi>برهان</bdi>"<span class="pn">}</span>
+      <span class="pn">]</span>
+    <span class="pn">}</span>
+  <span class="pn">]</span>
+<span class="pn">}</span></code></pre>
+          </div>
+        </section>
+
+        <section id="built">
+          <h2 class="h2">How I built it</h2>
+          <div class="prose"><p>The starting point was a public raw dump of the dictionary with one HTML fragment per entry. Turning that into something usable took several steps:</p></div>
+          <ol class="ledger">
+            <li><span><b>Splitting senses</b> on the dictionary's <code>||</code> separators.</span></li>
+            <li><span><b>Extracting sub-entries</b>, which the dictionary marks with a leading dash followed by <code>phrase؛ definition</code>.</span></li>
+            <li><span><b>Reading pronunciation and part of speech</b> from the leading <code>[ … ]</code> block and the coloured <code>( … )</code> labels.</span></li>
+            <li><span><b>Cleaning the text</b>: joining the hard line wraps of the print layout, converting Arabic <code>ي</code> and <code>ك</code> to their Persian forms <code>ی</code> and <code>ک</code>, and normalizing footnote markers.</span></li>
+            <li><span><b>Normalizing citations</b> by stripping volume numbers, page numbers and prefixes, so that the same book always appears under the same name.</span></li>
+            <li><span><b>Restoring alphabetical order.</b> The website's ids are mostly alphabetical but not entirely. A block of about 3,900 entries starting with <b lang="fa">م</b> shows up after <b lang="fa">ی</b>. I re-sorted everything by Persian collation, ignoring diacritics, spaces and ZWNJ, which matches Dehkhoda's own ordering.</span></li>
+          </ol>
+
+          <figure class="fig" style="margin-top:56px; max-width:880px">
+            <div class="fig-head">
+              <div class="eyebrow"><span>Figure</span><span>Schematic</span></div>
+              <h3 class="h3">About 3,900 <span lang="fa">م</span> entries sat after <span lang="fa">ی</span>.</h3>
+              <p>Order of entries by first letter · reads right to left · schematic, not to scale</p>
+            </div>
+            <div class="fig-body abc">
+              <div class="abc-in" role="img" aria-label="Two rows of the Persian alphabet. In the website's id order, an extra block of entries starting with م follows ی. After re-sorting by Persian collation, م sits in its place between ل and ن.">
+                <div class="k"><span>Website id order</span><span class="muted">← <span lang="fa">ا</span></span></div>
+                <div class="row" dir="rtl" lang="fa" aria-hidden="true"><span>ا</span><span>ب</span><span>پ</span><span>ت</span><span>ث</span><span>ج</span><span>چ</span><span>ح</span><span>خ</span><span>د</span><span>ذ</span><span>ر</span><span>ز</span><span>ژ</span><span>س</span><span>ش</span><span>ص</span><span>ض</span><span>ط</span><span>ظ</span><span>ع</span><span>غ</span><span>ف</span><span>ق</span><span>ک</span><span>گ</span><span>ل</span><span>م</span><span>ن</span><span>و</span><span>ه</span><span>ی</span><span class="wide off">م</span></div>
+                <div class="note">↑ ≈ 3,900 entries starting with <span lang="fa">م</span>, after <span lang="fa">ی</span></div>
+                <div class="k"><span>Re-sorted by Persian collation</span><span class="muted">← <span lang="fa">ا</span></span></div>
+                <div class="row" dir="rtl" lang="fa" aria-hidden="true"><span>ا</span><span>ب</span><span>پ</span><span>ت</span><span>ث</span><span>ج</span><span>چ</span><span>ح</span><span>خ</span><span>د</span><span>ذ</span><span>ر</span><span>ز</span><span>ژ</span><span>س</span><span>ش</span><span>ص</span><span>ض</span><span>ط</span><span>ظ</span><span>ع</span><span>غ</span><span>ف</span><span>ق</span><span>ک</span><span>گ</span><span>ل</span><span class="wide on">م</span><span>ن</span><span>و</span><span>ه</span><span>ی</span></div>
+              </div>
+            </div>
+            <figcaption><span>Collation ignores diacritics, spaces and ZWNJ. Signal marks the displaced block.</span></figcaption>
+          </figure>
+        </section>
+
+        <section id="limits">
+          <h2 class="h2">Limitations</h2>
+          <ul class="ledger">
+            <li><span>506 entries from the printed dictionary are missing from the source scrape.</span></li>
+            <li><span>The website never published the footnotes, so only the markers remain.</span></li>
+            <li><span>Joining print line wraps also joins the lines of quoted poetry. <code>raw_html</code> keeps the original breaks if you need them.</span></li>
+            <li><span>Sub-entry and source extraction is rule-based, so a small number of entries will be wrong. Sources with fewer than 20 citations aren't listed in <code>sources</code>, though they stay in the text.</span></li>
+          </ul>
+        </section>
+
+        <section id="try">
+          <h2 class="h2">Try it</h2>
+          <div class="code" style="margin-top:32px; max-width:760px">
+            <div class="code-head"><span>Python</span><button type="button" data-copy="code-py" data-umami-event="code-copy-python">Copy</button></div>
+<pre><code id="code-py"><span class="kw">from</span> datasets <span class="kw">import</span> load_dataset
+
+ds = load_dataset(<span class="str">"n9e6y/persian-dehkhoda-dictionary"</span>, split=<span class="str">"train"</span>)
+
+entry = ds.filter(<span class="kw">lambda</span> e: e[<span class="str">"headword"</span>] == "<bdi>جلو</bdi>")[0]
+<span class="kw">for</span> sense <span class="kw">in</span> entry[<span class="str">"senses"</span>]:
+    print(sense[<span class="str">"sense_no"</span>], sense[<span class="str">"subentry"</span>] <span class="kw">or</span> <span class="str">""</span>, sense[<span class="str">"text"</span>])</code></pre>
+          </div>
+        </section>
+
+        <section id="uses">
+          <h2 class="h2">What it could be used for</h2>
+          <div class="prose"><p>A structured Dehkhoda opens up a lot for Persian NLP: building search and lookup tools, studying how word senses change over time, mining the citation network to see which classical sources the dictionary leans on, creating lexicons for spell-checking or morphology, or training and evaluating language models on a rich, literary Persian corpus.</p></div>
+        </section>
+
+        <section id="data">
+          <h2 class="h2">Get the data</h2>
+          <div class="prose"><p>The dataset is available in two formats:</p></div>
+          <div class="cards">
+            <a class="card" data-umami-event="dataset-huggingface" href="https://huggingface.co/datasets/n9e6y/persian-dehkhoda-dictionary" target="_blank" rel="noopener">
+              <span class="top"><span>JSONL with nested senses</span><span>↗</span></span>
+              <b>Hugging Face</b>
+              <span class="u">huggingface.co/datasets/n9e6y/persian-dehkhoda-dictionary</span>
+            </a>
+            <a class="card" data-umami-event="dataset-kaggle" href="https://www.kaggle.com/datasets/nimayavari/persian-dehkhoda-dictionary" target="_blank" rel="noopener">
+              <span class="top"><span>Linked CSV tables</span><span>↗</span></span>
+              <b>Kaggle</b>
+              <span class="u">kaggle.com/datasets/nimayavari/persian-dehkhoda-dictionary</span>
+            </a>
+          </div>
+        </section>
+
+        <section id="thanks">
+          <h2 class="h2">Acknowledgements</h2>
+          <div class="prose"><p>All the credit for the content goes to Allameh Ali Akbar Dehkhoda (1879–1956) and his collaborators. My part was only to make their life's work easier to work with. Thanks also to the compiler of the original public dump, which made this project possible.</p></div>
+          <p class="closing">If you use the dataset, I'd love to hear about it. Feel free to open a discussion on the Hugging Face page or send me a message.</p>
+        </section>
+
+        <div class="post-foot">
+          <a href="/blog.html">← All writing</a>
+          <a href="#top">Back to top ↑</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</main>
+
+<section id="contact" class="contact">
+  <div class="inner">
+    <div class="eyebrow">Contact</div>
+    <h2 class="display">Let's talk.</h2>
+    <p class="lede">Research, code, ideas — Feel free to say Hi.</p>
+    <div class="pills">
+      <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+      <!-- <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="LinkedIn"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a> -->
+      <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="GitHub"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="X"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="Kaggle"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-huggingface" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="Hugging Face"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span></a>
+    </div>
+  </div>
+  <footer class="site-foot">
+    <span class="sig"><span class="mono-mark" aria-hidden="true"><span>9</span><span>9</span></span>© 2026 Nima Yavari</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</section>
+<script>
+  // Copy buttons on the code blocks.
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var src = document.getElementById(b.dataset.copy).textContent;
+      var done = function () { b.textContent = 'Copied'; setTimeout(function () { b.textContent = 'Copy'; }, 1400); };
+      try { navigator.clipboard.writeText(src).then(done, function () {}); } catch (e) {}
+    });
+  });
+</script>
+<script src="/assets/charts.js"></script>
+<script src="/assets/brand.js"></script>
+</body>
+</html>
