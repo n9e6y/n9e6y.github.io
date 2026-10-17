@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://n9e6y.com/sitemap.xml
