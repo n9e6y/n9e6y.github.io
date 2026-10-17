@@ -1,0 +1,50 @@
+# Uptime check for n9e6y.com. Runs every 2 hours (GitHub may start it a few minutes late).
+# A failed run emails whoever last edited the cron line below. Run it by hand from the Actions tab.
+# Note: GitHub pauses scheduled workflows after 60 days without commits to the repo, and emails a warning first.
+name: Uptime
+
+on:
+  schedule:
+    - cron: '17 */2 * * *'   # every 2nd hour at :17, away from the busy top of the hour (runs start late then)
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SITE: n9e6y.com
+      PAGES_IP: 185.199.108.153   # the one A record at Parspack
+    steps:
+      - name: DNS points at GitHub Pages
+        run: |
+          ip=$(dig +short "$SITE" A @1.1.1.1 | tail -n1)
+          echo "A $SITE -> $ip"
+          [ "$ip" = "$PAGES_IP" ] || { echo "::error::$SITE resolves to '$ip', expected $PAGES_IP. Check DNS at Parspack."; exit 1; }
+
+      - name: Pages answer over HTTPS
+        run: |
+          fail=0
+          for p in / /works.html /blog.html /about.html /writing/dehkhoda-dictionary.html /assets/og.png /sitemap.xml; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --retry 2 --retry-delay 10 --max-time 20 "https://$SITE$p")
+            echo "$code https://$SITE$p"
+            [ "$code" = 200 ] || { echo "::error::https://$SITE$p returned $code"; fail=1; }
+          done
+          exit $fail
+
+      - name: www and github.io redirect to the bare domain
+        run: |
+          fail=0
+          for u in "https://www.$SITE/" "https://n9e6y.github.io/"; do
+            loc=$(curl -s -o /dev/null -w '%{redirect_url}' --max-time 20 "$u")
+            echo "$u -> $loc"
+            [ "$loc" = "https://$SITE/" ] || { echo "::error::$u redirects to '$loc'"; fail=1; }
+          done
+          exit $fail
+
+      - name: HTTPS certificate valid for 14+ days
+        run: |
+          end=$(echo | openssl s_client -servername "$SITE" -connect "$SITE:443" 2>/dev/null | openssl x509 -noout -enddate | cut -d= -f2)
+          days=$(( ($(date -d "$end" +%s) - $(date +%s)) / 86400 ))
+          echo "Certificate expires $end ($days days)"
+          [ "$days" -ge 14 ] || { echo "::error::Certificate for $SITE expires in $days days"; exit 1; }
