@@ -1,4 +1,4 @@
-// Shared behaviour for every page: theme toggle, logo, mobile menu, share button, scroll reveals.
+// Shared behaviour for every page: theme toggle, logo, mobile menu, scroll reveals.
 (function () {
   var root = document.documentElement;
   root.classList.add('js');
@@ -59,34 +59,6 @@
     window.addEventListener('scroll', spy, { passive: true });
     spy();
   }
-
-  // ---- Share: system share sheet where there is one, otherwise copy the canonical link ----
-  document.querySelectorAll('[data-share]').forEach(function (b) {
-    var note = document.createElement('span');
-    note.className = 'share-note';
-    note.setAttribute('role', 'status');
-    b.parentNode.insertBefore(note, b);
-    var timer;
-    var say = function (msg) {
-      note.textContent = msg;
-      note.classList.add('on');
-      clearTimeout(timer);
-      timer = setTimeout(function () { note.classList.remove('on'); }, 2000);
-    };
-    b.addEventListener('click', function () {
-      var canon = document.querySelector('link[rel="canonical"]');
-      var url = canon ? canon.href : location.href;
-      var title = document.title;
-      if (navigator.share) {
-        navigator.share({ title: title, url: url }).catch(function () {});
-      } else if (navigator.clipboard) {
-        navigator.clipboard.writeText(url).then(function () { say('Link copied'); },
-          function () { window.prompt('Copy this link', url); });
-      } else {
-        window.prompt('Copy this link', url);
-      }
-    });
-  });
 
   // ---- Scroll reveals (once) ----
   var items = document.querySelectorAll('[data-reveal]');
