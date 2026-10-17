@@ -78,7 +78,7 @@
   }
   #home .inner { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 var(--pad); }
   /* Negative left margin cancels the "H" side bearing so the big headline lines up with the text below. */
-  #home h1 { margin: 24px 0 0 -0.055em; }
+  #home h1 { margin-top: 24px; }  /* left offset: the optical alignment on .display in brand.css */
   #home .lede { margin: 32px 0 0; max-width: 30ch; }
 
   /* "I like ___." The word slides up and out while the next slides in; the box eases to the new

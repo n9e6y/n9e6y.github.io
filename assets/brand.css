@@ -57,6 +57,9 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 
 /* Type scale: huge headlines next to tiny mono labels. */
 .display { font-size: clamp(64px, 13vw, 184px); letter-spacing: -0.055em; line-height: 0.92; }
+/* Optical alignment: Geist's straight-stem capitals (H, L, N…) carry 0.08em of space on their left, which shows at
+   display size (~15px at 184px). Pull it back, minus the ~2px the smaller text below keeps, so the stems line up. */
+.display { margin-left: calc(-0.08em + 2px); }
 .h1 { font-size: clamp(72px, 10vw, 112px); letter-spacing: -0.045em; line-height: 0.95; }
 .h2 { font-size: clamp(36px, 4.6vw, 56px); letter-spacing: -0.04em; line-height: 1; }
 .h3 { font-size: 24px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; }
@@ -170,8 +173,7 @@ header.site nav { display: flex; align-items: center; gap: 4px; font-size: 15px;
   text-decoration: none; transition: background .2s;
 }
 .pill:hover { background: var(--line); }
-.pill svg, .pill .glyph { display: block; width: 18px; height: 18px; }
-.pill svg { width: 20px; height: 20px; }
+.pill svg, .pill .glyph { display: block; width: 20px; height: 20px; }
 .pill .glyph { background: var(--ink); }
 
 /* Share button: icon-only outlined circle at the right end of a page's label row.
