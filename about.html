@@ -35,7 +35,7 @@
     "@type": "Person",
     "@id": "https://n9e6y.com/#person",
     "name": "Nima Yavari",
-    "alternateName": "N9E6Y",
+    "alternateName": "n9e6y",
     "url": "https://n9e6y.com/",
     "image": "https://n9e6y.com/img/profile_picture/1.jpeg",
     "email": "mailto:n9e6y@outlook.com",
@@ -98,7 +98,7 @@
   .stack-row .k { flex: 0 0 140px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
   .stack-row .items { flex: 1 1 360px; display: flex; flex-wrap: wrap; gap: 10px 24px; }
   .stack-row .items span { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; }
-  /* Name line: "Nima Yavari" opens to "Nima · NEY · Yavari", then "Nima · N9E6Y · Yavari", then folds back. Each part slides
+  /* Name line: "Nima Yavari" opens to "Nima ney Yavari", then "Nima n9e6y Yavari", then folds back. Each part slides
      open by animating its grid column from 0fr to 1fr (same trick as the header logo). */
   .name-line {
     display: block; margin: 0 0 20px; cursor: default; white-space: nowrap;
@@ -119,7 +119,7 @@
 
 <header class="site">
   <div class="bar">
-    <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
+    <a href="/" class="brand" aria-label="n9e6y — home"><span class="ney">n<span class="ney-x"><span>9</span></span>e<span class="ney-x"><span>6</span></span>y</span></a>
     <nav aria-label="Main">
       <span class="nav-links" id="nav-links">
         <a href="/works.html">Work</a>
@@ -144,7 +144,7 @@
     <div class="bio">
       <figure class="portrait"><img src="/img/profile_picture/1.jpeg" alt="Portrait of Nima Yavari" width="640" height="640" /></figure>
       <div class="copy">
-        <h2 class="name-line" id="name-line"><span>Nima<span class="hn hn-handle"><span>&nbsp;·&nbsp;N<span class="hn hn-d"><span>9</span></span>E<span class="hn hn-d"><span>6</span></span>Y&nbsp;·</span></span>&nbsp;Yavari</span></h2>
+        <h2 class="name-line" id="name-line"><span>Nima<span class="hn hn-handle"><span>&nbsp;n<span class="hn hn-d"><span>9</span></span>e<span class="hn hn-d"><span>6</span></span>y</span></span>&nbsp;Yavari</span></h2>
         <p class="big-p">I build LLM applications, AI pipelines and the backend systems behind them.</p>
         <div class="prose">
           <p>I'm a CE working in applied AI and machine learning. I'm most comfortable somewhere between a messy dataset and a system that no longer needs me to watch it</p>
@@ -227,8 +227,8 @@
 (function () {
   // ---- Name line timing (ms). Tune here. ----
   var NAME = {
-    digitsAfter: 900,    // after NEY opens, wait this long before 9 and 6 slide in
-    collapseAfter: 2400, // from the start, when N9E6Y folds away back to "Nima Yavari"
+    digitsAfter: 900,    // after ney opens, wait this long before 9 and 6 slide in
+    collapseAfter: 2400, // from the start, when n9e6y folds away back to "Nima Yavari"
     idle: 4000           // time between plays
   };
   var el = document.getElementById('name-line');
@@ -241,7 +241,7 @@
     el.classList.toggle('show-handle', handle);
     el.classList.toggle('show-digits', digits);
   }
-  // Nima Yavari -> Nima · NEY · Yavari -> Nima · N9E6Y · Yavari -> Nima Yavari
+  // Nima Yavari -> Nima ney Yavari -> Nima n9e6y Yavari -> Nima Yavari
   function play() {
     clear();
     set(true, false);

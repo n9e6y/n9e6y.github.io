@@ -29,7 +29,7 @@
       "@id": "https://n9e6y.com/#website",
       "url": "https://n9e6y.com/",
       "name": "Nima Yavari",
-      "alternateName": "N9E6Y",
+      "alternateName": "n9e6y",
       "inLanguage": "en",
       "publisher": { "@id": "https://n9e6y.com/#person" }
     },
@@ -37,7 +37,7 @@
       "@type": "Person",
       "@id": "https://n9e6y.com/#person",
       "name": "Nima Yavari",
-      "alternateName": "N9E6Y",
+      "alternateName": "n9e6y",
       "url": "https://n9e6y.com/",
       "image": "https://n9e6y.com/img/profile_picture/1.jpeg",
       "email": "mailto:n9e6y@outlook.com",
@@ -115,7 +115,7 @@
 
 <header class="site">
   <div class="bar">
-    <a href="/" class="brand" aria-label="N9E6Y — home"><span class="ney">N<span class="ney-x"><span>9</span></span>E<span class="ney-x"><span>6</span></span>Y</span></a>
+    <a href="/" class="brand" aria-label="n9e6y — home"><span class="ney">n<span class="ney-x"><span>9</span></span>e<span class="ney-x"><span>6</span></span>y</span></a>
     <nav aria-label="Main">
       <span class="nav-links" id="nav-links">
         <a href="/works.html">Work</a>
@@ -134,7 +134,7 @@
   <div class="inner">
     <div class="wrap">
       <h1 class="display">Hi, I'm<br>Nima.</h1>
-      <p class="lede" id="likes">I like <span class="rotator"><span class="rw in">computers</span></span>.</p>
+      <p class="lede" id="likes">I <span class="rotator"><span class="rw in">wire up LLMs</span></span>.</p>
     </div>
   </div>
   <nav class="hero-index" aria-label="Index">
@@ -170,11 +170,18 @@
 <script src="/assets/hero-tree.js"></script>
 <script>
 (function () {
-  // ---- "I like ___" rotation. Tune here. ----
+  // ---- "I ___" rotation: each phrase (verb + thing) slides in whole. Tune here. ----
   var LIKES = {
-    words: ['computers', 'data', 'algorithms', 'chess', 'ML', 'Hearthstone'],
-    every: 3500,      // ms each word stays
-    hoverEvery: 1300  // ms each word stays while the pointer is on the line
+    words: [
+      'wire up LLMs',
+      'dig into data',
+      'tinker with computers',
+      'build Hearthstone decks',
+      'blunder in chess',
+      'rewrite things twice'
+    ],
+    every: 3500,      // ms each phrase stays
+    hoverEvery: 1300  // ms each phrase stays while the pointer is on the line
   };
   var line = document.getElementById('likes');
   if (!line) return;

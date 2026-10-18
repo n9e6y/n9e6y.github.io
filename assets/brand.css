@@ -74,7 +74,7 @@ h1, h2, h3 { margin: 0; font-weight: 600; }
 .page-head .intro { margin: 24px 0 0; }
 .page-head + .rule, .rule { margin-top: 48px; border: 0; border-top: 1px solid var(--line2); }
 
-/* ---- Logo: NEY opens to N9E6Y ---- */
+/* ---- Logo: ney opens to n9e6y ---- */
 .ney { display: inline-flex; align-items: baseline; white-space: nowrap; }
 .ney-x { display: inline-grid; grid-template-columns: 0fr; opacity: 0;
          transition: grid-template-columns .7s var(--ease), opacity .3s ease; }

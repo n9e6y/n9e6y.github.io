@@ -18,7 +18,7 @@
   });
   syncToggle();
 
-  // ---- Logo: NEY opens to N9E6Y on first load and on hover ----
+  // ---- Logo: ney opens to n9e6y on first load and on hover ----
   var ney = document.querySelector('.ney');
   var brand = ney && ney.closest('a');
   if (ney) {
