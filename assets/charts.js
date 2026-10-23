@@ -1,6 +1,6 @@
 // Figures: draws an SVG chart from the <table> inside each <figure class="fig" data-chart="...">.
 // The table stays as the accessible "Data" view and is the source for Copy CSV.
-// Options go in data-opts as JSON. Chart kinds: bars, hbar, split, dumbbell, line, heatmap.
+// Options go in data-opts as JSON. Chart kinds: bars, hbar, split, stack, dumbbell, line, heatmap.
 (function () {
   var NS = 'http://www.w3.org/2000/svg';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -131,6 +131,7 @@
 
   // Part-to-whole: one bar split into its rows, labels above, total below. o.focus names the part drawn in ink.
   // Drawn at the container's width so the labels stay legible; below 560px each label gets its own line.
+  // o.share: the values already are percentages, so labels show them once and the total reads 100%.
   CHARTS.split = function (svg, d, o, tip) {
     var W = o.w || Math.max(300, Math.round(svg.parentNode.clientWidth) || 680), stack = W < 560;
     var vals = d.rows.map(function (r) { return num(r[1]); }), top = stack ? vals.length * 20 + 8 : 28, H = top + 76;
@@ -138,14 +139,48 @@
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
     vals.forEach(function (v, i) {
       var r = d.rows[i], on = r[0] === o.focus, last = i === vals.length - 1, gap = last ? 0 : 2;
-      var pct = fmt(v / total * 100, { dp: 1, suf: '%' }), label = r[0] + ' · ' + r[1] + ' · ' + pct;
+      var pct = o.share ? r[1] + '%' : fmt(v / total * 100, { dp: 1, suf: '%' });
+      var label = o.share ? r[0] + ' · ' + pct : r[0] + ' · ' + r[1] + ' · ' + pct;
       var b = el('rect', { x: r1(x(at)), y: top, width: r1(Math.max(1, x(v) - gap)), height: 48, style: 'fill:var(' + (on ? '--ink' : '--g4') + ')' }, svg);
       text(svg, last ? W : x(at), stack ? 16 + i * 20 : 16, label, { anchor: last ? 'end' : null, ink: on, bold: on });
       point(b, label, tip);
       at += v;
     });
     text(svg, 0, H - 6, '0', { size: 11 });
-    text(svg, W, H - 6, total.toLocaleString('en-US'), { anchor: 'end', size: 11 });
+    text(svg, W, H - 6, o.share ? '100%' : total.toLocaleString('en-US'), { anchor: 'end', size: 11 });
+  };
+
+  // 100% stacked bars: one bar per row, one segment per column, shaded down the gray ramp from ink.
+  // Legend on top, values inside segments wide enough to hold them (and not below o.min). Drawn at the container's width, like split.
+  CHARTS.stack = function (svg, d, o, tip) {
+    var W = o.w || Math.max(300, Math.round(svg.parentNode.clientWidth) || 680), m = { l: o.left || 96 };
+    var parts = d.head.slice(1), ramp = ['--ink', '--g7', '--g5', '--g3', '--g2'], CH = 7.3, rowH = 50, barH = 36;
+    // Legend: swatch + name, wrapping onto new lines at the right edge.
+    var lx = m.l, ly = 0;
+    parts.forEach(function (p, k) {
+      var w = 16 + p.length * CH + 20;
+      if (lx + w > W && lx > m.l) { lx = m.l; ly += 20; }
+      el('rect', { x: lx, y: ly + 3, width: 10, height: 10, style: 'fill:var(' + ramp[k % ramp.length] + ')' }, svg);
+      text(svg, lx + 16, ly + 12, p);
+      lx += w;
+    });
+    var top = ly + 32, H = top + d.rows.length * rowH - (rowH - barH);
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    d.rows.forEach(function (r, i) {
+      var vals = r.slice(1).map(num), total = vals.reduce(function (a, b) { return a + b; }, 0);
+      var yy = top + i * rowH, x = scale(0, total, m.l, W), at = 0;
+      text(svg, 0, yy + barH / 2 + 4, r[0], { ink: 1, size: 13 });
+      vals.forEach(function (v, k) {
+        var x0 = x(at), w = x(at + v) - x0, last = k === vals.length - 1, f = ramp[k % ramp.length];
+        var seg = el('rect', { x: r1(x0), y: yy, width: r1(Math.max(1, w - (last ? 0 : 2))), height: barH, style: 'fill:var(' + f + ')' }, svg);
+        var label = r[k + 1].replace(/^0\./, '.');
+        if (w >= label.length * CH + 12 && !(v < o.min)) {
+          el('text', { x: r1(x0 + 7), y: yy + barH / 2 + 4, text: label, style: 'fill:var(' + (k < 3 ? '--paper' : '--ink') + ')' }, svg);
+        }
+        point(seg, r[0] + ' · ' + parts[k] + ' ' + label, tip);
+        at += v;
+      });
+    });
   };
 
   // Before/after dumbbell. Columns: label, before, after. The row with the biggest ratio gets Signal.
