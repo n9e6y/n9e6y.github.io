@@ -4,14 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>About — Nima Yavari</title>
-<meta name="description" content="Computer engineer, formerly a graphic designer: interests, journey and stack." />
+<meta name="description" content="Computer engineer and M.Sc. student in algorithms and computation, formerly a graphic designer: interests, journey and stack." />
 <link rel="canonical" href="https://n9e6y.com/about.html" />
 <meta name="author" content="Nima Yavari" />
 <meta property="og:type" content="profile" />
 <meta property="og:site_name" content="Nima Yavari" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:title" content="About — Nima Yavari" />
-<meta property="og:description" content="Computer engineer, formerly a graphic designer: interests, journey and stack." />
+<meta property="og:description" content="Computer engineer and M.Sc. student in algorithms and computation, formerly a graphic designer: interests, journey and stack." />
 <meta property="og:url" content="https://n9e6y.com/about.html" />
 <meta property="og:image" content="https://n9e6y.com/assets/og.png" />
 <meta property="og:image:width" content="1200" />
@@ -29,7 +29,7 @@
   "@type": "ProfilePage",
   "url": "https://n9e6y.com/about.html",
   "name": "About — Nima Yavari",
-  "description": "Computer engineer, formerly a graphic designer: interests, journey and stack.",
+  "description": "Computer engineer and M.Sc. student in algorithms and computation, formerly a graphic designer: interests, journey and stack.",
   "isPartOf": { "@id": "https://n9e6y.com/#website" },
   "mainEntity": {
     "@type": "Person",
@@ -78,7 +78,7 @@
   .ledger > div { padding: 20px 0; }
 
   .timeline { margin-top: 40px; }
-  .timeline .axis { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .timeline .axis { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
   .timeline .axis span { padding: 0 0 6px 4px; border-left: 1px solid var(--line2); }
   .tl-row { padding: 20px 0; border-bottom: 1px solid var(--line); }
   .tl-row .track { position: relative; height: 12px; }
@@ -88,7 +88,10 @@
   .tl-row .what { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; }
   .tl-row .what b { font-size: 18px; font-weight: 500; }
   .tl-row .what span { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-  @media (max-width: 720px) { .tl-row .what { margin-left: 0 !important; } }
+  @media (max-width: 720px) { .tl-row .what { margin-left: 0 !important; } .timeline .axis span:nth-child(even) { color: transparent; } }
+  /* Expected spans: outlined, not filled; the optional extra year is dashed. */
+  .tl-row .track span.planned { border: 1.5px solid var(--ink); }
+  .tl-row .track span.maybe { border: 1.5px dashed var(--ink); border-left: 0; }
 
   .legend { display: flex; flex-wrap: wrap; gap: 8px 24px; padding-bottom: 12px; border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: 12px; }
   .legend span { display: flex; align-items: center; gap: 8px; }
@@ -167,25 +170,29 @@
       <div class="body">
         <h2 class="h2">Design, then engineering.</h2>
         <div class="timeline" data-reveal>
-          <div class="axis" aria-hidden="true"><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span></div>
+          <div class="axis" aria-hidden="true"><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>2026</span><span>2027</span><span>2028</span><span>2029</span></div>
         <div class="tl-row">
-          <div class="track"><span style="left:5.2%;width:12.5%;background:var(--g4)"></span></div>
-          <div class="what" style="margin-left:min(5.2%, calc(100% - 300px))"><b>Account Manager, Limitlines</b><span>Jun 2018 – Jun 2019</span></div>
-        </div>
-        <div class="tl-row">
-          <div class="track"><span style="left:17.7%;width:30.2%;background:var(--g4)"></span></div>
-          <div class="what" style="margin-left:min(17.7%, calc(100% - 300px))"><b>Graphic Designer, freelance &amp; agencies</b><span>Jun 2019 – Nov 2021</span></div>
+          <div class="track"><span style="left:3.5%;width:8.3%;background:var(--g4)"></span></div>
+          <div class="what" style="margin-left:min(3.5%, calc(100% - 300px))"><b>Account Manager, Limitlines</b><span>Jun 2018 – Jun 2019</span></div>
         </div>
         <div class="tl-row">
-          <div class="track"><span style="left:37.5%;width:50.0%;background:var(--ink)"></span></div>
-          <div class="what" style="margin-left:min(37.5%, calc(100% - 300px))"><b>B.Sc. Computer Engineering, IAU</b><span>2021 – 2025</span></div>
+          <div class="track"><span style="left:11.8%;width:20.1%;background:var(--g4)"></span></div>
+          <div class="what" style="margin-left:min(11.8%, calc(100% - 300px))"><b>Graphic Designer, freelance &amp; agencies</b><span>Jun 2019 – Nov 2021</span></div>
         </div>
         <div class="tl-row">
-          <div class="track"><span style="left:74.0%;width:8.3%;background:var(--ink)"></span></div>
-          <div class="what" style="margin-left:min(74.0%, calc(100% - 300px))"><b>ML Training Program, Fanap Campus</b><span>Dec 2023 – Aug 2024</span></div>
+          <div class="track"><span style="left:25.0%;width:33.3%;background:var(--ink)"></span></div>
+          <div class="what" style="margin-left:min(25.0%, calc(100% - 300px))"><b>B.Sc. Computer Engineering, IAU</b><span>2021 – 2025</span></div>
+        </div>
+        <div class="tl-row">
+          <div class="track"><span style="left:49.3%;width:5.6%;background:var(--ink)"></span></div>
+          <div class="what" style="margin-left:min(49.3%, calc(100% - 300px))"><b>ML Training Program, Fanap Campus</b><span>Dec 2023 – Aug 2024</span></div>
+        </div>
+        <div class="tl-row">
+          <div class="track"><span class="planned" style="left:72.9%;width:16.7%"></span><span class="maybe" style="left:89.6%;width:8.3%"></span></div>
+          <div class="what" style="margin-left:min(72.9%, calc(100% - 420px))"><b>M.Sc. Algorithms and Computation, UT</b><span>Oct 2026 – present · expected Oct 2028 or Oct 2029</span></div>
         </div>
         </div>
-        <div class="eyebrow" style="margin-top:12px;text-transform:none;letter-spacing:0">Gray = design and client work · ink = engineering</div>
+        <div class="eyebrow" style="margin-top:12px;text-transform:none;letter-spacing:0">Gray = design and client work · ink = engineering · outline = expected</div>
       </div>
     </section>
 

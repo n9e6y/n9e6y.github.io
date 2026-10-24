@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://n9e6y.com/</loc><lastmod>2026-10-16</lastmod></url>
+  <url><loc>https://n9e6y.com/</loc><lastmod>2026-10-24</lastmod></url>
   <url><loc>https://n9e6y.com/works.html</loc><lastmod>2026-10-24</lastmod></url>
   <url><loc>https://n9e6y.com/work/bebin.html</loc><lastmod>2026-10-24</lastmod></url>
-  <url><loc>https://n9e6y.com/blog.html</loc><lastmod>2026-10-16</lastmod></url>
-  <url><loc>https://n9e6y.com/about.html</loc><lastmod>2026-10-16</lastmod></url>
+  <url><loc>https://n9e6y.com/work/test-badger.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://n9e6y.com/blog.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://n9e6y.com/about.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://n9e6y.com/writing/building-test-badger.html</loc><lastmod>2026-10-24</lastmod></url>
   <url><loc>https://n9e6y.com/writing/dehkhoda-dictionary.html</loc><lastmod>2026-10-16</lastmod></url>
 </urlset>

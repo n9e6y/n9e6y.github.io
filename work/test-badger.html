@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>test-badger — Nima Yavari</title>
+<meta name="description" content="An AI agent that tests a website's critical flows before release: it proposes a test plan, tests in a real browser and reports every bug with evidence and steps to reproduce." />
+<link rel="canonical" href="https://n9e6y.com/work/test-badger.html" />
+<meta name="author" content="Nima Yavari" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Nima Yavari" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:title" content="test-badger — Nima Yavari" />
+<meta property="og:description" content="An AI agent that tests a website's critical flows before release: it proposes a test plan, tests in a real browser and reports every bug with evidence and steps to reproduce." />
+<meta property="og:url" content="https://n9e6y.com/work/test-badger.html" />
+<meta property="og:image" content="https://n9e6y.com/assets/og/test-badger.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="test-badger — Nima Yavari" />
+<meta property="article:published_time" content="2026-10-10" />
+<meta property="article:author" content="https://n9e6y.com/about.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@n9e6y" />
+<meta name="twitter:creator" content="@n9e6y" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "url": "https://n9e6y.com/work/test-badger.html",
+      "name": "test-badger — Nima Yavari",
+      "description": "An AI agent that tests a website's critical flows before release: it proposes a test plan, tests in a real browser and reports every bug with evidence and steps to reproduce.",
+      "datePublished": "2026-10-10",
+      "inLanguage": "en",
+      "image": "https://n9e6y.com/assets/og/test-badger.png",
+      "isPartOf": { "@id": "https://n9e6y.com/#website" },
+      "author": { "@type": "Person", "@id": "https://n9e6y.com/#person", "name": "Nima Yavari", "url": "https://n9e6y.com/" },
+      "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "test-badger",
+        "description": "An AI agent that tests a website's critical flows before release.",
+        "sameAs": "https://github.com/n9e6y/test-badger",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "keywords": ["Python", "FastAPI", "Playwright", "Pydantic", "React", "TypeScript", "Tailwind", "PostgreSQL", "Redis", "Docker Compose", "Caddy"],
+        "author": { "@type": "Person", "@id": "https://n9e6y.com/#person", "name": "Nima Yavari", "url": "https://n9e6y.com/" }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://n9e6y.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Work", "item": "https://n9e6y.com/works.html" },
+        { "@type": "ListItem", "position": 3, "name": "test-badger", "item": "https://n9e6y.com/work/test-badger.html" }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('nima-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="/assets/brand.css" />
+<link rel="stylesheet" href="/assets/charts.css" />
+<style>
+  .prose code, .ledger code { font-family: var(--mono); font-size: 0.86em; background: var(--line); padding: 1px 6px; border-radius: 3px; }
+
+  .crumbs { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .crumbs a { color: var(--ink); text-decoration: none; }
+  .actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .meta-ledger .k { flex-basis: 88px; }
+  .lead { margin-top: 48px; }
+  .lead p:first-child { margin-top: 0; }
+  .prose p { margin: 24px 0 0; }
+
+  /* Screenshots and brand plates: light-only images, so a hairline frame keeps them tidy on the dark theme. */
+  .shot { margin: 64px 0 0; }
+  .report .shot { margin-top: 40px; }
+  .shot img { display: block; width: 100%; height: auto; border: 1px solid var(--line2); border-radius: 6px; }
+  .shot figcaption { margin-top: 12px; font-family: var(--mono); font-size: 12px; line-height: 1.5; color: var(--muted); max-width: 68ch; }
+  .shot-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 24px; }
+  .shot-pair > div { display: flex; flex-direction: column; gap: 12px; }
+  .shot-pair span { font-size: 15px; line-height: 1.5; color: var(--muted); }
+  .shot-pair b { color: var(--ink); font-weight: 600; }
+
+  /* The product logo: one PNG per theme. */
+  .logo { margin-top: 48px; }
+  .logo img { display: block; width: min(380px, 100%); height: auto; margin: 0 auto; }
+
+  /* The judges' result: total, then the four criteria, then their note. */
+  .judge { margin: 32px 0 0; padding-left: 24px; border-left: 2px solid var(--ink); max-width: 68ch; font-size: 19px; line-height: 1.7; text-wrap: pretty; }
+  .judge cite { display: block; margin-top: 12px; font: normal 12px/1.5 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .logo .on-dark, [data-theme="dark"] .logo .on-light { display: none; }
+  [data-theme="dark"] .logo .on-dark { display: block; }
+
+  .report .h2 { margin-top: 0; }
+  .sub { margin-top: 48px; scroll-margin-top: 88px; }
+  .sub .prose p:first-child { margin-top: 16px; }
+
+  /* Lists: ledger rows, no numbers. */
+  ul.ledger { list-style: none; margin: 32px 0 0; padding: 0; max-width: 760px; }
+  ul.ledger.soft { margin-top: 16px; border-top-color: var(--line2); }
+  .ledger li { font-size: 18px; line-height: 1.6; text-wrap: pretty; }
+  .ledger li b { font-weight: 600; }
+  /* Two-column rows: a name on the left, what it means on the right. */
+  ul.ledger.pairs li > span { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 4px 24px; width: 100%; }
+  @media (max-width: 720px) { ul.ledger.pairs li > span { grid-template-columns: minmax(0, 1fr); } }
+
+  /* Results at a glance. */
+  .glance { margin-top: 32px; max-width: 760px; border-top: 1px solid var(--ink); }
+  .glance > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 24px; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 17px; line-height: 1.5; }
+  .glance .k { color: var(--muted); }
+  .glance b { font-weight: 600; }
+  @media (max-width: 720px) { .glance > div { grid-template-columns: minmax(0, 1fr); } }
+
+  /* Figure: home vs away scorecard. */
+  .score { width: 100%; border-collapse: collapse; border-top: 1px solid var(--ink); font-variant-numeric: tabular-nums; }
+  .score th { padding: 10px 16px 10px 0; text-align: left; font: 400 11px/1.5 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line2); }
+  .score td { padding: 16px 16px 16px 0; border-bottom: 1px solid var(--line); vertical-align: baseline; }
+  .score td:first-child { width: 44%; font-size: 16px; line-height: 1.4; }
+  .score td:first-child span { display: block; margin-top: 2px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .score td.v { font-size: clamp(24px, 3.4vw, 36px); font-weight: 600; letter-spacing: -0.03em; line-height: 1; white-space: nowrap; }
+
+  .closing { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line2); max-width: 68ch; font-size: 17px; line-height: 1.6; color: var(--muted); }
+
+  /* Figures wipe in with the same slow, soft timing as the Dehkhoda post. */
+  .report { --wipe-time: 1.8s; --wipe-ease: cubic-bezier(.4, 0, .2, 1); }
+  /* Schematics and HTML figures fade in rather than wipe. */
+  .js .fig .diagram, .js .fig .bugs, .js .fig .anatomy, .js .fig .names { opacity: 0; transition: opacity var(--wipe-time) ease-out; }
+  .js .fig.drawn .diagram, .js .fig.drawn .bugs, .js .fig.drawn .anatomy, .js .fig.drawn .names { opacity: 1; }
+
+  /* Figure: the demo shop's planted bugs, one column per page. */
+  .bugs { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 24px; border-top: 1px solid var(--ink); }
+  .bugs > div { padding: 16px 0 20px; border-bottom: 1px solid var(--line); }
+  .bugs b { font-size: 20px; font-weight: 500; letter-spacing: -0.02em; }
+  .bugs ul { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .bugs li { display: flex; gap: 10px; align-items: baseline; font-size: 15px; line-height: 1.4; }
+  .bugs .id { flex: none; padding: 1px 6px; border-radius: 3px; background: var(--ink); color: var(--paper); font: 500 11px/1.5 var(--mono); }
+
+  /* Figure: mark anatomy. */
+  .anatomy { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 24px 48px; align-items: center; }
+  .anatomy svg { display: block; width: 100%; height: auto; }
+  .anatomy .ledger { margin: 0; }
+  @media (max-width: 720px) { .anatomy { grid-template-columns: minmax(0, 1fr); } .anatomy svg { max-width: 160px; } }
+
+  /* Figure: writing the name. */
+  .names { max-width: 480px; border-top: 1px solid var(--ink); }
+  .names > div { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
+  .names s { color: var(--muted); font-weight: 500; }
+  .names > div span { font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; }
+  .names .yes span { padding: 2px 8px; border-radius: 3px; background: var(--ink); color: var(--paper); }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430" data-domains="n9e6y.com"></script>
+</head>
+<body>
+
+<header class="site">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="n9e6y — home"><span class="ney">n<span class="ney-x"><span>9</span></span>e<span class="ney-x"><span>6</span></span>y</span></a>
+    <nav aria-label="Main">
+      <span class="nav-links" id="nav-links">
+        <a href="/works.html" aria-current="page">Work</a>
+        <a href="/blog.html">Writing</a>
+        <a href="/about.html">About</a>
+      </span>
+      <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="wrap">
+    <div class="page-head" data-reveal>
+      <div class="eyebrow crumbs"><a href="/works.html">← Work</a><span>Applied ML</span><span class="when">10 Oct 2026</span><span class="when">8 min read</span></div>
+      <h1 class="h1 report-title">test-badger</h1>
+      <p class="intro"><b>Find it first.</b> test-badger is an AI agent that tests the critical flows of a website before you release it.</p>
+      <div class="actions">
+        <!-- TODO: Live app, Brand page and Tech docs buttons once the links are given. -->
+        <a class="btn" data-umami-event="writeup-github" href="https://github.com/n9e6y/test-badger" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="meta-ledger">
+      <div><span class="k">Role</span><span>Everything, with an AI pair: product scope, agent design, backend, frontend, infrastructure, evaluation, brand direction</span></div>
+      <div><span class="k">Timeline</span><span class="m">5 days of building, 5–9 October 2026</span></div>
+      <div><span class="k">Context</span><span>buildX hackathon, problem #4 "Web Workflow Tester". Scoring: technical, UI/UX, business plan, live functional test (25 points each)</span></div>
+      <div><span class="k">Stack</span><span class="m">Python 3.12 · FastAPI · Playwright (Chromium) · Pydantic v2 · arq + Redis · PostgreSQL 16 · React + TypeScript + Tailwind · Docker Compose · Caddy · one VPS</span></div>
+      <div><span class="k">Models</span><span>Claude Sonnet 5.5 (recon, planning, verification, Hard mode), Gemini 3.8 Flash (Easy mode), Claude Haiku 4.5 (report writing), all through one multi-provider client</span></div>
+      <div><span class="k">Links</span><span class="m"><a data-umami-event="writeup-github" href="https://github.com/n9e6y/test-badger" target="_blank" rel="noopener">GitHub ↗</a></span></div>
+    </div>
+
+    <div class="logo" data-reveal>
+      <img class="on-light" src="/img/test-badger/logo-light.png" alt="test-badger" width="1302" height="308" />
+      <img class="on-dark" src="/img/test-badger/logo-dark.png" alt="test-badger" width="1302" height="308" />
+    </div>
+
+    <div class="prose lead">
+      <p>You give it your site and a goal. It explores the site and proposes a test plan, and you approve it. Then you watch it test in a real browser, and you get a report with evidence and exact steps to reproduce every bug.</p>
+      <p>I built it in five days for the buildX hackathon, as one developer working with Claude Code as a pair programmer. It's deployed on a live server with sign-up, login and the full flow in the browser. And it's measured: on our benchmark shop it found <b>9 of 9 planted bugs with 0 false findings in 13 evaluation runs</b>.</p>
+    </div>
+
+    <div class="stats" style="margin-top:64px" data-reveal>
+      <div class="stat"><div class="eyebrow">Planted bugs found</div><div class="v">9/9</div><div class="d muted">demo shop, final evaluation</div></div>
+      <div class="stat"><div class="eyebrow">False findings</div><div class="v">0</div><div class="d muted">in 13 demo-shop runs</div></div>
+      <div class="stat"><div class="eyebrow">Built in</div><div class="v">5<small> days</small></div><div class="d muted">5–9 Oct 2026</div></div>
+      <div class="stat"><div class="eyebrow">AI cost per run</div><div class="v">$0.29</div><div class="d muted">Hard, Registration · $0.15 on Easy</div></div>
+    </div>
+
+    <div class="report">
+      <nav class="toc" aria-label="Contents">
+        <div class="eyebrow">Contents</div>
+        <a href="#problem">The problem</a>
+        <a href="#built">What I built</a>
+        <a href="#how">How the agent works</a>
+        <a href="#proof">Proving it works</a>
+        <a href="#brand">The brand</a>
+        <a href="#shipping">Shipping it</a>
+        <a href="#results">Results at a glance</a>
+        <a href="#judges">The judges' score</a>
+        <a href="#next">What I'd build next</a>
+      </nav>
+      <article>
+        <section id="problem">
+          <h2 class="h2">The problem</h2>
+          <div class="prose">
+            <p>Small teams ship websites without a QA person. A store owner on WooCommerce, a three-person SaaS team or a small agency changes a theme, updates a plugin and presses publish. Nobody checks whether signup still works, whether a coupon still applies, or whether the cart's <b>Remove</b> button still removes anything. Customers find out first.</p>
+            <p>That button is no invented example. It comes from the competition brief itself: <i>"unable to use the delete button to remove an item from the shopping cart."</i> The brief asked for an agent that turns a goal into test steps, runs them in a browser, logs failures and reports evidence with steps to reproduce.</p>
+            <p>Existing test-automation tools mostly assume someone writes and maintains test code. My target user has no test suite, often no access to the code, and one question: <b>"Is my site safe to release? If not, what's broken?"</b></p>
+            <p>The hackathon added hard rules that shaped the design:</p>
+          </div>
+          <ul class="ledger">
+            <li><span>The agent has to be the core of the product, not a feature on the side.</span></li>
+            <li><span>Only hosted LLMs, no local models. No agent builders or automation tools such as n8n.</span></li>
+            <li><span>Judges must be able to sign up, log in and finish the whole flow on the deployed site with no help. A CLI doesn't count.</span></li>
+          </ul>
+        </section>
+
+        <section id="built">
+          <h2 class="h2">What I built</h2>
+          <div class="prose"><p>The whole product is one guided flow. Every step happens in the web app.</p></div>
+          <ul class="ledger pairs">
+            <li><span><b>Add a site</b><span>A URL and a checkbox: "I own this site or am authorized to test it."</span></span></li>
+            <li><span><b>Pick a test and a mode</b><span><i>Registration</i>, <i>Store &amp; checkout</i>, or <i>Both</i>. <b>Hard</b> lets the strongest model drive the browser; <b>Easy</b> costs about half.</span></span></li>
+            <li><span><b>Approve the plan</b><span>The agent explores the site, proposes scenarios and waits. Nothing is tested before you approve.</span></span></li>
+            <li><span><b>Watch it test</b><span>A live view of the agent's real browser, every action with its reason, elapsed time and AI cost so far.</span></span></li>
+            <li><span><b>Read the report</b><span>One verdict per scenario: <b>Passed</b>, <b>Bug found</b>, <b>Blocked</b> or <b>Inconclusive</b>, with screenshots, console and network errors and repro steps.</span></span></li>
+            <li><span><b>Watch it happen</b><span>Each scenario is recorded on video. "Watch video" on a bug plays exactly that moment.</span></span></li>
+            <li><span><b>Check your fix</b><span><b>Re-run same plan</b> runs the same scenarios again and marks each one <i>fixed</i>, <i>still broken</i> or <i>new</i>.</span></span></li>
+          </ul>
+
+          <figure class="shot">
+            <img src="/img/test-badger/screenshot-live-run.png" alt="Live run: scenarios, the agent's browser and its activity feed" width="1800" height="1125" loading="lazy" />
+            <figcaption>The live run. Scenarios on the left, the agent's real browser in the middle, every action and its reason on the right.</figcaption>
+          </figure>
+
+          <figure class="shot shot-pair">
+            <div><img src="/img/test-badger/screenshot-report-bug.png" alt="A report with a bug found" width="1800" height="1125" loading="lazy" /><span><b>Bug found.</b> Expected vs. actual, evidence, steps to reproduce.</span></div>
+            <div><img src="/img/test-badger/screenshot-report-partly-tested.png" alt="A &quot;Partly tested&quot; report" width="1800" height="1125" loading="lazy" /><span><b>Partly tested.</b> When the agent can't finish a check, it says so and why.</span></div>
+          </figure>
+        </section>
+
+        <section id="how">
+          <h2 class="h2">How the agent works</h2>
+
+          <div class="sub">
+            <h3 class="h3">Architecture</h3>
+            <figure class="fig">
+              <div class="fig-head">
+                <div class="eyebrow"><span>Figure · Architecture</span><span>Schematic</span></div>
+              </div>
+              <div class="fig-body"><div class="fig-chart">
+<svg class="diagram" viewBox="0 0 960 482" role="img" aria-label="You in the browser reach Caddy over HTTPS. Inside one server running Docker Compose, Caddy passes /api to the FastAPI API, which queues jobs in Redis; a worker running the agent and Playwright takes them. The API and the worker share PostgreSQL, the worker writes screenshots and videos to a volume, drives the site under test in real Chromium and makes tool calls to hosted LLMs through one multi-provider client." style="min-width:640px"><g style="font-family:var(--mono); font-size:12px; fill:var(--ink);">
+<rect x="0.5" y="70.5" width="170" height="60" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="14" y="96">You</text><text x="14" y="114" style="fill:var(--muted); font-size:11px;">in the browser</text>
+<rect x="210.5" y="20.5" width="739" height="360" rx="4" style="fill:none; stroke:var(--line2);"></rect><text x="226" y="46" style="fill:var(--muted); font-size:11px;">One server · Docker Compose</text>
+<line x1="171" y1="100" x2="233" y2="100" style="stroke:var(--ink);"></line><path d="M240,100 L233,96 L233,104 Z" style="fill:var(--ink);"></path>
+<text x="190" y="90" style="fill:var(--muted); font-size:11px; text-anchor:middle;">HTTPS</text>
+<rect x="240.5" y="70.5" width="180" height="60" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="254" y="96">Caddy</text><text x="254" y="114" style="fill:var(--muted); font-size:11px;">HTTPS · web app</text>
+<line x1="421" y1="100" x2="473" y2="100" style="stroke:var(--ink);"></line><path d="M480,100 L473,96 L473,104 Z" style="fill:var(--ink);"></path>
+<text x="450" y="90" style="fill:var(--muted); font-size:11px; text-anchor:middle;">/api</text>
+<rect x="480.5" y="70.5" width="180" height="60" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="494" y="96">API</text><text x="494" y="114" style="fill:var(--muted); font-size:11px;">FastAPI</text>
+<line x1="570" y1="131" x2="570" y2="173" style="stroke:var(--ink);"></line><path d="M570,180 L566,173 L574,173 Z" style="fill:var(--ink);"></path>
+<text x="580" y="160" style="fill:var(--muted); font-size:11px;">jobs</text>
+<rect x="480.5" y="180.5" width="180" height="60" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="494" y="206">Redis</text><text x="494" y="224" style="fill:var(--muted); font-size:11px;">queue · live events</text>
+<line x1="570" y1="241" x2="570" y2="283" style="stroke:var(--ink);"></line><path d="M570,290 L566,283 L574,283 Z" style="fill:var(--ink);"></path>
+<rect x="480.5" y="290.5" width="180" height="60" rx="4" style="fill:var(--ink); stroke:var(--ink);"></rect><text x="494" y="316" style="fill:var(--paper);">Worker</text><text x="494" y="334" style="fill:var(--paper); font-size:11px; opacity:.75;">agent + Playwright</text>
+<rect x="240.5" y="290.5" width="180" height="60" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="254" y="316">Volume</text><text x="254" y="334" style="fill:var(--muted); font-size:11px;">screenshots · videos</text>
+<line x1="421" y1="320" x2="480" y2="320" style="stroke:var(--ink);"></line>
+<rect x="740.5" y="180.5" width="180" height="60" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="754" y="206">PostgreSQL</text><text x="754" y="224" style="fill:var(--muted); font-size:11px;">runs · steps · findings</text>
+<path d="M661,100 H830 V180" style="fill:none; stroke:var(--ink);"></path>
+<path d="M661,320 H830 V241" style="fill:none; stroke:var(--ink);"></path>
+<line x1="520" y1="351" x2="520" y2="413" style="stroke:var(--ink);"></line><path d="M520,420 L516,413 L524,413 Z" style="fill:var(--ink);"></path>
+<text x="512" y="402" style="fill:var(--muted); font-size:11px; text-anchor:end;">real Chromium</text>
+<line x1="630" y1="351" x2="630" y2="413" style="stroke:var(--ink);"></line><path d="M630,420 L626,413 L634,413 Z" style="fill:var(--ink);"></path>
+<text x="638" y="402" style="fill:var(--muted); font-size:11px;">tool calls</text>
+<rect x="380.5" y="420.5" width="180" height="60" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="394" y="455">Site under test</text>
+<rect x="600.5" y="420.5" width="200" height="60" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="614" y="446">Hosted LLMs</text><text x="614" y="464" style="fill:var(--muted); font-size:11px;">one multi-provider client</text>
+</g></svg>
+              </div></div>
+              <figcaption><span>Ink = the worker, the only process that opens a browser.</span></figcaption>
+            </figure>
+            <div class="prose"><p>The API never opens a browser. It queues jobs, and a separate worker runs the agent and Chromium. Every step is published through Redis and streamed to the page as server-sent events, so the live view updates as the agent moves.</p></div>
+          </div>
+
+          <div class="sub">
+            <h3 class="h3">The pipeline</h3>
+            <figure class="fig">
+              <div class="fig-head">
+                <div class="eyebrow"><span>Figure · The pipeline</span><span>Schematic</span></div>
+              </div>
+              <div class="fig-body"><div class="fig-chart">
+<svg class="diagram" viewBox="0 0 960 112" role="img" aria-label="Recon finds the pages, the planner proposes scenarios, you approve the plan, then the executor runs each scenario, triage verifies suspected bugs and the report gives verdicts and evidence." style="min-width:640px"><g style="font-family:var(--mono); font-size:12px; fill:var(--ink);">
+<rect x="0.5" y="40.5" width="129" height="70" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="14" y="64">Recon</text><text x="14" y="84" style="fill:var(--muted); font-size:11px;">find the pages</text>
+<rect x="166.5" y="40.5" width="129" height="70" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="180" y="64">Planner</text><text x="180" y="84" style="fill:var(--muted); font-size:11px;">propose</text><text x="180" y="98" style="fill:var(--muted); font-size:11px;">scenarios</text>
+<rect x="332.5" y="40.5" width="129" height="70" rx="4" style="fill:var(--ink); stroke:var(--ink);"></rect><text x="346" y="64" style="fill:var(--paper);">You approve</text><text x="346" y="84" style="fill:var(--paper); font-size:11px; opacity:.75;">the plan</text>
+<rect x="498.5" y="40.5" width="129" height="70" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="512" y="64">Executor</text><text x="512" y="84" style="fill:var(--muted); font-size:11px;">run each</text><text x="512" y="98" style="fill:var(--muted); font-size:11px;">scenario</text>
+<rect x="664.5" y="40.5" width="129" height="70" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="678" y="64">Triage</text><text x="678" y="84" style="fill:var(--muted); font-size:11px;">verify suspected</text><text x="678" y="98" style="fill:var(--muted); font-size:11px;">bugs</text>
+<rect x="830.5" y="40.5" width="129" height="70" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="844" y="64">Report</text><text x="844" y="84" style="fill:var(--muted); font-size:11px;">verdicts +</text><text x="844" y="98" style="fill:var(--muted); font-size:11px;">evidence</text>
+<line x1="130" y1="75" x2="159" y2="75" style="stroke:var(--ink);"></line><path d="M166,75 L159,71 L159,79 Z" style="fill:var(--ink);"></path>
+<line x1="296" y1="75" x2="325" y2="75" style="stroke:var(--ink);"></line><path d="M332,75 L325,71 L325,79 Z" style="fill:var(--ink);"></path>
+<line x1="462" y1="75" x2="491" y2="75" style="stroke:var(--ink);"></line><path d="M498,75 L491,71 L491,79 Z" style="fill:var(--ink);"></path>
+<text x="480" y="28" style="fill:var(--muted); font-size:11px; text-anchor:middle;">approved</text>
+<line x1="628" y1="75" x2="657" y2="75" style="stroke:var(--ink);"></line><path d="M664,75 L657,71 L657,79 Z" style="fill:var(--ink);"></path>
+<line x1="794" y1="75" x2="823" y2="75" style="stroke:var(--ink);"></line><path d="M830,75 L823,71 L823,79 Z" style="fill:var(--ink);"></path>
+</g></svg>
+              </div></div>
+              <figcaption><span>Ink = the human gate. Nothing is tested before you approve.</span></figcaption>
+            </figure>
+            <ul class="ledger soft">
+              <li><span><b>Recon</b> opens the site and finds the signup, cart and checkout pages on its own.</span></li>
+              <li><span><b>Planner</b> turns a test-type template plus what recon found into concrete scenarios, then stops for human approval.</span></li>
+              <li><span><b>Executor</b> runs each scenario in a loop of observe, decide, act. It reads a compact page snapshot with numbered element references, adds a screenshot only when the text isn't enough, and picks one browser tool per step.</span></li>
+              <li><span><b>Triage</b> sends every suspected bug to a second model call that verifies it against the evidence. Duplicates are dropped, and unsure cases become <i>Inconclusive</i>.</span></li>
+              <li><span><b>Reporter</b> writes a plain-language summary. Repro steps, URLs and errors are filled in <b>by code from the recorded steps</b>, never by the model.</span></li>
+            </ul>
+          </div>
+
+          <div class="sub">
+            <h3 class="h3">One step, in detail</h3>
+            <figure class="fig">
+              <div class="fig-head">
+                <div class="eyebrow"><span>Figure · One step</span><span>Schematic</span></div>
+              </div>
+              <div class="fig-body"><div class="fig-chart">
+<svg class="diagram" viewBox="0 0 960 300" role="img" aria-label="Observe a snapshot, plus a screenshot if needed; the LLM decides by picking one tool; guards check the allowlist, private networks, payment and budgets. Allowed actions run in Playwright, blocked ones are refused with the reason. Both are recorded with step, screenshot, console and network, then the next step starts again at observe." style="min-width:640px"><g style="font-family:var(--mono); font-size:12px; fill:var(--ink);">
+<rect x="0.5" y="80.5" width="159" height="90" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="14" y="106">Observe</text><text x="14" y="126" style="fill:var(--muted); font-size:11px;">snapshot</text><text x="14" y="142" style="fill:var(--muted); font-size:11px;">+ screenshot if needed</text>
+<rect x="200.5" y="80.5" width="159" height="90" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="214" y="106">Decide</text><text x="214" y="126" style="fill:var(--muted); font-size:11px;">the LLM picks</text><text x="214" y="142" style="fill:var(--muted); font-size:11px;">one tool</text>
+<rect x="400.5" y="80.5" width="159" height="90" rx="4" style="fill:var(--ink); stroke:var(--ink);"></rect><text x="414" y="106" style="fill:var(--paper);">Guards</text><text x="414" y="126" style="fill:var(--paper); font-size:11px; opacity:.75;">allowlist</text><text x="414" y="142" style="fill:var(--paper); font-size:11px; opacity:.75;">private network</text><text x="414" y="158" style="fill:var(--paper); font-size:11px; opacity:.75;">payment · budgets</text>
+<line x1="160" y1="125" x2="193" y2="125" style="stroke:var(--ink);"></line><path d="M200,125 L193,121 L193,129 Z" style="fill:var(--ink);"></path>
+<line x1="360" y1="125" x2="393" y2="125" style="stroke:var(--ink);"></line><path d="M400,125 L393,121 L393,129 Z" style="fill:var(--ink);"></path>
+<path d="M560,125 H585 M585,38 V212 M585,38 H603 M585,212 H603" style="fill:none; stroke:var(--ink);"></path>
+<path d="M610,38 L603,34 L603,42 Z" style="fill:var(--ink);"></path><path d="M610,212 L603,208 L603,216 Z" style="fill:var(--ink);"></path>
+<text x="578" y="34" style="fill:var(--muted); font-size:11px; text-anchor:end;">allowed</text>
+<text x="578" y="226" style="fill:var(--muted); font-size:11px; text-anchor:end;">blocked</text>
+<rect x="610.5" y="0.5" width="159" height="76" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="624" y="30">Act</text><text x="624" y="50" style="fill:var(--muted); font-size:11px;">Playwright</text>
+<rect x="610.5" y="174.5" width="159" height="76" rx="4" style="fill:none; stroke:var(--line2); stroke-dasharray:4 3;"></rect><text x="624" y="204">Refused</text><text x="624" y="224" style="fill:var(--muted); font-size:11px;">with the reason</text>
+<path d="M770,38 H785 V212 M770,212 H785 M785,125 H793" style="fill:none; stroke:var(--ink);"></path><path d="M800,125 L793,121 L793,129 Z" style="fill:var(--ink);"></path>
+<rect x="800.5" y="80.5" width="159" height="90" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="814" y="106">Record</text><text x="814" y="126" style="fill:var(--muted); font-size:11px;">step · screenshot</text><text x="814" y="142" style="fill:var(--muted); font-size:11px;">console · network</text>
+<path d="M880,171 V285 H80 V178" style="fill:none; stroke:var(--ink);"></path><path d="M80,171 L76,178 L84,178 Z" style="fill:var(--ink);"></path>
+<text x="480" y="278" style="fill:var(--muted); font-size:11px; text-anchor:middle;">next step</text>
+</g></svg>
+              </div></div>
+              <figcaption><span>Ink = the guards: Python, not prompt text. Dashed = refused.</span></figcaption>
+            </figure>
+          </div>
+
+          <div class="sub">
+            <h3 class="h3">Rules I held the code to</h3>
+            <ul class="ledger pairs soft">
+              <li><span><b>The LLM decides, the code enforces</b><span>The origin allowlist, the private-network (SSRF) block, the payment guard and the step and cost budgets are Python, not prompt text. The agent can <i>ask</i> to pay; the tool layer refuses.</span></span></li>
+              <li><span><b>Every model output is a typed model</b><span>Each LLM response is validated as a Pydantic model, with one retry carrying the error, then a clean failure.</span></span></li>
+              <li><span><b>Secrets never reach the model</b><span>The model only sees <code>{{TEST_EMAIL}}</code> and <code>{{TEST_PASSWORD}}</code> placeholders. The tool layer swaps in the real values, and password fields are masked in screenshots.</span></span></li>
+              <li><span><b>Evidence comes from recordings</b><span>Screenshots, video, console and network errors come from Playwright, not from what the model says it saw.</span></span></li>
+              <li><span><b>Honest verdicts</b><span><i>Inconclusive</i> beats a weak <i>Bug found</i>, and the report is green only when every scenario passed.</span></span></li>
+              <li><span><b>Generic core, pluggable flows</b><span>Registration and Store are template files. A login or booking test would be one more file, with no core changes.</span></span></li>
+            </ul>
+            <div class="prose"><p>A few other choices that paid off:</p></div>
+            <ul class="ledger soft">
+              <li><span><b>A plain async Python orchestrator</b> instead of an agent framework. The stages are fixed and the loop is short, so plain code was easier to debug than a graph library.</span></li>
+              <li><span><b>One LLM client for every provider</b> (Anthropic, OpenAI, any OpenAI-compatible endpoint), with the model chosen <i>per role</i> in config. Swapping the executor model became a one-line experiment, and that experiment turned into the Hard/Easy feature.</span></li>
+              <li><span><b>A fake "sim" provider</b> for development: a rule-based stand-in that drives real browser runs with no model calls. The UI and the demo video were rehearsed without spending a cent.</span></li>
+              <li><span><b>Re-runs compare per scenario ID, not per finding title.</b> Titles are written by the model and change between runs; the scenario IDs of an identical plan don't.</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="proof">
+          <h2 class="h2">Proving it works</h2>
+          <div class="prose"><p>An agent that says "looks fine" is worthless if you can't check it. So I built the answer key first.</p></div>
+
+          <div class="sub">
+            <h3 class="h3">A demo shop with planted bugs</h3>
+            <div class="prose"><p><i>Pine &amp; Pebble</i> is a small store I built as the test target, with <b>nine bugs planted on purpose</b> behind switches: an invalid e-mail accepted, unchecked password confirmation, a fake "Welcome!" on duplicate signup, a crash on an empty name, the dead <b>Remove</b> button, negative quantities, an expired coupon that still works, an out-of-stock item you can buy, and a postal code with a space that silently blocks checkout. It also has five things a good tester must <b>not</b> report: a cookie banner, a newsletter popup, a loading spinner, an animated badge and a CAPTCHA page, which must end as <i>Blocked</i>.</p></div>
+
+            <figure class="fig">
+              <div class="fig-head">
+                <div class="eyebrow"><span>Figure · Demo shop</span></div>
+                <h3 class="h3">Demo shop "Pine &amp; Pebble": 9 planted bugs</h3>
+                <p>Our test target. Every bug can be switched on or off; Registration finds B1–B4, Store &amp; checkout finds B5–B9.</p>
+              </div>
+              <div class="fig-body bugs">
+                <div><b>Sign up</b><ul>
+                  <li><span class="id">B1</span><span>Invalid email "anna@" is accepted</span></li>
+                  <li><span class="id">B2</span><span>Password confirmation is not checked</span></li>
+                  <li><span class="id">B3</span><span>Duplicate email shows a fake "Welcome!"</span></li>
+                  <li><span class="id">B4</span><span>Empty name crashes the server (500)</span></li>
+                </ul></div>
+                <div><b>Cart</b><ul>
+                  <li><span class="id">B5</span><span>"Remove" does nothing (JavaScript error)</span></li>
+                  <li><span class="id">B6</span><span>Quantity −2 gives a negative total</span></li>
+                  <li><span class="id">B7</span><span>Expired coupon SUMMER24 still applies 20 % off</span></li>
+                </ul></div>
+                <div><b>Product page</b><ul>
+                  <li><span class="id">B8</span><span>Out-of-stock Linen Tote Bag can still be bought</span></li>
+                </ul></div>
+                <div><b>Checkout</b><ul>
+                  <li><span class="id">B9</span><span>Postal code "10 115" silently keeps Continue disabled</span></li>
+                </ul></div>
+              </div>
+            </figure>
+
+<figure class="fig" data-chart="heatmap" data-opts='{"n":9,"cols":true,"of":true,"left":236,"cell":40,"cellH":40,"focus":"Round 2 · after the fixes","minW":600}'>
+  <div class="fig-head">
+    <div class="eyebrow"><span>Figure · Demo shop recall</span></div>
+    <h3 class="h3">9 planted bugs, three rounds</h3>
+    <p>Each square is one planted bug. Filled = the agent reported it with evidence.</p>
+  </div>
+  <div class="fig-body">
+    <div class="fig-chart"></div>
+      <div class="fig-table"><table class="fig-data">
+        <thead><tr><th>Round</th><th>B1</th><th>B2</th><th>B3</th><th>B4</th><th>B5</th><th>B6</th><th>B7</th><th>B8</th><th>B9</th><th>Executor model</th><th>Runs</th><th>Missed (reported Inconclusive)</th><th>False findings</th></tr></thead>
+        <tbody>
+        <tr><td>Round 1 · Sonnet drives</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>Claude Sonnet 5.5</td><td>3 pairs of runs + 2 clean runs</td><td>B3, B9</td><td>0</td></tr>
+        <tr><td>Round 2 · after the fixes</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>Claude Sonnet 5.5</td><td>after fixes</td><td>none</td><td>0</td></tr>
+        <tr><td>Round 3 · Gemini Flash drives</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td>Gemini 3.8 Flash</td><td></td><td>B8</td><td>0</td></tr>
+        </tbody>
+      </table></div>
+  </div>
+  <figcaption><span>B1–B4 registration, B5–B9 store &amp; checkout (1 = found). Missed bugs were reported Inconclusive with a reason, never a false Passed. False findings: 0 in all 13 runs.</span><span class="fig-tools"></span></figcaption>
+</figure>
+
+            <div class="prose">
+              <p>The two misses in round 1 taught me the most. Neither was fixed with prompt text:</p>
+            </div>
+            <ul class="ledger soft">
+              <li><span><b>B3 (fake success on duplicate signup).</b> The verifier hedged because it never saw that the first account had been created in an earlier scenario of the same run. <b>Fix:</b> triage now hands the verifier the results of the scenarios a scenario depends on, as established facts.</span></li>
+              <li><span><b>B9 (postal code with a space).</b> The agent had first submitted the empty form, and the shop's "Enter a valid postal code" message stayed on screen. After it typed <code>10 115</code>, that stale message looked like a correct rejection. <b>Fix:</b> the shop says "is required" for empty fields, as it does everywhere else. The bug itself didn't change.</span></li>
+            </ul>
+            <div class="prose"><p>Both fixes changed what the agent could <i>see</i>, not what it was <i>told</i>. After them: <b>9 / 9</b>.</p></div>
+          </div>
+
+          <div class="sub">
+            <h3 class="h3">Cost, measured and cut</h3>
+            <div class="prose"><p>Every model call is logged with tokens and dollars, so cost per run is a number on the screen, not a guess.</p></div>
+
+<figure class="fig" data-chart="multiples" data-opts='{"focus":"Hard: Sonnet + prompt caching"}'>
+  <div class="fig-head">
+    <div class="eyebrow"><span>Figure · AI cost per run</span></div>
+    <h3 class="h3">What one test run costs</h3>
+    <p>US dollars of AI per full run on the demo shop. Same agent, three configurations.</p>
+  </div>
+  <div class="fig-body">
+    <div class="fig-chart"></div>
+      <div class="fig-table"><table class="fig-data">
+        <thead><tr><th>Configuration</th><th>Registration (6 scenarios)</th><th>Store &amp; checkout (7 scenarios)</th></tr></thead>
+        <tbody>
+        <tr><td>Sonnet, no caching</td><td>$0.44</td><td>~$0.65 (estimate)</td></tr>
+        <tr><td>Hard: Sonnet + prompt caching</td><td>$0.29</td><td>$0.43</td></tr>
+        <tr><td>Easy: Gemini Flash as executor</td><td>$0.15</td><td>$0.26</td></tr>
+        </tbody>
+      </table></div>
+  </div>
+  <figcaption><span>Dashed = estimate (no Store run was measured without caching). All other bars are measured runs.</span><span class="fig-tools"></span></figcaption>
+</figure>
+
+            <div class="prose"><p>The first full run cost $0.44, and 76 % of that was the executor. About 85 % of every executor call was an identical prefix of tool schemas and system prompt, paid again on every step. Prompt caching made that prefix cost a tenth of the price:</p></div>
+
+<figure class="fig" data-chart="stack" data-opts='{"n":2,"left":140}'>
+  <div class="fig-head">
+    <div class="eyebrow"><span>Figure · Prompt caching</span></div>
+    <h3 class="h3">One executor step, before and after caching</h3>
+    <p>Input tokens of a single call. The prefix (tool schemas + system prompt) never changes between steps.</p>
+  </div>
+  <div class="fig-body">
+    <div class="fig-chart"></div>
+      <div class="fig-table"><table class="fig-data">
+        <thead><tr><th>Call</th><th>Full price ($2.00 / M)</th><th>Cache read ($0.20 / M)</th></tr></thead>
+        <tbody>
+        <tr><td>Before · $0.0084</td><td>2,625</td><td>0</td></tr>
+        <tr><td>After · $0.0016</td><td>168</td><td>2,460</td></tr>
+        </tbody>
+      </table></div>
+  </div>
+  <figcaption><span>Whole Registration run: $0.44 → $0.27 (−38 %).</span><span class="fig-tools"></span></figcaption>
+</figure>
+
+            <div class="prose"><p>Trying a cheaper executor model was a one-line config change. Gemini Flash found 8 of 9 at roughly half the price, so instead of picking one, I shipped both as the <b>Hard</b> and <b>Easy</b> modes.</p></div>
+          </div>
+
+          <div class="sub">
+            <h3 class="h3">Then a store I didn't build</h3>
+            <div class="prose"><p>Nine of nine on your own shop proves less than it seems. So I pointed the unchanged agent at <b>Toolshop</b>, a public training store by testsmith with <b>94 planted bugs</b> and an official bug list. I wrote the in-scope answer key (19 functional bugs) <i>before</i> running anything, and used Toolshop's clean twin as a control.</p></div>
+
+            <figure class="fig">
+              <div class="fig-head">
+                <div class="eyebrow"><span>Figure · Home vs away</span></div>
+                <h3 class="h3">Our shop, then someone else's</h3>
+                <p>The same agent, untuned, on a site with an answer key written by somebody else.</p>
+              </div>
+              <div class="fig-body">
+                <table class="score">
+                  <thead><tr><th></th><th>Our demo shop</th><th>Toolshop</th></tr></thead>
+                  <tbody>
+                  <tr><td>Planted bugs found<span>in-scope bugs only</span></td><td class="v">9/9</td><td class="v">1/19</td></tr>
+                  <tr><td>False findings<span>13 runs vs 6 runs</span></td><td class="v">0</td><td class="v">0</td></tr>
+                  <tr><td>AI cost per Hard run<span>Toolshop is a heavy Angular app</span></td><td class="v">$0.29–0.43</td><td class="v">$0.48–0.69</td></tr>
+                  <tr><td>Real bug on the "clean" copy<span>reproduced by hand</span></td><td class="v">–</td><td class="v">1</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <figcaption><span>Honesty held off our own turf; recall did not.</span></figcaption>
+            </figure>
+
+<figure class="fig" data-chart="stack" data-opts='{"n":3,"left":210}'>
+  <div class="fig-head">
+    <div class="eyebrow"><span>Figure · External benchmark</span></div>
+    <h3 class="h3">A store we did not build</h3>
+    <p>Toolshop (testsmith): 94 planted bugs, 19 in scope. Scenario verdicts per run, Hard mode.</p>
+  </div>
+  <div class="fig-body">
+    <div class="fig-chart"></div>
+      <div class="fig-table"><table class="fig-data">
+        <thead><tr><th>Run</th><th>Passed</th><th>Bug found</th><th>Inconclusive</th><th>Note</th></tr></thead>
+        <tbody>
+        <tr><td>Buggy copy · Registration</td><td>1</td><td>0</td><td>5</td><td></td></tr>
+        <tr><td>Buggy copy · Store</td><td>1</td><td>2</td><td>4</td><td>planted #8, reported twice</td></tr>
+        <tr><td>Clean copy · Registration</td><td>3</td><td>0</td><td>3</td><td></td></tr>
+        <tr><td>Clean copy · Store</td><td>2</td><td>1</td><td>4</td><td>a real glitch on the "clean" site, reproduced by hand</td></tr>
+        <tr><td>Re-run · Registration</td><td>2</td><td>0</td><td>4</td><td>now "Partly tested"</td></tr>
+        <tr><td>Re-run · Store</td><td>2</td><td>1</td><td>4</td><td>#8 again, no duplicate</td></tr>
+        </tbody>
+      </table></div>
+  </div>
+  <figcaption><span>Rows 1–4 first round, rows 5–6 after the fixes. False findings: 0 in 6 runs. Notes are in the Data view.</span><span class="fig-tools"></span></figcaption>
+</figure>
+
+            <div class="prose">
+              <p>Recall fell to <b>1 of 19</b>. Honesty held: <b>0 false findings in 6 runs</b>, and the one finding on the "bug-free" copy was a real glitch (quantity −2 shows a line total of −$24.02 next to a stale order total), which I reproduced by hand.</p>
+              <p>The root causes were generic, which made them useful: a fixed test password that real sites reject as leaked, icon-only buttons with no accessible name, a shared public test account, and scenarios that don't cover sorting or filters. The worst one was my own: the report showed a green <b>"All passed"</b> with one scenario passed and five inconclusive, which broke my own spec. Two fixes shipped the same day: a grey <b>"Partly tested"</b> verdict (green only when every check passed) and a fresh strong password for every run.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="brand">
+          <h2 class="h2">The brand</h2>
+          <div class="prose"><p>The name came first. A badger <b>digs</b>, the way recon digs through a site, and the planning screen says the agent is <i>"digging through the site."</i> To <b>badger</b> someone is to keep asking until you get an answer: the invalid e-mail, the mismatched password, the expired coupon, the quantity of −2. A badger is <b>stubborn, not reckless</b>: it digs its own sett, not the neighbour's, the way the agent stays on your origins, never pays and stops at a CAPTCHA. And its face is black and white, with <b>nothing to hide behind</b>.</p></div>
+
+          <figure class="fig">
+            <div class="fig-head">
+              <div class="eyebrow"><span>Figure · Mark anatomy</span></div>
+            </div>
+            <div class="fig-body anatomy">
+              <!-- The mark from the product's logo-mark.svg: black parts in ink, white parts in paper, so it inverts with the theme like the logo. -->
+              <svg viewBox="0 0 28 28" role="img" aria-label="The test-badger mark: a badger's head with pointed ears, a white blaze, cheek stripes, tapering to a point that breaks a ground line"><path d="M3 8 L6.5 3 L10 6 L18 6 L21.5 3 L25 8 L23 15.5 L14 26 L5 15.5 Z" style="fill:var(--ink)"/><polygon points="12,6 16,6 15,19.5 13,19.5" style="fill:var(--paper)"/><polygon points="4,9.5 6,10.5 11.6,22.4 5.6,15.4" style="fill:var(--paper)"/><polygon points="24,9.5 22,10.5 16.4,22.4 22.4,15.4" style="fill:var(--paper)"/><circle cx="9.6" cy="12.4" r="1" style="fill:var(--paper)"/><circle cx="18.4" cy="12.4" r="1" style="fill:var(--paper)"/><line x1="0" y1="22.5" x2="8.6" y2="22.5" style="stroke:var(--ink)" stroke-width="1.4"/><line x1="19.4" y1="22.5" x2="28" y2="22.5" style="stroke:var(--ink)" stroke-width="1.4"/></svg>
+              <ul class="ledger soft">
+                <li><span><b>Pointed ears.</b> It listens past the screen: console and network errors are recorded on every step.</span></li>
+                <li><span><b>White blaze.</b> One straight line down the middle. One verdict per scenario.</span></li>
+                <li><span><b>Cheek stripes.</b> Dark, light, dark. They became the badger stripe on our labels.</span></li>
+                <li><span><b>Drill-bit taper.</b> The head narrows to a point. Built to dig, not to decorate.</span></li>
+                <li><span><b>Ground line.</b> The snout breaks the surface. Find it first.</span></li>
+              </ul>
+            </div>
+          </figure>
+          <div class="prose"><p>Every part of the mark maps to the product. The <b>white blaze</b> is one straight line down the middle, like one verdict per scenario. The <b>cheek stripes</b> (dark, light, dark) became the small "badger stripe" that leads every page label. The head tapers like a <b>drill bit</b>, and the snout breaks a <b>ground line</b>: find it first.</p></div>
+
+          <figure class="shot">
+            <img src="/img/test-badger/brand-color-is-a-verdict.png" alt="Color is a verdict. So everything else is black and white." width="2160" height="2717" loading="lazy" />
+          </figure>
+          <div class="prose"><p>The central design decision is about colour. <b>In a testing tool, colour is information.</b> If buttons, charts and illustrations were colourful, a red "Bug found" would have to compete with them. So the interface is ink on paper, and the only hues anywhere are the four verdicts. Red is always a bug. Inconclusive is grey on purpose, because not knowing is not a colour. The charts on this page follow the same rule.</p></div>
+
+          <div class="prose"><p>Headings are <b>Barlow Condensed</b>, narrow industrial letters that let timers, costs and verdicts sit in tight columns. Body text is regular <b>Barlow</b>, because repro steps are meant to be read carefully. Frames carry small "+" registration marks borrowed from engineering drawings, and each screen has exactly one black button: the next step you should take.</p></div>
+
+          <figure class="fig">
+            <div class="fig-head">
+              <div class="eyebrow"><span>Figure · Writing the name</span></div>
+              <p>Always lowercase, even at the start of a sentence. The hyphen is part of the mark: it joins what the product does to how it does it.</p>
+            </div>
+            <div class="fig-body names">
+              <div class="yes"><b>test-badger</b><span>✓ Yes</span></div>
+              <div><s>Test Badger</s><span>✕ No</span></div>
+              <div><s>TestBadger</s><span>✕ No</span></div>
+              <div><s>test badger</s><span>✕ No</span></div>
+            </div>
+            <figcaption><span>The marks on the right are ink, not green and red. Color stays reserved for verdicts, even here.</span></figcaption>
+          </figure>
+          <div class="prose"><p>I directed the visual system in Claude Design and implemented it twice in the product: first as an "Industry" system with a steel accent, then as the stricter black-and-white v3. After the freeze I also built a redesigned second frontend that runs beside the first one on the same API and accounts, using only real data. Any design placeholder without data behind it was left out.</p></div>
+        </section>
+
+        <section id="shipping">
+          <h2 class="h2">Shipping it</h2>
+          <ul class="ledger">
+            <li><span><b>One VPS</b> (2 vCPU, 3.8 GB) running Docker Compose: Caddy with automatic HTTPS, the API, the worker, PostgreSQL, Redis and the demo shop. Nightly database backups by cron.</span></li>
+            <li><span><b>Real money, real limits.</b> Every run costs real AI credit, so budgets live in the app: a per-run cost cap, daily run limits, separate API keys and budgets per audience (the judges' account and everyone else), and a run's cap lowered to whatever money the tier has left.</span></li>
+            <li><span><b>Safe to open to the public.</b> Per-IP rate limits on login and signup (no per-account lockout, so nobody can lock the judges out), an audit of every commit for secrets before the repo went public, and no server address in the repository.</span></li>
+            <li><span><b>The submission pages</b> (technical docs, business plan, brand page) are served by the same Caddy, marked <code>noindex</code>.</span></li>
+          </ul>
+        </section>
+
+        <section id="results">
+          <h2 class="h2">Results at a glance</h2>
+          <div class="glance">
+            <div><span class="k">Planted bugs found (demo shop, final evaluation)</span><span><b>9 / 9</b></span></div>
+            <div><span class="k">False findings</span><span><b>0</b> in 13 demo-shop runs, <b>0</b> in 6 runs on a third-party store</span></div>
+            <div><span class="k">Run time</span><span>Registration ~2.5 min, Store ~4.5 min, plus ~30 s planning</span></div>
+            <div><span class="k">AI cost per run</span><span>Hard $0.29 / $0.43 · Easy $0.15 / $0.26</span></div>
+            <div><span class="k">Bot protection</span><span>CAPTCHA → a clear <i>Blocked</i> verdict with advice, $0 of AI</span></div>
+            <div><span class="k">Backend tests</span><span>135, run against a fake LLM, so the suite never calls a real model</span></div>
+          </div>
+        </section>
+
+        <section id="judges">
+          <h2 class="h2">The judges' score</h2>
+          <div class="prose"><p>buildX scored every entry on four criteria, 25 points each. test-badger got <b>83 out of 100</b>. For the live functional test, the judges ran it themselves on <b>Easy</b> mode, the cheaper one where Gemini 3.8 Flash drives the browser.</p></div>
+          <div class="stats" style="margin-top:40px">
+            <div class="stat"><div class="eyebrow">Total</div><div class="v">83<small>/100</small></div></div>
+            <div class="stat"><div class="eyebrow">Technical</div><div class="v">23<small>/25</small></div></div>
+            <div class="stat"><div class="eyebrow">Functional testing</div><div class="v">21<small>/25</small></div><div class="d muted">Functional Product Testing</div></div>
+            <div class="stat"><div class="eyebrow">UI/UX</div><div class="v">20<small>/25</small></div><div class="d muted">User Interface</div></div>
+            <div class="stat"><div class="eyebrow">Business</div><div class="v">19<small>/25</small></div><div class="d muted">Business &amp; Pitch</div></div>
+          </div>
+          <blockquote class="judge">Using the "Test Badger" evaluation method, the planning and execution of seven scenarios on a sample store—up to the generation of the final report—took approximately 12 minutes. The report identified four issues, two successful outcomes, and one inconclusive result. This reflects the product's performance in a real-world scenario; however, results from a controlled demo cannot necessarily be generalized to all websites.<cite>Judge's feedback · run on Easy mode</cite></blockquote>
+          <div class="prose"><p>The last point is fair, and it matches what the external benchmark showed: on a store I didn't build, honesty held but recall didn't.</p></div>
+        </section>
+
+        <section id="next">
+          <h2 class="h2">What I'd build next</h2>
+          <div class="prose"><p>The external benchmark wrote the roadmap: give icon-only buttons a name in the snapshot, merge the same bug found by two scenarios, add more flow templates (login, contact form, booking, free-form goal), and schedule runs before every release.</p></div>
+          <p class="closing"><i>Built with Claude Code as my pair programmer, from a written spec and a decision log I kept up to date the whole way. The story of how that worked is in the companion post: <a data-umami-event="writeup-post" href="/writing/building-test-badger.html">Five days, one developer, one AI pair</a>.</i></p>
+        </section>
+      </article>
+    </div>
+
+    <nav class="pager" aria-label="More projects">
+      <a data-umami-event="project-prev" href="/work/bebin.html"><span class="eyebrow">← Previous</span><b>Bebin</b></a>
+      <a href="/works.html"><span class="eyebrow">All →</span><b>Work</b></a>
+    </nav>
+  </div>
+</main>
+
+<section id="contact" class="contact">
+  <div class="inner">
+    <div class="eyebrow">Contact</div>
+    <h2 class="display">Let's talk.</h2>
+    <p class="lede">Research, code, ideas — Feel free to say Hi.</p>
+    <div class="pills">
+      <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+      <!-- <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="LinkedIn"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a> -->
+      <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="GitHub"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="X"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="Kaggle"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-huggingface" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="Hugging Face"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span></a>
+    </div>
+  </div>
+  <footer class="site-foot">
+    <span class="sig"><span class="mono-mark" aria-hidden="true"><span>9</span><span>9</span></span>© 2026 Nima Yavari</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</section>
+<script src="/assets/charts.js"></script>
+<script src="/assets/brand.js"></script>
+</body>
+</html>
