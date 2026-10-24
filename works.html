@@ -4,14 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Work — Nima Yavari</title>
-<meta name="description" content="Eight projects across systems, applied ML and tools, mostly in Go and Python." />
+<meta name="description" content="Nine projects across systems, applied ML, tools and product, mostly in Go and Python." />
 <link rel="canonical" href="https://n9e6y.com/works.html" />
 <meta name="author" content="Nima Yavari" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Nima Yavari" />
 <meta property="og:locale" content="en_US" />
 <meta property="og:title" content="Work — Nima Yavari" />
-<meta property="og:description" content="Eight projects across systems, applied ML and tools, mostly in Go and Python." />
+<meta property="og:description" content="Nine projects across systems, applied ML, tools and product, mostly in Go and Python." />
 <meta property="og:url" content="https://n9e6y.com/works.html" />
 <meta property="og:image" content="https://n9e6y.com/assets/og/works.png" />
 <meta property="og:image:width" content="1200" />
@@ -26,7 +26,7 @@
   "@type": "CollectionPage",
   "url": "https://n9e6y.com/works.html",
   "name": "Work — Nima Yavari",
-  "description": "Eight projects across systems, applied ML and tools, mostly in Go and Python.",
+  "description": "Nine projects across systems, applied ML, tools and product, mostly in Go and Python.",
   "isPartOf": { "@id": "https://n9e6y.com/#website" },
   "author": { "@type": "Person", "@id": "https://n9e6y.com/#person", "name": "Nima Yavari", "url": "https://n9e6y.com/" },
   "mainEntity": {
@@ -35,6 +35,23 @@
       {
         "@type": "ListItem",
         "position": 1,
+        "item": {
+          "@type": "SoftwareApplication",
+          "name": "Bebin",
+          "alternateName": "ببین",
+          "description": "An in-person shopping assistant for Torob.",
+          "url": "https://n9e6y.com/work/bebin.html",
+          "sameAs": ["https://bebin-web.liara.run", "https://github.com/n9e6y/scH-T"],
+          "genre": "Product",
+          "applicationCategory": "ShoppingApplication",
+          "operatingSystem": "Web",
+          "keywords": ["Next.js", "FastAPI", "SQLite", "embeddings"],
+          "author": { "@type": "Person", "@id": "https://n9e6y.com/#person", "name": "Nima Yavari", "url": "https://n9e6y.com/" }
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
         "item": {
           "@type": "SoftwareSourceCode",
           "name": "GoCade",
@@ -48,7 +65,7 @@
       },
       {
         "@type": "ListItem",
-        "position": 2,
+        "position": 3,
         "item": {
           "@type": "SoftwareSourceCode",
           "name": "Delivery Fare Engine",
@@ -62,7 +79,7 @@
       },
       {
         "@type": "ListItem",
-        "position": 3,
+        "position": 4,
         "item": {
           "@type": "SoftwareSourceCode",
           "name": "Persian Poetry Generator",
@@ -75,7 +92,7 @@
       },
       {
         "@type": "ListItem",
-        "position": 4,
+        "position": 5,
         "item": {
           "@type": "SoftwareSourceCode",
           "name": "Letterboxd Recommender",
@@ -88,12 +105,12 @@
       },
       {
         "@type": "ListItem",
-        "position": 5,
+        "position": 6,
         "item": {
           "@type": "SoftwareSourceCode",
           "name": "test-badger",
           "description": "An AI agent that tests a website's signup and checkout flows in a real browser and reports bugs with evidence.",
-          "url": "https://github.com/n9e6y/test-badger",
+          "url": "https://n9e6y.com/work/test-badger.html",
           "genre": "Applied ML",
           "keywords": ["Python", "FastAPI", "Playwright", "React"],
           "author": { "@type": "Person", "@id": "https://n9e6y.com/#person", "name": "Nima Yavari", "url": "https://n9e6y.com/" },
@@ -102,7 +119,7 @@
       },
       {
         "@type": "ListItem",
-        "position": 6,
+        "position": 7,
         "item": {
           "@type": "SoftwareSourceCode",
           "name": "Hokm × Jev",
@@ -116,7 +133,7 @@
       },
       {
         "@type": "ListItem",
-        "position": 7,
+        "position": 8,
         "item": {
           "@type": "SoftwareSourceCode",
           "name": "Time Analyzer",
@@ -130,7 +147,7 @@
       },
       {
         "@type": "ListItem",
-        "position": 8,
+        "position": 9,
         "item": {
           "@type": "SoftwareSourceCode",
           "name": "Semantic Code Search",
@@ -151,7 +168,7 @@
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&family=Vazirmatn:wght@300..700&display=swap" rel="stylesheet" />
 <script>
   (function () {
     try {
@@ -188,6 +205,7 @@
   .proj-row .stack { color: var(--muted); }
   .proj-table .cols :last-child, .proj-row .st { text-align: right; }
   code { font-family: var(--mono); font-size: 0.9em; }
+  [lang="fa"] { font-family: 'Vazirmatn', sans-serif; letter-spacing: 0; }
   @media (max-width: 720px) {
     .proj-table .cols { display: none; }
     .proj-row { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 18px 0; }
@@ -237,16 +255,17 @@
     <div class="page-head" data-reveal>
       <div class="eyebrow">Work</div>
       <h1 class="h1">Work</h1>
-      <p class="intro">Eight things I built to learn how something works. Mostly Go and Python.</p>
+      <p class="intro">Problems I wanted to understand, each worked through from input to output.</p>
     </div>
     <hr class="rule" />
 
     <div class="toolbar">
       <div class="filters" role="group" aria-label="Filter by domain">
-        <button class="chip" data-filter="All" data-umami-event="filter-all" aria-pressed="true">All <span class="c">8</span></button>
+        <button class="chip" data-filter="All" data-umami-event="filter-all" aria-pressed="true">All <span class="c">9</span></button>
         <button class="chip" data-filter="Systems" data-umami-event="filter-systems" aria-pressed="false">Systems <span class="c">2</span></button>
         <button class="chip" data-filter="Applied ML" data-umami-event="filter-applied-ml" aria-pressed="false">Applied ML <span class="c">4</span></button>
         <button class="chip" data-filter="Tools" data-umami-event="filter-tools" aria-pressed="false">Tools <span class="c">2</span></button>
+        <button class="chip" data-filter="Product" data-umami-event="filter-product" aria-pressed="false">Product <span class="c">1</span></button>
       </div>
       <div class="views" role="group" aria-label="View">
         <button data-view="index" data-umami-event="view-index" aria-pressed="true">Index</button>
@@ -256,6 +275,12 @@
 
     <div id="view-index" class="proj-table">
       <div class="cols" aria-hidden="true"><span>Project</span><span>Domain</span><span>Stack</span><span>Status ↗</span></div>
+      <a class="proj-row" data-dom="Product" data-umami-event="project-bebin" href="/work/bebin.html">
+        <span class="name"><b><bdi lang="fa" dir="rtl">ببین</bdi> (Bebin)</b><span>An in-person shopping assistant for Torob.</span></span>
+        <span class="dom">Product</span>
+        <span class="stack">Next.js · FastAPI · SQLite</span>
+        <span class="st">● Shipped →</span>
+      </a>
       <a class="proj-row" data-dom="Systems" data-umami-event="project-gocade" href="https://github.com/n9e6y/gocade" target="_blank" rel="noopener">
         <span class="name"><b>GoCade</b><span>A multiplayer TCP game server you play with <code>nc host 9000</code>.</span></span>
         <span class="dom">Systems</span>
@@ -280,11 +305,11 @@
         <span class="stack">Python · Gensim · Gradio</span>
         <span class="st">● Shipped ↗</span>
       </a>
-      <a class="proj-row" data-dom="Applied ML" data-umami-event="project-test-badger" href="https://github.com/n9e6y/test-badger" target="_blank" rel="noopener">
+      <a class="proj-row" data-dom="Applied ML" data-umami-event="project-test-badger" href="/work/test-badger.html">
         <span class="name"><b>test-badger</b><span>An AI agent that tests a website's signup and checkout flows in a real browser and reports bugs with evidence.</span></span>
         <span class="dom">Applied ML</span>
         <span class="stack">Python · FastAPI · Playwright · React</span>
-        <span class="st">● Shipped ↗</span>
+        <span class="st">● Shipped →</span>
       </a>
       <a class="proj-row" data-dom="Applied ML" data-umami-event="project-jev-hokm" href="https://github.com/n9e6y/jev-hokm" target="_blank" rel="noopener">
         <span class="name"><b>Hokm × Jev</b><span>Hokm, the Persian card game, against bots driven by the Jev decision model, with every decision recorded.</span></span>
@@ -307,6 +332,12 @@
     </div>
 
     <div id="view-grid" class="cards" hidden>
+      <a class="card" data-dom="Product" data-umami-event="project-bebin" href="/work/bebin.html">
+        <span class="top"><span>Product</span><span>→</span></span>
+        <span class="hd"><b><bdi lang="fa" dir="rtl">ببین</bdi> (Bebin)</b><span class="one">An in-person shopping assistant for Torob.</span></span>
+        <span class="tags"><span class="tag">Next.js</span><span class="tag">FastAPI</span><span class="tag">SQLite</span><span class="tag">Embeddings</span></span>
+        <span class="st">● Shipped</span>
+      </a>
       <a class="card" data-dom="Systems" data-umami-event="project-gocade" href="https://github.com/n9e6y/gocade" target="_blank" rel="noopener">
         <span class="top"><span>Systems</span><span>↗</span></span>
         <span class="hd"><b>GoCade</b><span class="one">A multiplayer TCP game server you play with <code>nc host 9000</code>.</span></span>
@@ -331,8 +362,8 @@
         <span class="tags"><span class="tag">Python</span><span class="tag">Gensim</span><span class="tag">Gradio</span></span>
         <span class="st">● Shipped</span>
       </a>
-      <a class="card" data-dom="Applied ML" data-umami-event="project-test-badger" href="https://github.com/n9e6y/test-badger" target="_blank" rel="noopener">
-        <span class="top"><span>Applied ML</span><span>↗</span></span>
+      <a class="card" data-dom="Applied ML" data-umami-event="project-test-badger" href="/work/test-badger.html">
+        <span class="top"><span>Applied ML</span><span>→</span></span>
         <span class="hd"><b>test-badger</b><span class="one">An AI agent that tests a website's signup and checkout flows in a real browser and reports bugs with evidence.</span></span>
         <span class="tags"><span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Playwright</span><span class="tag">React</span></span>
         <span class="st">● Shipped</span>

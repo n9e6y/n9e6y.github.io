@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Five days, one developer, one AI pair — Nima Yavari</title>
+<meta name="description" content="Notes from a hackathon week: what I got wrong, and what I'd do differently." />
+<link rel="canonical" href="https://n9e6y.com/writing/building-test-badger.html" />
+<meta name="author" content="Nima Yavari" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Nima Yavari" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:title" content="Five days, one developer, one AI pair — Nima Yavari" />
+<meta property="og:description" content="Notes from a hackathon week: what I got wrong, and what I'd do differently." />
+<meta property="og:url" content="https://n9e6y.com/writing/building-test-badger.html" />
+<meta property="og:image" content="https://n9e6y.com/assets/og/building-test-badger.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Five days, one developer, one AI pair — Nima Yavari" />
+<meta property="article:published_time" content="2026-10-24" />
+<meta property="article:author" content="https://n9e6y.com/about.html" />
+<meta property="article:tag" content="Hackathon" />
+<meta property="article:tag" content="Claude Code" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@n9e6y" />
+<meta name="twitter:creator" content="@n9e6y" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "Five days, one developer, one AI pair",
+      "description": "Notes from a hackathon week: what I got wrong, and what I'd do differently.",
+      "url": "https://n9e6y.com/writing/building-test-badger.html",
+      "datePublished": "2026-10-24",
+      "keywords": ["Hackathon", "Claude Code"],
+      "author": { "@type": "Person", "@id": "https://n9e6y.com/#person", "name": "Nima Yavari", "url": "https://n9e6y.com/" },
+      "mainEntityOfPage": "https://n9e6y.com/writing/building-test-badger.html",
+      "dateModified": "2026-10-24",
+      "inLanguage": "en",
+      "image": "https://n9e6y.com/assets/og/building-test-badger.png",
+      "publisher": { "@type": "Person", "@id": "https://n9e6y.com/#person", "name": "Nima Yavari", "url": "https://n9e6y.com/" },
+      "about": { "@type": "SoftwareApplication", "name": "test-badger", "url": "https://n9e6y.com/work/test-badger.html", "applicationCategory": "DeveloperApplication" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://n9e6y.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Writing", "item": "https://n9e6y.com/blog.html" },
+        { "@type": "ListItem", "position": 3, "name": "Five days, one developer, one AI pair", "item": "https://n9e6y.com/writing/building-test-badger.html" }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap" rel="stylesheet" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('nima-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="/assets/brand.css" />
+<link rel="stylesheet" href="/assets/charts.css" />
+<style>
+  .prose code, .ledger code { font-family: var(--mono); font-size: 0.86em; background: var(--line); padding: 1px 6px; border-radius: 3px; }
+
+  .art-head .eyebrow { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; }
+  .art-head .eyebrow a { color: var(--ink); text-decoration: none; }
+  .art-head h1 { margin-top: 24px; font-size: clamp(52px, 8vw, 96px); letter-spacing: -0.045em; line-height: 0.95; max-width: 14ch; text-wrap: balance; }
+  .art-head .deck { margin: 24px 0 0; font-size: clamp(20px, 2.2vw, 24px); line-height: 1.45; max-width: 40ch; color: var(--muted); }
+
+  .report { margin-top: 64px; }
+  .report .h2 { margin-top: 0; font-size: clamp(32px, 4vw, 44px); letter-spacing: -0.035em; line-height: 1.05; }
+  .report .prose p:first-child { margin-top: 24px; }
+  article > blockquote { margin: 0; }
+  article > blockquote + .prose p:first-child { margin-top: 32px; }
+
+  /* Lists: ledger rows, no numbers. */
+  ul.ledger { list-style: none; margin: 32px 0 0; padding: 0; max-width: 760px; border-top-color: var(--line2); }
+  .ledger li { font-size: 18px; line-height: 1.6; text-wrap: pretty; }
+  .ledger li b { font-weight: 600; }
+
+  /* Figures wipe in with the same slow, soft timing as the Dehkhoda post. */
+  .report { --wipe-time: 1.8s; --wipe-ease: cubic-bezier(.4, 0, .2, 1); }
+
+  .closing { margin: 40px 0 0; max-width: 680px; padding-top: 24px; border-top: 1px solid var(--ink); font-size: clamp(22px, 2.4vw, 28px); line-height: 1.35; letter-spacing: -0.02em; text-wrap: pretty; }
+  .post-foot { margin-top: 96px; max-width: 760px; padding-top: 16px; border-top: 1px solid var(--line2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-family: var(--mono); font-size: 12px; }
+  .post-foot a { text-decoration: none; }
+  .post-foot a:hover { text-decoration: underline; }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430" data-domains="n9e6y.com"></script>
+</head>
+<body>
+
+<header class="site">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="n9e6y — home"><span class="ney">n<span class="ney-x"><span>9</span></span>e<span class="ney-x"><span>6</span></span>y</span></a>
+    <nav aria-label="Main">
+      <span class="nav-links" id="nav-links">
+        <a href="/works.html">Work</a>
+        <a href="/blog.html" aria-current="page">Writing</a>
+        <a href="/about.html">About</a>
+      </span>
+      <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="wrap">
+    <header class="art-head" style="padding-top:clamp(48px,8vw,96px)" data-reveal>
+      <div class="eyebrow"><a href="/blog.html">← Writing</a><span class="tag">Hackathon</span><span class="tag">Claude Code</span><span>24 Oct 2026</span><span>2 min read</span></div>
+      <h1>Five days, one developer, one AI pair</h1>
+      <p class="deck">Notes from a hackathon week: what I got wrong, and what I'd do differently.</p>
+      <hr class="rule" />
+    </header>
+
+    <div class="report">
+      <nav class="toc" aria-label="Contents">
+        <div class="eyebrow">Contents</div>
+        <a href="#docs">Writing things down</a>
+        <a href="#missed">When it missed</a>
+        <a href="#away">A store I didn't build</a>
+        <a href="#ended">How it ended</a>
+        <a href="#dayzero">Day zero</a>
+      </nav>
+      <article>
+        <blockquote><i>"Unable to use the delete button to remove an item from the shopping cart."</i></blockquote>
+        <div class="prose">
+          <p>That line was in the brief for problem #4 at the buildX hackathon: build an agent that tests web workflows. By the end of the first build day it was bug <b>B5</b> in a small fake shop I'd made, and my agent found it on its own.</p>
+          <p>I built test-badger in five days, with Claude Code as a pair programmer. The <a data-umami-event="writing-see-work" href="/work/test-badger.html">case study is on my works page</a>. This is just a few notes on the week, mostly about the things I got wrong.</p>
+        </div>
+
+        <section id="docs" style="margin-top:96px">
+          <h2 class="h2">I started by writing things down</h2>
+          <div class="prose">
+            <p>Before any code, I spent a day writing nine short documents: what the product is, every screen, how the agent works, the demo shop and its bugs, and a plan with the things I was willing to cut. It felt slow. It turned out to be the most valuable day of the week.</p>
+            <p>Every decision went into a log the moment it was made, with a reason. When I asked myself "why did we do it this way?" on day five, the answer was one search away.</p>
+          </div>
+
+<figure class="fig" data-chart="multiples" data-opts='{"n":2,"focus":"Plan · Oct 3–4"}'>
+  <div class="fig-head">
+    <div class="eyebrow"><span>Figure · The week, day by day</span></div>
+    <h3 class="h3">The decisions came before the build days</h3>
+    <p>Decisions written to the log, and commits pushed, per day.</p>
+  </div>
+  <div class="fig-body">
+    <div class="fig-chart"></div>
+      <div class="fig-table"><table class="fig-data">
+        <thead><tr><th>Day</th><th>Decisions logged</th><th>Commits</th><th>What happened</th></tr></thead>
+        <tbody>
+        <tr><td>Plan · Oct 3–4</td><td>16</td><td>2</td><td>9 spec documents, decision log, working rules</td></tr>
+        <tr><td>Day 1 · Oct 5</td><td>0</td><td>8</td><td>skeleton, auth, demo shop, deployed</td></tr>
+        <tr><td>Day 2 · Oct 6</td><td>0</td><td>5</td><td>agent end to end, evaluation 9/9</td></tr>
+        <tr><td>Day 3 · Oct 7</td><td>6</td><td>3</td><td>redesign, rename, re-run + compare, scenario video</td></tr>
+        <tr><td>Day 4 · Oct 8</td><td>3</td><td>2</td><td>Hard/Easy modes, judges' account</td></tr>
+        <tr><td>Day 5 · Oct 9</td><td>13</td><td>19</td><td>budgets, external benchmark, feature freeze, docs, go-public audit</td></tr>
+        <tr><td>Day 6 · Oct 10</td><td>1</td><td>2</td><td>redesigned frontend beside the old one</td></tr>
+        </tbody>
+      </table></div>
+  </div>
+  <figcaption><span>Feature freeze at the end of Oct 9. What happened each day is in the Data view.</span><span class="fig-tools"></span></figcaption>
+</figure>
+        </section>
+
+        <section id="missed">
+          <h2 class="h2">When it missed</h2>
+          <div class="prose">
+            <p>The first proper evaluation found 7 of the 9 bugs I'd planted, and it missed the same two every time. The tempting fix was a longer prompt. Neither real fix touched the prompt: in both cases the agent simply couldn't see something it needed. Once it could, it found both.</p>
+            <p>Since then, when an agent seems confused, my first question is "what was on its screen?"</p>
+          </div>
+        </section>
+
+        <section id="away">
+          <h2 class="h2">A store I didn't build</h2>
+          <div class="prose">
+            <p>After 9 of 9 on my own shop, I tried Toolshop, a public practice store whose bug list was written by somebody else. Of the 19 bugs in scope, it found one.</p>
+            <p>That stung, and it was the most useful hour of the week. The worst finding was my own: with one scenario passed and five inconclusive, my report showed a big green "All passed". The agent had been careful; my summary wasn't. I fixed it the same day.</p>
+            <p>Your own test site always flatters you. Next time I'd try a stranger's site on day two, not day five.</p>
+          </div>
+        </section>
+
+        <section id="ended">
+          <h2 class="h2">How it ended</h2>
+          <div class="prose">
+            <p>test-badger scored 83 out of 100. The judges ran it themselves and wrote that results from a controlled demo can't necessarily be generalised to all websites. They're right. Toolshop had already shown me the same thing.</p>
+          </div>
+        </section>
+
+        <section id="dayzero">
+          <h2 class="h2">What I'd tell myself on day zero</h2>
+          <ul class="ledger">
+            <li><span><b>Write the answer key before the agent.</b> It made every change measurable.</span></li>
+            <li><span><b>Try a stranger's site early.</b> Your own always makes you look good.</span></li>
+            <li><span><b>Let "I don't know" be an answer.</b> For a testing tool, a confident wrong answer is worse than none.</span></li>
+          </ul>
+          <p class="closing">The badger's slogan is <i>find it first</i>. That week, the agent found most of the bugs in my own process before I did. I'll take that.</p>
+        </section>
+
+        <div class="post-foot">
+          <a href="/blog.html">← All writing</a>
+          <a href="#top">Back to top ↑</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</main>
+
+<section id="contact" class="contact">
+  <div class="inner">
+    <div class="eyebrow">Contact</div>
+    <h2 class="display">Let's talk.</h2>
+    <p class="lede">Research, code, ideas — Feel free to say Hi.</p>
+    <div class="pills">
+      <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+      <!-- <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="LinkedIn"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a> -->
+      <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="GitHub"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="X"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="Kaggle"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-huggingface" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="Hugging Face"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span></a>
+    </div>
+  </div>
+  <footer class="site-foot">
+    <span class="sig"><span class="mono-mark" aria-hidden="true"><span>9</span><span>9</span></span>© 2026 Nima Yavari</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</section>
+<script src="/assets/charts.js"></script>
+<script src="/assets/brand.js"></script>
+</body>
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ببین (Bebin) — Nima Yavari</title>
+<meta name="description" content="An in-person shopping assistant for Torob: what to buy, which store, when to go, where the store is inside the mall, and what the seller has actually confirmed." />
+<link rel="canonical" href="https://n9e6y.com/work/bebin.html" />
+<meta name="author" content="Nima Yavari" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Nima Yavari" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:title" content="ببین (Bebin) — Nima Yavari" />
+<meta property="og:description" content="An in-person shopping assistant for Torob: what to buy, which store, when to go, where the store is inside the mall, and what the seller has actually confirmed." />
+<meta property="og:url" content="https://n9e6y.com/work/bebin.html" />
+<meta property="og:image" content="https://n9e6y.com/assets/og/bebin.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="ببین (Bebin) — Nima Yavari" />
+<meta property="article:published_time" content="2026-10-24" />
+<meta property="article:author" content="https://n9e6y.com/about.html" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@n9e6y" />
+<meta name="twitter:creator" content="@n9e6y" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "url": "https://n9e6y.com/work/bebin.html",
+      "name": "ببین (Bebin) — Nima Yavari",
+      "description": "An in-person shopping assistant for Torob: what to buy, which store, when to go, where the store is inside the mall, and what the seller has actually confirmed.",
+      "datePublished": "2026-10-24",
+      "inLanguage": "en",
+      "image": "https://n9e6y.com/assets/og/bebin.png",
+      "isPartOf": { "@id": "https://n9e6y.com/#website" },
+      "author": { "@type": "Person", "@id": "https://n9e6y.com/#person", "name": "Nima Yavari", "url": "https://n9e6y.com/" },
+      "mainEntity": {
+        "@type": "SoftwareApplication",
+        "name": "Bebin",
+        "alternateName": "ببین",
+        "description": "An in-person shopping assistant for Torob.",
+        "url": "https://bebin-web.liara.run",
+        "sameAs": "https://github.com/n9e6y/scH-T",
+        "applicationCategory": "ShoppingApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "fa",
+        "keywords": ["Next.js", "React", "TypeScript", "FastAPI", "Python", "SQLite", "embeddings", "SSE"],
+        "author": { "@type": "Person", "@id": "https://n9e6y.com/#person", "name": "Nima Yavari", "url": "https://n9e6y.com/" }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://n9e6y.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Work", "item": "https://n9e6y.com/works.html" },
+        { "@type": "ListItem", "position": 3, "name": "Bebin", "item": "https://n9e6y.com/work/bebin.html" }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&family=Vazirmatn:wght@300..700&display=swap" rel="stylesheet" />
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('nima-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="/assets/brand.css" />
+<link rel="stylesheet" href="/assets/charts.css" />
+<style>
+  /* Persian text: Vazirmatn, with no negative tracking (it breaks the joins). */
+  [lang="fa"] { font-family: 'Vazirmatn', sans-serif; letter-spacing: 0; }
+  .prose code, .ledger code { font-family: var(--mono); font-size: 0.86em; background: var(--line); padding: 1px 6px; border-radius: 3px; }
+
+  .crumbs { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  .crumbs a { color: var(--ink); text-decoration: none; }
+  .actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .actions .hint { align-self: center; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  /* Heads-up under the buttons: the demo can go, the code stays. Hollow dot = not a live status. */
+  .live-note { margin-top: 24px; max-width: 640px; padding: 16px 20px; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.55; }
+  .live-note .eyebrow { display: inline-flex; align-items: center; gap: 8px; }
+  .live-note .dot { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--ink); }
+  .live-note a { text-underline-offset: 4px; }
+  .meta-ledger .k { flex-basis: 88px; }
+  .meta-ledger .links { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+
+  /* Screenshots: one row of phones; on narrow screens the strip scrolls sideways. */
+  .shots { margin: 64px 0 0; }
+  .shots .strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 3vw, 40px); max-width: 880px; margin: 0 auto; }
+  .shots .strip > div { display: flex; flex-direction: column; gap: 10px; }
+  .shots img { display: block; width: 100%; height: auto; border: 1px solid var(--line2); border-radius: 20px; }
+  .shots .strip span { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .shots figcaption { margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+  .shots figcaption [lang="fa"] { font-size: clamp(28px, 3.4vw, 40px); font-weight: 600; line-height: 1.3; }
+  @media (max-width: 720px) {
+    .shots .strip { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+    .shots .strip > div { flex: 0 0 min(60%, 260px); scroll-snap-align: start; }
+  }
+
+  .report .h2 { margin-top: 0; }
+  .sub { margin-top: 48px; scroll-margin-top: 88px; }
+  .sub .prose p:first-child { margin-top: 16px; }
+  .sub + .fig, .sub .fig { margin-top: 40px; }
+
+  /* Lists: ledger rows, no numbers. */
+  ul.ledger { list-style: none; margin: 32px 0 0; padding: 0; max-width: 760px; }
+  ul.ledger.soft { margin-top: 16px; border-top-color: var(--line2); }
+  .ledger li { font-size: 18px; line-height: 1.6; text-wrap: pretty; }
+  .ledger li b { font-weight: 600; }
+  .stack-line { margin-top: 32px; max-width: 760px; display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: baseline; }
+  .stack-line .m { flex: 1; min-width: 260px; font-family: var(--mono); font-size: 14px; line-height: 1.7; }
+
+  /* Figures wipe in with the same slow, soft timing as the Dehkhoda post. */
+  .report { --wipe-time: 1.8s; --wipe-ease: cubic-bezier(.4, 0, .2, 1); }
+  .fig .diagram .fa { font-family: 'Vazirmatn', sans-serif; }
+  /* Schematics fade in rather than wipe. */
+  .js .fig .diagram { opacity: 0; transition: opacity var(--wipe-time) ease-out; }
+  .js .fig.drawn .diagram { opacity: 1; }
+
+  /* Figure: the journey. Four steps, the pain points under each. */
+  .journey { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-top: 1px solid var(--ink); }
+  .journey a { padding: 16px 16px 20px 0; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; text-decoration: none; transition: background .2s; }
+  .journey a:hover { background: var(--line); }
+  .journey .arr { font-family: var(--mono); font-size: 12px; color: var(--muted); min-height: 18px; }
+  .journey b { font-size: 28px; font-weight: 500; letter-spacing: -0.025em; line-height: 1; }
+  .journey .pains { display: flex; flex-direction: column; gap: 6px; }
+  .journey .pains span { font-family: var(--mono); font-size: 12px; line-height: 1.4; padding: 6px 8px; border: 1px solid var(--line2); border-radius: 3px; }
+
+  /* Figure: trust scale. Wipes in from the certain end. */
+  .trust { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+  .trust > div { display: flex; flex-direction: column; gap: 10px; }
+  .trust .sw { height: 72px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 15px; }
+  .trust .sw[lang="fa"] { font-family: 'Vazirmatn', sans-serif; font-size: 22px; }
+  .trust .sw.verified { background: var(--ink); color: var(--paper); font-weight: 600; }
+  .trust .sw.listed { border: 1.5px solid var(--ink); }
+  .trust .sw.stale { border: 1.5px solid var(--g4); color: var(--g6); }
+  .trust .sw.unknown { border: 1.5px dashed var(--g4); color: var(--muted); }
+  .trust b { font-size: 15px; font-weight: 500; }
+  .trust .note { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .js .fig .trust { clip-path: inset(0 100% 0 0); transition: clip-path var(--wipe-time) var(--wipe-ease); }
+  .js .fig.drawn .trust { clip-path: inset(-20px); }
+
+  /* Figure: the mascot's poses. */
+  .poses { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 24px 12px; }
+  @media (max-width: 720px) { .poses { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .poses > div { display: flex; flex-direction: column; gap: 8px; }
+  /* Inline so the floating marks (z, clock, speech bubble) are drawn in ink and follow the theme. */
+  .poses svg { display: block; width: 100%; max-width: 96px; height: auto; color: var(--ink); }
+  .poses b { font-size: 14px; font-weight: 500; }
+  .poses .note { font-family: var(--mono); font-size: 11px; line-height: 1.4; color: var(--muted); }
+
+  .tagline { margin-top: 64px; display: flex; flex-direction: column; gap: 6px; }
+  .tagline [lang="fa"] { align-self: flex-start; font-size: 22px; font-weight: 500; }
+</style>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="0dd999d5-f85f-4412-ba89-895b9a661430" data-domains="n9e6y.com"></script>
+</head>
+<body>
+
+<header class="site">
+  <div class="bar">
+    <a href="/" class="brand" aria-label="n9e6y — home"><span class="ney">n<span class="ney-x"><span>9</span></span>e<span class="ney-x"><span>6</span></span>y</span></a>
+    <nav aria-label="Main">
+      <span class="nav-links" id="nav-links">
+        <a href="/works.html" aria-current="page">Work</a>
+        <a href="/blog.html">Writing</a>
+        <a href="/about.html">About</a>
+      </span>
+      <button data-umami-event="theme-toggle" id="theme-toggle" aria-label="Toggle theme"><span class="half"></span><span class="label">Dark</span></button>
+      <button class="menu-btn" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    </nav>
+  </div>
+</header>
+
+<main class="page">
+  <div class="wrap">
+    <div class="page-head" data-reveal>
+      <div class="eyebrow crumbs"><a href="/works.html">← Work</a><span>Product</span><span class="when">24 Oct 2026</span><span class="when">5 min read</span></div>
+      <h1 class="h1 report-title"><span lang="fa" dir="rtl">ببین</span> (Bebin)</h1>
+      <p class="intro"><b>An in-person shopping assistant for Torob.</b> It takes a shopper from "I want X" to a <i>verified visit</i>: what to buy, which store, when to go, where the store is inside the mall, and what the seller has actually confirmed.</p>
+      <div class="actions">
+        <a class="btn" data-umami-event="writeup-live" href="https://bebin-web.liara.run" target="_blank" rel="noopener">Live app ↗</a>
+        <a class="btn outline" data-umami-event="writeup-api-docs" href="https://bebin-api.liara.run/api/docs" target="_blank" rel="noopener">API docs ↗</a>
+        <a class="btn outline" data-umami-event="writeup-github" href="https://github.com/n9e6y/scH-T" target="_blank" rel="noopener">GitHub ↗</a>
+        <span class="hint">Open it on a phone</span>
+      </div>
+      <div class="callout live-note">
+        <span class="eyebrow"><span class="dot" aria-hidden="true"></span>If the demo is down</span>
+        <span>The live app may go offline one day, maybe for good. Everything it needs is on <a data-umami-event="writeup-github" href="https://github.com/n9e6y/scH-T" target="_blank" rel="noopener">GitHub ↗</a>, so you can run your own copy.</span>
+      </div>
+    </div>
+    <div class="meta-ledger">
+      <div><span class="k">Built for</span><span>Torob's in-person shopping challenge</span></div>
+      <div><span class="k">Time</span><span class="m">~3 days (Oct 22–24, 2026)</span></div>
+      <div><span class="k">Role</span><span>Solo developer and designer (with Claude Code)</span></div>
+      <div><span class="k">Platform</span><span>Persian · RTL · mobile-first · installable PWA</span></div>
+      <div><span class="k">Stack</span><span class="m">Next.js 16 · React 19 · TypeScript · Tailwind · FastAPI · Python 3.12 · SQLite FTS5 · embeddings · SSE</span></div>
+      <div><span class="k">Links</span><span class="m links"><a data-umami-event="writeup-live" href="https://bebin-web.liara.run" target="_blank" rel="noopener">Live ↗</a><a data-umami-event="writeup-api-docs" href="https://bebin-api.liara.run/api/docs" target="_blank" rel="noopener">API docs ↗</a><a data-umami-event="writeup-github" href="https://github.com/n9e6y/scH-T" target="_blank" rel="noopener">GitHub ↗</a></span></div>
+    </div>
+
+    <div class="stats" style="margin-top:64px" data-reveal>
+      <div class="stat"><div class="eyebrow">Shops</div><div class="v">6,476</div></div>
+      <div class="stat"><div class="eyebrow">Products</div><div class="v">225<small>k</small></div><div class="d muted">225,903</div></div>
+      <div class="stat"><div class="eyebrow">Offers</div><div class="v">331<small>k</small></div><div class="d muted">331,506</div></div>
+      <div class="stat"><div class="eyebrow">LLM budget</div><div class="v">~$3</div><div class="d muted">in total</div></div>
+    </div>
+
+    <figure class="shots" data-reveal>
+      <div class="strip">
+        <div><img src="/img/bebin/1-search.png" alt="Search results for phones, with the need-finder asking what the phone is mostly for" width="416" height="900" loading="lazy" /><span>Search</span></div>
+        <div><img src="/img/bebin/3-verified.png" alt="The seller confirmed the price and stock: the mascot holds the stamp with the time it was given" width="416" height="900" loading="lazy" /><span>Verified</span></div>
+        <div><img src="/img/bebin/5-in-mall.png" alt="Inside the mall: the shop's floor and unit, with the floors to pick from" width="416" height="900" loading="lazy" /><span>In the mall</span></div>
+      </div>
+      <figcaption><span lang="fa" dir="rtl">«قبل از رفتن، ببین.»</span><span class="eyebrow">Look before you go.</span></figcaption>
+    </figure>
+
+    <div class="report">
+      <nav class="toc" aria-label="Contents">
+        <div class="eyebrow">Contents</div>
+        <a href="#problem">The problem</a>
+        <a href="#what">What it does</a>
+        <a href="#honesty">Honesty, by design</a>
+        <a href="#how">How it works</a>
+        <a href="#design">Design</a>
+        <a href="#more">Read more</a>
+      </nav>
+      <article>
+        <section id="problem">
+          <h2 class="h2">The problem</h2>
+          <div class="prose"><p>Online price comparison stops at the screen. In Tehran, a lot of shopping still happens in person, in small shops, arcades (<span lang="fa">پاساژ</span>) and malls, and that's where it goes wrong:</p></div>
+          <ul class="ledger">
+            <li><span><b>"I don't know which model is right."</b></span></li>
+            <li><span><b>The listed price is old</b>, and nobody knows whether the item is in stock.</span></li>
+            <li><span><b>You cross the city and the shop is closed</b>, or the owner never picks up.</span></li>
+            <li><span><b>You find the mall but not the shop</b> inside it.</span></li>
+            <li><span><b>You can only buy on installments</b>, and you don't know who offers them.</span></li>
+          </ul>
+          <div class="prose"><p>The challenge asked for a flow that covers four steps: <b>choose → find stores → compare stores → contact stores</b>, plus all five pain points.</p></div>
+
+          <figure class="fig">
+            <div class="fig-head">
+              <div class="eyebrow"><span>Figure · The journey</span></div>
+              <h3 class="h3">Four steps, five places it goes wrong.</h3>
+              <p>Each pain point sits under the step where it hurts · click a step to jump to it</p>
+            </div>
+            <div class="fig-body journey">
+              <a href="#choose"><span class="arr">→</span><b>Choose</b><span class="pains"><span>Which model?</span></span></a>
+              <a href="#find"><span class="arr">→</span><b>Find</b><span class="pains"><span>Mall, but not the shop</span></span></a>
+              <a href="#compare"><span class="arr">→</span><b>Compare</b><span class="pains"><span>Closed when you arrive</span></span></a>
+              <a href="#ask"><span class="arr"></span><b>Ask</b><span class="pains"><span>Old price, unknown stock</span><span>Who offers installments?</span></span></a>
+            </div>
+          </figure>
+        </section>
+
+        <section id="what">
+          <h2 class="h2">What it does</h2>
+
+          <div id="choose" class="sub">
+            <h3 class="h3">Choose: search that understands plain Persian</h3>
+            <div class="prose"><p>Type <span lang="fa" dir="rtl">«گوشی سامسونگ زیر ۶۰ میلیون اقساطی»</span> ("Samsung phone under 60 million, on installments") and Bebin pulls out the budget, the brand and the payment condition as removable chips. If you're unsure, a <b>need-finder</b> asks short questions about budget and use, and you can compare products side by side.</p></div>
+          </div>
+
+          <div id="find" class="sub">
+            <h3 class="h3">Find: stores near you, honestly labelled</h3>
+            <div class="prose"><p>Sellers appear in a list and on a map, ranked from your location, with walking or taxi times. Shops that only match the <i>category</i> are kept in a separate group. The app never implies they carry the item.</p></div>
+          </div>
+
+          <div id="compare" class="sub">
+            <h3 class="h3">Compare: rankings that explain themselves</h3>
+            <div class="prose"><p>Sort by cheapest, nearest, or a balance of both. Each shop shows whether it will be <b>open when you arrive</b>, not just now, and a <span lang="fa" dir="rtl">«چرا این ترتیب؟»</span> ("why this order?") sheet breaks down the score.</p></div>
+
+<figure class="fig" data-chart="stack" data-opts='{"min":0.1}'>
+  <div class="fig-head">
+    <div class="eyebrow"><span>Figure · Ranking weights</span></div>
+    <h3 class="h3">What "balanced" means.</h3>
+    <p>Share of the score per factor, by ranking mode · real weights from the ranker</p>
+  </div>
+  <div class="fig-body">
+    <div class="fig-chart"></div>
+      <div class="fig-table"><table class="fig-data">
+        <thead><tr><th>Mode</th><th>price</th><th>distance</th><th>open on arrival</th><th>fresh</th><th>verified</th></tr></thead>
+        <tbody>
+        <tr><td>balanced</td><td>0.35</td><td>0.30</td><td>0.15</td><td>0.10</td><td>0.10</td></tr>
+        <tr><td>cheapest</td><td>0.60</td><td>0.15</td><td>0.10</td><td>0.10</td><td>0.05</td></tr>
+        <tr><td>nearest</td><td>0.15</td><td>0.60</td><td>0.15</td><td>0.05</td><td>0.05</td></tr>
+        </tbody>
+      </table></div>
+  </div>
+  <figcaption><span>Unlabelled segments are .05.</span><span class="fig-tools"></span></figcaption>
+</figure>
+          </div>
+
+          <div id="ask" class="sub">
+            <h3 class="h3">Ask: <span lang="fa" dir="rtl">«از فروشگاه بپرس»</span></h3>
+            <div class="prose">
+              <p>Ask up to three shops about today's price, stock, exact location or installments. Replies arrive live. A confirmed answer gets a <b>stamp (<span lang="fa">مهر</span>)</b> with the time it was given, and it replaces the old listed price.</p>
+              <p>If a shop doesn't answer, or says it's out of stock, Bebin offers <b>alternatives</b> in order: the same product at another shop, similar models at the same shop, then similar models nearby.</p>
+            </div>
+
+            <figure class="fig">
+              <div class="fig-head">
+                <div class="eyebrow"><span>Figure · Inquiry states</span><span>Schematic</span></div>
+                <h3 class="h3">The life of a question.</h3>
+                <p>Boxes = states, ink outline = the outcome you want, dashed = dead ends that hand off to alternatives</p>
+              </div>
+              <div class="fig-body"><div class="fig-chart">
+<svg class="diagram" viewBox="0 0 960 330" role="img" aria-label="Inquiry states: sent, delivered, seen, answered and stamped; no answer and out of stock lead to alternatives; sent can be cancelled" style="min-width:640px"><g style="font-family:var(--mono); font-size:12px; fill:var(--ink);">
+<rect x="0.5" y="40.5" width="130" height="56" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="14" y="66">sent</text><text x="14" y="84" style="fill:var(--muted); font-size:11px;">to ≤ 3 shops</text>
+<rect x="190.5" y="40.5" width="130" height="56" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="204" y="66">delivered</text>
+<rect x="380.5" y="40.5" width="130" height="56" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="394" y="66">seen</text>
+<rect x="570.5" y="40.5" width="130" height="56" rx="4" style="fill:var(--paper); stroke:var(--ink); stroke-width:1.5;"></rect><text x="584" y="66">answered</text><text x="584" y="84" style="fill:var(--muted); font-size:11px;">live over SSE</text>
+<rect x="760.5" y="40.5" width="199" height="56" rx="4" style="fill:var(--ink); stroke:var(--ink);"></rect><text x="774" y="66" style="fill:var(--paper);">stamped · <tspan class="fa">مهر</tspan></text><text x="774" y="84" style="fill:var(--paper); font-size:11px; opacity:.75;">replaces listed price</text>
+<line x1="131" y1="68" x2="184" y2="68" style="stroke:var(--ink);"></line><path d="M190,68 L183,64 L183,72 Z" style="fill:var(--ink);"></path>
+<line x1="321" y1="68" x2="374" y2="68" style="stroke:var(--ink);"></line><path d="M380,68 L373,64 L373,72 Z" style="fill:var(--ink);"></path>
+<line x1="511" y1="68" x2="564" y2="68" style="stroke:var(--ink);"></line><path d="M570,68 L563,64 L563,72 Z" style="fill:var(--ink);"></path>
+<line x1="701" y1="68" x2="754" y2="68" style="stroke:var(--ink);"></line><path d="M760,68 L753,64 L753,72 Z" style="fill:var(--ink);"></path>
+<rect x="0.5" y="190.5" width="130" height="56" rx="4" style="fill:none; stroke:var(--line2); stroke-dasharray:4 3;"></rect><text x="14" y="216">cancelled</text><text x="14" y="234" style="fill:var(--muted); font-size:11px;">by the shopper</text>
+<line x1="65" y1="97" x2="65" y2="184" style="stroke:var(--line2);"></line><path d="M65,190 L61,183 L69,183 Z" style="fill:var(--line2);"></path>
+<rect x="380.5" y="190.5" width="130" height="56" rx="4" style="fill:none; stroke:var(--line2); stroke-dasharray:4 3;"></rect><text x="394" y="216">no answer</text><text x="394" y="234" style="fill:var(--muted); font-size:11px;">deadline passed</text>
+<line x1="430" y1="97" x2="430" y2="184" style="stroke:var(--ink);"></line><path d="M430,190 L426,183 L434,183 Z" style="fill:var(--ink);"></path>
+<path d="M470,190 C470,150 470,130 470,103" style="fill:none; stroke:var(--muted); stroke-dasharray:3 3;"></path><path d="M470,97 L466,104 L474,104 Z" style="fill:var(--muted);"></path>
+<text x="480" y="150" style="fill:var(--muted); font-size:11px;">one nudge</text><text x="480" y="164" style="fill:var(--muted); font-size:11px;">extends deadline</text>
+<rect x="570.5" y="190.5" width="130" height="56" rx="4" style="fill:none; stroke:var(--line2); stroke-dasharray:4 3;"></rect><text x="584" y="216">out of stock</text><text x="584" y="234" style="fill:var(--muted); font-size:11px;">seller's answer</text>
+<line x1="635" y1="97" x2="635" y2="184" style="stroke:var(--ink);"></line><path d="M635,190 L631,183 L639,183 Z" style="fill:var(--ink);"></path>
+<rect x="760.5" y="160.5" width="199" height="168" rx="4" style="fill:var(--paper); stroke:var(--ink); stroke-width:1.5;"></rect><text x="774" y="186">alternatives</text>
+<circle cx="779" cy="210" r="3" style="fill:var(--ink);"></circle><text x="792" y="214" style="font-size:11px;">same product</text><text x="792" y="228" style="fill:var(--muted); font-size:11px;">another shop</text>
+<circle cx="779" cy="250" r="3" style="fill:var(--ink);"></circle><text x="792" y="254" style="font-size:11px;">similar models</text><text x="792" y="268" style="fill:var(--muted); font-size:11px;">same shop</text>
+<circle cx="779" cy="290" r="3" style="fill:var(--ink);"></circle><text x="792" y="294" style="font-size:11px;">similar models</text><text x="792" y="308" style="fill:var(--muted); font-size:11px;">nearby</text>
+<path d="M511,232 C540,300 700,300 754,280" style="fill:none; stroke:var(--ink);"></path><path d="M760,278 L752,276 L755,284 Z" style="fill:var(--ink);"></path>
+<line x1="701" y1="218" x2="754" y2="218" style="stroke:var(--ink);"></line><path d="M760,218 L753,214 L753,222 Z" style="fill:var(--ink);"></path>
+</g></svg>
+              </div></div>
+              <figcaption><span>Alternatives are offered in this order.</span></figcaption>
+            </figure>
+          </div>
+
+          <div id="go" class="sub">
+            <h3 class="h3">Go: a plan that knows what will be open</h3>
+            <div class="prose"><p>The visit plan orders your stops, groups the ones in the same mall, and warns you when a shop will be closed on arrival. It can reschedule (<span lang="fa" dir="rtl">«برای شنبه ۱۰:۰۰ بچین»</span>, "plan it for Saturday 10:00") or swap the stop for an alternative. Mall pages show the <b>floor, unit and neighbouring shops</b>, so you can find the shop once you're inside.</p></div>
+          </div>
+
+          <div class="sub">
+            <h3 class="h3">Also</h3>
+            <ul class="ledger soft">
+              <li><span><b>An assistant chat</b> that uses the same tools: it searches, compares, finds sellers, asks stores (only after you confirm) and plans the visit. Its answers render with the same cards as the regular screens.</span></li>
+              <li><span><b>A seller panel</b> (<code>/seller</code>): open it on a second phone and answer the inquiries as the shop.</span></li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="honesty">
+          <h2 class="h2">Honesty, by design</h2>
+          <div class="prose"><p>The dataset has <b>no stock column</b>, every phone number is <b>fictitious</b>, and most optional fields are empty. Instead of hiding that, Bebin is built around it. These rules are enforced in the API, not only in the UI:</p></div>
+          <ul class="ledger">
+            <li><span><b>Stock is never stated unless a seller answered</b>, and the answer shows <i>when</i> they answered.</span></li>
+            <li><span><b>Listed price, last price change and seller verification are always shown separately.</b></span></li>
+            <li><span><b>Unknown is a first-class value:</b> <span lang="fa">«نامشخص»</span>, drawn dashed, with a way to find out.</span></li>
+            <li><span><b>Simulated seller replies are labelled <span lang="fa">«پاسخ شبیه‌سازی‌شده»</span></b> ("simulated reply").</span></li>
+          </ul>
+
+          <figure class="fig">
+            <div class="fig-head">
+              <div class="eyebrow"><span>Figure · Trust scale</span></div>
+              <h3 class="h3">Saturation = certainty.</h3>
+              <p>How Bebin draws a price, from most to least certain · drawn here in ink</p>
+            </div>
+            <div class="fig-body">
+              <div class="trust">
+                <div><div class="sw verified" lang="fa">مهر</div><b>Seller-verified</b><span class="note">stamp green · most saturated</span></div>
+                <div><div class="sw listed">listed</div><b>Listed and fresh</b><span class="note">plain ink</span></div>
+                <div><div class="sw stale">stale</div><b>Stale</b><span class="note">wilted olive</span></div>
+                <div><div class="sw unknown" lang="fa">؟</div><b>Unknown</b><span class="note">grey, dashed</span></div>
+              </div>
+            </div>
+            <figcaption><span>← more certain</span><span>less certain →</span></figcaption>
+          </figure>
+
+<figure class="fig" data-chart="split" data-opts='{"focus":"Older than two weeks","share":true}'>
+  <div class="fig-head">
+    <div class="eyebrow"><span>Figure · Price freshness</span></div>
+    <h3 class="h3">How fresh are the prices?</h3>
+    <p>Age of each listed price, measured against the snapshot date (2026-10-13)</p>
+  </div>
+  <div class="fig-body">
+    <div class="fig-chart"></div>
+      <div class="fig-table"><table class="fig-data">
+        <thead><tr><th>Age</th><th>Share of prices (%)</th></tr></thead>
+        <tbody>
+        <tr><td>Older than two weeks</td><td>55</td></tr>
+        <tr><td>Newer</td><td>45</td></tr>
+        </tbody>
+      </table></div>
+  </div>
+  <figcaption><span>Why freshness is printed next to every price.</span><span class="fig-tools"></span></figcaption>
+</figure>
+        </section>
+
+        <section id="how">
+          <h2 class="h2">How it works</h2>
+
+          <figure class="fig" style="margin-top:40px">
+            <div class="fig-head">
+              <div class="eyebrow"><span>Figure · Architecture</span><span>Schematic</span></div>
+              <h3 class="h3">Two apps, two SQLite files.</h3>
+              <p>Boxes = processes, cylinders flattened to boxes = data, dashed = optional</p>
+            </div>
+            <div class="fig-body"><div class="fig-chart">
+<svg class="diagram" viewBox="0 0 960 400" role="img" aria-label="Phone PWA talks to the FastAPI api over REST and SSE. The api reads catalog.db, writes app.db, optionally uses vectors, and calls an optional LLM provider." style="min-width:640px"><g style="font-family:var(--mono); font-size:12px; fill:var(--ink);">
+<rect x="0.5" y="110.5" width="190" height="80" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="14" y="138">Phone · web</text><text x="14" y="158" style="fill:var(--muted); font-size:11px;">Next.js 16</text><text x="14" y="174" style="fill:var(--muted); font-size:11px;">PWA, RTL</text>
+<line x1="191" y1="150" x2="294" y2="150" style="stroke:var(--ink);"></line><path d="M300,150 L293,146 L293,154 Z" style="fill:var(--ink);"></path><path d="M191,150 L198,146 L198,154 Z" style="fill:var(--ink);"></path>
+<text x="245" y="140" style="fill:var(--muted); font-size:11px; text-anchor:middle;">REST + SSE</text>
+<rect x="300.5" y="20.5" width="300" height="260" rx="4" style="fill:var(--paper); stroke:var(--ink); stroke-width:1.5;"></rect><text x="316" y="48">api</text><text x="316" y="66" style="fill:var(--muted); font-size:11px;">FastAPI, single instance</text>
+<rect x="316.5" y="96.5" width="268" height="64" rx="3" style="fill:none; stroke:var(--line2);"></rect><text x="330" y="122">in-process scheduler</text><text x="330" y="142" style="fill:var(--muted); font-size:11px;">inquiry simulator + live SSE hub</text>
+<rect x="316.5" y="176.5" width="268" height="64" rx="3" style="fill:none; stroke:var(--line2);"></rect><text x="330" y="202">llm.py</text><text x="330" y="222" style="fill:var(--muted); font-size:11px;">daily token guard</text>
+<rect x="680.5" y="20.5" width="279" height="70" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="694" y="46">catalog.db</text><text x="694" y="64" style="fill:var(--muted); font-size:11px;">SQLite + FTS5, read-only</text><text x="694" y="80" style="fill:var(--muted); font-size:11px;">built from the CSVs</text>
+<rect x="680.5" y="115.5" width="279" height="70" rx="4" style="fill:var(--paper); stroke:var(--line2);"></rect><text x="694" y="141">app.db</text><text x="694" y="159" style="fill:var(--muted); font-size:11px;">SQLite (WAL): inquiries,</text><text x="694" y="175" style="fill:var(--muted); font-size:11px;">verifications, LLM cache</text>
+<rect x="680.5" y="210.5" width="279" height="70" rx="4" style="fill:none; stroke:var(--line2); stroke-dasharray:4 3;"></rect><text x="694" y="236">vectors/</text><text x="694" y="254" style="fill:var(--muted); font-size:11px;">226k × 256 embeddings</text><text x="694" y="270" style="fill:var(--muted); font-size:11px;">optional</text>
+<path d="M601,70 C640,70 640,55 674,55" style="fill:none; stroke:var(--ink);"></path><path d="M680,55 L673,51 L673,59 Z" style="fill:var(--ink);"></path>
+<line x1="601" y1="150" x2="674" y2="150" style="stroke:var(--ink);"></line><path d="M680,150 L673,146 L673,154 Z" style="fill:var(--ink);"></path>
+<path d="M601,230 C640,230 640,245 674,245" style="fill:none; stroke:var(--ink);"></path><path d="M680,245 L673,241 L673,249 Z" style="fill:var(--ink);"></path>
+<line x1="450" y1="241" x2="450" y2="324" style="stroke:var(--ink);"></line><path d="M450,330 L446,323 L454,323 Z" style="fill:var(--ink);"></path>
+<rect x="300.5" y="330.5" width="300" height="60" rx="4" style="fill:none; stroke:var(--line2); stroke-dasharray:4 3;"></rect><text x="316" y="356">LLM provider</text><text x="316" y="374" style="fill:var(--muted); font-size:11px;">any OpenAI-compatible</text>
+<text x="620" y="356" style="fill:var(--muted); font-size:11px;">optional, every feature</text><text x="620" y="372" style="fill:var(--muted); font-size:11px;">has a fallback</text>
+</g></svg>
+            </div></div>
+            <figcaption><span>Ink outline = the one API process.</span></figcaption>
+          </figure>
+
+          <div class="sub">
+            <h3 class="h3">Key decisions</h3>
+            <ul class="ledger" style="margin-top:16px">
+              <li><span><b>Few moving parts.</b> Two apps and two SQLite files: no Redis, no queues, no workers. The read-only catalog and the user data live in separate files, so rebuilding the catalog never touches inquiries.</span></li>
+              <li><span><b>Deterministic code ranks and filters; the LLM understands, asks, explains and writes.</b> Rankings are reproducible and testable, and an LLM outage can't break a core flow.</span></li>
+              <li><span><b>Hybrid search.</b> SQLite FTS5 keyword search fused with vector embeddings (reciprocal rank fusion, rescaled onto each query's keyword-score range). It handles typos and synonyms: <span lang="fa">«کفش ورزشی»</span> ("sports shoes") went from 11 results to about 70.</span></li>
+              <li><span><b>Live updates over SSE</b>, with replay after a reconnect and an in-process scheduler that survives restarts.</span></li>
+              <li><span><b>The API returns view-ready data:</b> reasons, trust fields, distances, open status. The frontend and the assistant reuse the same payloads, and the TypeScript types are generated from the OpenAPI schema.</span></li>
+              <li><span><b>Built for Iran:</b> self-hosted fonts, logical (RTL-safe) CSS only, Persian digits and Jalali dates, deployed on an Iranian host.</span></li>
+            </ul>
+            <div class="stack-line">
+              <span class="eyebrow">Stack</span>
+              <span class="m">Next.js 16, React 19, TypeScript, Tailwind, TanStack Query, Zustand, Leaflet · Python 3.12, FastAPI, pydantic v2, SQLite, numpy · gpt-5.4-mini and text-embedding-3-small through an OpenAI-compatible provider · Docker on Liara.</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="design">
+          <h2 class="h2">Design</h2>
+          <div class="prose">
+            <p>The whole identity uses <b>two hues</b>: a radish's red and its leaves' green. Bright radish means "you can do this" and marks every call to action. Dark beet means "something's wrong". The «oo» in the wordmark is a pair of glasses, which doubles as the search icon.</p>
+            <p>The mascot is <b><span lang="fa">«تربچه»</span></b>, a 24×24 pixel radish that appears only at moments that matter, at most once per screen: searching, waiting for a reply, happy with the stamp, sleepy when a shop is closed, wilted when you're offline.</p>
+          </div>
+
+          <figure class="fig" style="margin-top:40px">
+            <div class="fig-head">
+              <div class="eyebrow"><span>Figure · <span lang="fa">تربچه</span></span></div>
+            </div>
+            <div class="fig-body poses">
+              <div><svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true"><path fill="#2E5121" d="M6 0h1v1h-1zM7 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM5 1h1v1h-1zM8 1h1v1h-1zM15 1h1v1h-1zM18 1h1v1h-1zM5 2h1v1h-1zM9 2h1v1h-1zM14 2h1v1h-1zM18 2h1v1h-1zM6 3h1v1h-1zM10 3h1v1h-1zM13 3h1v1h-1zM17 3h1v1h-1zM7 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM16 4h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM9 6h1v1h-1zM14 6h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1z"/><path fill="#5E8F3E" d="M6 1h1v1h-1zM7 1h1v1h-1zM16 1h1v1h-1zM17 1h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1z"/><path fill="#6E1534" d="M8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM5 9h1v1h-1zM18 9h1v1h-1zM4 10h1v1h-1zM19 10h1v1h-1zM3 11h1v1h-1zM20 11h1v1h-1zM3 12h1v1h-1zM20 12h1v1h-1zM3 13h1v1h-1zM20 13h1v1h-1zM3 14h1v1h-1zM20 14h1v1h-1zM3 15h1v1h-1zM10 15h1v1h-1zM13 15h1v1h-1zM20 15h1v1h-1zM4 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM19 16h1v1h-1zM5 17h1v1h-1zM19 17h1v1h-1zM6 18h1v1h-1zM18 18h1v1h-1zM7 19h1v1h-1zM8 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM10 21h1v1h-1zM13 21h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM12 23h1v1h-1z"/><path fill="#F08CA4" d="M8 8h1v1h-1zM9 8h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM4 11h1v1h-1zM4 12h1v1h-1zM6 14h1v1h-1zM17 14h1v1h-1z"/><path fill="#DE5274" d="M10 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM14 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM13 18h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1z"/><path fill="#C8385A" d="M17 9h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1z"/><path fill="#1B2420" d="M8 12h1v1h-1zM15 12h1v1h-1zM8 13h1v1h-1zM15 13h1v1h-1z"/><path fill="#FFFFFF" d="M11 20h1v1h-1zM12 20h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM12 22h1v1h-1z"/></svg><b>default</b><span class="note">hello</span></div>
+              <div><svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true"><path fill="#2E5121" d="M6 0h1v1h-1zM7 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM5 1h1v1h-1zM8 1h1v1h-1zM15 1h1v1h-1zM18 1h1v1h-1zM5 2h1v1h-1zM9 2h1v1h-1zM14 2h1v1h-1zM18 2h1v1h-1zM6 3h1v1h-1zM10 3h1v1h-1zM13 3h1v1h-1zM17 3h1v1h-1zM7 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM16 4h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM9 6h1v1h-1zM14 6h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1z"/><path fill="#5E8F3E" d="M6 1h1v1h-1zM7 1h1v1h-1zM16 1h1v1h-1zM17 1h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1z"/><path fill="#6E1534" d="M8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM5 9h1v1h-1zM18 9h1v1h-1zM4 10h1v1h-1zM19 10h1v1h-1zM3 11h1v1h-1zM20 11h1v1h-1zM3 12h1v1h-1zM20 12h1v1h-1zM3 13h1v1h-1zM20 13h1v1h-1zM3 14h1v1h-1zM20 14h1v1h-1zM3 15h1v1h-1zM20 15h1v1h-1zM4 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM19 16h1v1h-1zM5 17h1v1h-1zM19 17h1v1h-1zM6 18h1v1h-1zM18 18h1v1h-1zM7 19h1v1h-1zM8 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM10 21h1v1h-1zM13 21h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM12 23h1v1h-1z"/><path fill="#F08CA4" d="M8 8h1v1h-1zM9 8h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM5 10h1v1h-1zM4 12h1v1h-1z"/><path fill="#DE5274" d="M10 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM10 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM17 12h1v1h-1zM4 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM8 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM17 13h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM17 14h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM13 18h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1z"/><path fill="#C8385A" d="M17 9h1v1h-1zM18 10h1v1h-1zM19 12h1v1h-1zM19 13h1v1h-1zM19 14h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1z"/><path fill="#1B2420" d="M6 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM17 10h1v1h-1zM4 11h1v1h-1zM5 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM5 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM13 12h1v1h-1zM16 12h1v1h-1zM18 12h1v1h-1zM5 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM13 13h1v1h-1zM16 13h1v1h-1zM18 13h1v1h-1zM5 14h1v1h-1zM10 14h1v1h-1zM13 14h1v1h-1zM18 14h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1z"/><path fill="#FFFFFF" d="M6 11h1v1h-1zM14 11h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM12 22h1v1h-1z"/></svg><b>searching</b><span class="note">looking</span></div>
+              <div><svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true"><path fill="#2E5121" d="M6 0h1v1h-1zM7 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM5 1h1v1h-1zM8 1h1v1h-1zM15 1h1v1h-1zM18 1h1v1h-1zM5 2h1v1h-1zM9 2h1v1h-1zM14 2h1v1h-1zM18 2h1v1h-1zM6 3h1v1h-1zM10 3h1v1h-1zM13 3h1v1h-1zM17 3h1v1h-1zM7 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM16 4h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM9 6h1v1h-1zM14 6h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1z"/><path style="fill:currentColor" d="M20 0h1v1h-1zM21 0h1v1h-1zM22 0h1v1h-1zM19 1h1v1h-1zM23 1h1v1h-1zM19 2h1v1h-1zM23 2h1v1h-1zM20 3h1v1h-1zM21 3h1v1h-1zM22 3h1v1h-1zM20 4h1v1h-1z"/><path fill="#5E8F3E" d="M6 1h1v1h-1zM7 1h1v1h-1zM16 1h1v1h-1zM17 1h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1z"/><path style="fill:var(--paper)" d="M20 1h1v1h-1zM21 1h1v1h-1zM22 1h1v1h-1zM20 2h1v1h-1zM22 2h1v1h-1z"/><path fill="#C8385A" d="M21 2h1v1h-1zM17 9h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1z"/><path fill="#6E1534" d="M8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM5 9h1v1h-1zM18 9h1v1h-1zM4 10h1v1h-1zM19 10h1v1h-1zM3 11h1v1h-1zM20 11h1v1h-1zM3 12h1v1h-1zM20 12h1v1h-1zM3 13h1v1h-1zM20 13h1v1h-1zM3 14h1v1h-1zM20 14h1v1h-1zM3 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM20 15h1v1h-1zM4 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM19 16h1v1h-1zM5 17h1v1h-1zM19 17h1v1h-1zM6 18h1v1h-1zM18 18h1v1h-1zM7 19h1v1h-1zM8 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM10 21h1v1h-1zM13 21h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM12 23h1v1h-1z"/><path fill="#F08CA4" d="M8 8h1v1h-1zM9 8h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM4 11h1v1h-1zM4 12h1v1h-1zM6 14h1v1h-1zM17 14h1v1h-1z"/><path fill="#DE5274" d="M10 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM14 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM10 15h1v1h-1zM13 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM13 18h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1z"/><path fill="#1B2420" d="M8 12h1v1h-1zM15 12h1v1h-1zM8 13h1v1h-1zM15 13h1v1h-1z"/><path fill="#FFFFFF" d="M11 20h1v1h-1zM12 20h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM12 22h1v1h-1z"/></svg><b>asking</b><span class="note">asking a shop</span></div>
+              <div><svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true"><path style="fill:currentColor" d="M1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM0 1h1v1h-1zM2 1h1v1h-1zM4 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM0 3h1v1h-1zM4 3h1v1h-1zM1 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1z"/><path fill="#2E5121" d="M6 0h1v1h-1zM7 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM5 1h1v1h-1zM8 1h1v1h-1zM15 1h1v1h-1zM18 1h1v1h-1zM5 2h1v1h-1zM9 2h1v1h-1zM14 2h1v1h-1zM18 2h1v1h-1zM6 3h1v1h-1zM10 3h1v1h-1zM13 3h1v1h-1zM17 3h1v1h-1zM7 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM16 4h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM9 6h1v1h-1zM14 6h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1z"/><path style="fill:var(--paper)" d="M1 1h1v1h-1zM3 1h1v1h-1zM1 2h1v1h-1zM1 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1z"/><path fill="#5E8F3E" d="M6 1h1v1h-1zM7 1h1v1h-1zM16 1h1v1h-1zM17 1h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1z"/><path fill="#6E1534" d="M8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM5 9h1v1h-1zM18 9h1v1h-1zM4 10h1v1h-1zM19 10h1v1h-1zM3 11h1v1h-1zM20 11h1v1h-1zM3 12h1v1h-1zM20 12h1v1h-1zM3 13h1v1h-1zM20 13h1v1h-1zM3 14h1v1h-1zM20 14h1v1h-1zM3 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM20 15h1v1h-1zM4 16h1v1h-1zM19 16h1v1h-1zM5 17h1v1h-1zM19 17h1v1h-1zM6 18h1v1h-1zM18 18h1v1h-1zM7 19h1v1h-1zM8 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM10 21h1v1h-1zM13 21h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM12 23h1v1h-1z"/><path fill="#F08CA4" d="M8 8h1v1h-1zM9 8h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM4 11h1v1h-1zM4 12h1v1h-1zM6 14h1v1h-1zM17 14h1v1h-1z"/><path fill="#DE5274" d="M10 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM14 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM8 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM13 18h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1z"/><path fill="#C8385A" d="M17 9h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1z"/><path fill="#1B2420" d="M8 11h1v1h-1zM15 11h1v1h-1zM8 12h1v1h-1zM15 12h1v1h-1z"/><path fill="#FFFFFF" d="M11 20h1v1h-1zM12 20h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM12 22h1v1h-1z"/></svg><b>waiting</b><span class="note">awaiting reply</span></div>
+              <div><svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true"><path fill="#2E5121" d="M6 0h1v1h-1zM7 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM5 1h1v1h-1zM8 1h1v1h-1zM15 1h1v1h-1zM18 1h1v1h-1zM5 2h1v1h-1zM9 2h1v1h-1zM14 2h1v1h-1zM18 2h1v1h-1zM6 3h1v1h-1zM10 3h1v1h-1zM13 3h1v1h-1zM17 3h1v1h-1zM7 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM16 4h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM9 6h1v1h-1zM14 6h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1z"/><path fill="#5E8F3E" d="M6 1h1v1h-1zM7 1h1v1h-1zM16 1h1v1h-1zM17 1h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1z"/><path fill="#6E1534" d="M8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM5 9h1v1h-1zM18 9h1v1h-1zM4 10h1v1h-1zM19 10h1v1h-1zM3 11h1v1h-1zM20 11h1v1h-1zM3 12h1v1h-1zM20 12h1v1h-1zM3 13h1v1h-1zM20 13h1v1h-1zM3 14h1v1h-1zM20 14h1v1h-1zM3 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM20 15h1v1h-1zM4 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM19 16h1v1h-1zM5 17h1v1h-1zM6 18h1v1h-1zM7 19h1v1h-1zM8 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM10 21h1v1h-1zM13 21h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM12 23h1v1h-1z"/><path fill="#F08CA4" d="M8 8h1v1h-1zM9 8h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM4 11h1v1h-1zM4 12h1v1h-1zM6 14h1v1h-1zM17 14h1v1h-1z"/><path fill="#DE5274" d="M10 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM8 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM15 12h1v1h-1zM17 12h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM8 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM13 18h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1z"/><path fill="#C8385A" d="M17 9h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1z"/><path fill="#1B2420" d="M8 11h1v1h-1zM15 11h1v1h-1zM7 12h1v1h-1zM9 12h1v1h-1zM14 12h1v1h-1zM16 12h1v1h-1z"/><path fill="#007A36" d="M19 17h1v1h-1zM20 17h1v1h-1zM21 17h1v1h-1zM18 18h1v1h-1zM22 18h1v1h-1zM18 19h1v1h-1zM20 19h1v1h-1zM22 19h1v1h-1zM18 20h1v1h-1zM22 20h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM21 21h1v1h-1z"/><path fill="#FFFFFF" d="M19 18h1v1h-1zM20 18h1v1h-1zM21 18h1v1h-1zM19 19h1v1h-1zM21 19h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM19 20h1v1h-1zM20 20h1v1h-1zM21 20h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM12 22h1v1h-1z"/></svg><b>happy</b><span class="note">stamped</span></div>
+              <div><svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true"><path fill="#2E5121" d="M6 0h1v1h-1zM7 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM5 1h1v1h-1zM8 1h1v1h-1zM15 1h1v1h-1zM18 1h1v1h-1zM5 2h1v1h-1zM9 2h1v1h-1zM14 2h1v1h-1zM18 2h1v1h-1zM6 3h1v1h-1zM10 3h1v1h-1zM13 3h1v1h-1zM17 3h1v1h-1zM7 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM16 4h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM9 6h1v1h-1zM14 6h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1z"/><path fill="#5E8F3E" d="M6 1h1v1h-1zM7 1h1v1h-1zM16 1h1v1h-1zM17 1h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1z"/><path style="fill:currentColor" d="M19 1h1v1h-1zM20 1h1v1h-1zM21 1h1v1h-1zM22 1h1v1h-1zM21 2h1v1h-1zM20 3h1v1h-1zM19 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1z"/><path fill="#6E1534" d="M8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM5 9h1v1h-1zM18 9h1v1h-1zM4 10h1v1h-1zM19 10h1v1h-1zM3 11h1v1h-1zM20 11h1v1h-1zM3 12h1v1h-1zM20 12h1v1h-1zM3 13h1v1h-1zM20 13h1v1h-1zM3 14h1v1h-1zM20 14h1v1h-1zM3 15h1v1h-1zM20 15h1v1h-1zM4 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM19 16h1v1h-1zM5 17h1v1h-1zM19 17h1v1h-1zM6 18h1v1h-1zM18 18h1v1h-1zM7 19h1v1h-1zM8 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM10 21h1v1h-1zM13 21h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM12 23h1v1h-1z"/><path fill="#F08CA4" d="M8 8h1v1h-1zM9 8h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM4 11h1v1h-1zM4 12h1v1h-1zM6 14h1v1h-1zM17 14h1v1h-1z"/><path fill="#DE5274" d="M10 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM17 13h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM13 18h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1z"/><path fill="#C8385A" d="M17 9h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1z"/><path fill="#1B2420" d="M7 13h1v1h-1zM8 13h1v1h-1zM15 13h1v1h-1zM16 13h1v1h-1z"/><path fill="#FFFFFF" d="M11 20h1v1h-1zM12 20h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM12 22h1v1h-1z"/></svg><b>sleepy</b><span class="note">shop closed</span></div>
+              <div><svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true"><path fill="#5F5D36" d="M5 3h1v1h-1zM6 3h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM11 3h1v1h-1zM12 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM17 3h1v1h-1zM18 3h1v1h-1zM4 4h1v1h-1zM10 4h1v1h-1zM13 4h1v1h-1zM19 4h1v1h-1zM3 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM14 5h1v1h-1zM15 5h1v1h-1zM20 5h1v1h-1zM3 6h1v1h-1zM7 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM16 6h1v1h-1zM20 6h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1zM6 7h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1zM17 7h1v1h-1zM18 7h1v1h-1zM19 7h1v1h-1z"/><path fill="#9C9A6E" d="M5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM18 4h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM7 5h1v1h-1zM16 5h1v1h-1zM17 5h1v1h-1zM18 5h1v1h-1zM19 5h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM17 6h1v1h-1zM18 6h1v1h-1zM19 6h1v1h-1z"/><path fill="#6E1534" d="M8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM5 9h1v1h-1zM18 9h1v1h-1zM4 10h1v1h-1zM19 10h1v1h-1zM3 11h1v1h-1zM20 11h1v1h-1zM3 12h1v1h-1zM20 12h1v1h-1zM3 13h1v1h-1zM20 13h1v1h-1zM3 14h1v1h-1zM20 14h1v1h-1zM3 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM20 15h1v1h-1zM4 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM19 16h1v1h-1zM5 17h1v1h-1zM19 17h1v1h-1zM6 18h1v1h-1zM18 18h1v1h-1zM7 19h1v1h-1zM8 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM10 21h1v1h-1zM13 21h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM12 23h1v1h-1z"/><path fill="#F08CA4" d="M8 8h1v1h-1zM9 8h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM4 11h1v1h-1zM4 12h1v1h-1z"/><path fill="#DE5274" d="M10 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM14 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM9 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM17 14h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM9 15h1v1h-1zM10 15h1v1h-1zM13 15h1v1h-1zM14 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM7 18h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM13 18h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1z"/><path fill="#C8385A" d="M17 9h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM15 17h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1z"/><path fill="#1B2420" d="M8 13h1v1h-1zM15 13h1v1h-1z"/><path fill="#FFFFFF" d="M11 20h1v1h-1zM12 20h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM12 22h1v1h-1z"/></svg><b>wilted</b><span class="note">offline</span></div>
+              <div><svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true"><path fill="#2E5121" d="M6 0h1v1h-1zM7 0h1v1h-1zM16 0h1v1h-1zM17 0h1v1h-1zM5 1h1v1h-1zM8 1h1v1h-1zM15 1h1v1h-1zM18 1h1v1h-1zM5 2h1v1h-1zM9 2h1v1h-1zM14 2h1v1h-1zM18 2h1v1h-1zM6 3h1v1h-1zM10 3h1v1h-1zM13 3h1v1h-1zM17 3h1v1h-1zM7 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM16 4h1v1h-1zM8 5h1v1h-1zM15 5h1v1h-1zM9 6h1v1h-1zM14 6h1v1h-1zM11 7h1v1h-1zM12 7h1v1h-1z"/><path fill="#5E8F3E" d="M6 1h1v1h-1zM7 1h1v1h-1zM16 1h1v1h-1zM17 1h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM17 2h1v1h-1zM7 3h1v1h-1zM8 3h1v1h-1zM9 3h1v1h-1zM14 3h1v1h-1zM15 3h1v1h-1zM16 3h1v1h-1zM8 4h1v1h-1zM9 4h1v1h-1zM10 4h1v1h-1zM13 4h1v1h-1zM14 4h1v1h-1zM15 4h1v1h-1zM9 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1z"/><path fill="#6E1534" d="M8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM13 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM5 9h1v1h-1zM18 9h1v1h-1zM4 10h1v1h-1zM19 10h1v1h-1zM3 11h1v1h-1zM20 11h1v1h-1zM3 12h1v1h-1zM20 12h1v1h-1zM3 13h1v1h-1zM20 13h1v1h-1zM3 14h1v1h-1zM20 14h1v1h-1zM3 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM20 15h1v1h-1zM4 16h1v1h-1zM19 16h1v1h-1zM5 17h1v1h-1zM19 17h1v1h-1zM6 18h1v1h-1zM18 18h1v1h-1zM7 19h1v1h-1zM8 19h1v1h-1zM15 19h1v1h-1zM16 19h1v1h-1zM9 20h1v1h-1zM10 20h1v1h-1zM13 20h1v1h-1zM14 20h1v1h-1zM10 21h1v1h-1zM13 21h1v1h-1zM11 22h1v1h-1zM13 22h1v1h-1zM12 23h1v1h-1z"/><path fill="#F08CA4" d="M8 8h1v1h-1zM9 8h1v1h-1zM6 9h1v1h-1zM7 9h1v1h-1zM8 9h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM4 11h1v1h-1zM4 12h1v1h-1zM6 14h1v1h-1zM17 14h1v1h-1z"/><path fill="#DE5274" d="M10 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM13 8h1v1h-1zM14 8h1v1h-1zM15 8h1v1h-1zM9 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM14 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM10 10h1v1h-1zM11 10h1v1h-1zM12 10h1v1h-1zM13 10h1v1h-1zM14 10h1v1h-1zM15 10h1v1h-1zM16 10h1v1h-1zM5 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM8 11h1v1h-1zM9 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM13 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM5 12h1v1h-1zM6 12h1v1h-1zM7 12h1v1h-1zM9 12h1v1h-1zM10 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM14 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM4 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM12 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM16 13h1v1h-1zM17 13h1v1h-1zM4 14h1v1h-1zM5 14h1v1h-1zM7 14h1v1h-1zM8 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM12 14h1v1h-1zM13 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM7 15h1v1h-1zM8 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM7 18h1v1h-1z"/><path fill="#C8385A" d="M17 9h1v1h-1zM17 10h1v1h-1zM18 10h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM18 13h1v1h-1zM19 13h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM18 15h1v1h-1zM19 15h1v1h-1zM16 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1z"/><path fill="#1B2420" d="M8 12h1v1h-1zM15 12h1v1h-1zM8 13h1v1h-1zM15 13h1v1h-1z"/><path fill="#56615B" d="M9 14h1v1h-1zM14 14h1v1h-1zM9 15h1v1h-1zM14 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM7 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM15 16h1v1h-1zM16 16h1v1h-1zM17 16h1v1h-1zM18 16h1v1h-1zM10 18h1v1h-1zM11 18h1v1h-1zM12 18h1v1h-1zM13 18h1v1h-1z"/><path fill="#FFFFFF" d="M8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM11 17h1v1h-1zM12 17h1v1h-1zM13 17h1v1h-1zM14 17h1v1h-1zM15 17h1v1h-1zM8 18h1v1h-1zM9 18h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM11 19h1v1h-1zM12 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM11 21h1v1h-1zM12 21h1v1h-1zM12 22h1v1h-1z"/></svg><b>apron</b><span class="note">seller</span></div>
+            </div>
+          </figure>
+
+          <div class="prose"><p style="margin-top:40px">All 25 designed screens were built, with 44 px touch targets, visible focus rings, reduced-motion support, and colour never used as the only signal.</p></div>
+        </section>
+
+        <section id="more">
+          <h2 class="h2">Read more</h2>
+          <div class="ledger" style="margin-top:32px; max-width:760px">
+            <a class="row-link" data-umami-event="writeup-live" href="https://bebin-web.liara.run" target="_blank" rel="noopener" style="justify-content:space-between"><b>Live app</b><span class="mono">↗</span></a>
+            <a class="row-link" data-umami-event="writeup-api-docs" href="https://bebin-api.liara.run/api/docs" target="_blank" rel="noopener" style="justify-content:space-between"><b>API docs</b><span class="mono">↗</span></a>
+            <a class="row-link" data-umami-event="writeup-technical" href="https://github.com/n9e6y/scH-T/blob/main/TECHNICAL.md" target="_blank" rel="noopener" style="justify-content:space-between"><span><b>Technical decisions</b><span class="muted"> · every choice, with its reasons and measurements (TECHNICAL.md in the repository)</span></span><span class="mono">↗</span></a>
+          </div>
+          <div class="tagline"><span lang="fa" dir="rtl">«قبل از رفتن، ببین.»</span><span class="eyebrow">Look before you go.</span></div>
+        </section>
+      </article>
+    </div>
+
+    <nav class="pager" aria-label="More projects">
+      <a data-umami-event="project-prev" href="https://github.com/n9e6y/snappboxchallengeforalgorithmarena" target="_blank" rel="noopener"><span class="eyebrow">← Previous</span><b>Delivery Fare Engine</b></a>
+      <a href="/works.html"><span class="eyebrow">All →</span><b>Work</b></a>
+    </nav>
+  </div>
+</main>
+
+<section id="contact" class="contact">
+  <div class="inner">
+    <div class="eyebrow">Contact</div>
+    <h2 class="display">Let's talk.</h2>
+    <p class="lede">Research, code, ideas — Feel free to say Hi.</p>
+    <div class="pills">
+      <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" class="pill" aria-label="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+      <!-- <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="LinkedIn"><span class="glyph" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a> -->
+      <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="GitHub"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="X"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-kaggle" href="https://www.kaggle.com/nimayavari" target="_blank" rel="noopener" class="pill" aria-label="Kaggle"><span class="glyph" style="-webkit-mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat;mask:url(data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%3E%3Cpath%20d%3D%27M5%203h3.2v7.2L14.6%203h4.1l-7%208.1L19%2021h-4.1l-5.4-7.3-1.3%201.5V21H5z%27%2F%3E%3C%2Fsvg%3E) center/contain no-repeat"></span></a>
+      <a data-umami-event="contact-huggingface" href="https://huggingface.co/n9e6y" target="_blank" rel="noopener" class="pill" aria-label="Hugging Face"><span class="glyph" style="-webkit-mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/huggingface) center/contain no-repeat"></span></a>
+    </div>
+  </div>
+  <footer class="site-foot">
+    <span class="sig"><span class="mono-mark" aria-hidden="true"><span>9</span><span>9</span></span>© 2026 Nima Yavari</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</section>
+<script src="/assets/charts.js"></script>
+<script src="/assets/brand.js"></script>
+</body>
+</html>

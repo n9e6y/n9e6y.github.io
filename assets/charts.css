@@ -29,10 +29,12 @@
 .fig-tools button:hover { background: var(--line); }
 .fig-tools button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
-/* Draw in once when scrolled into view: lines trace left to right, bars grow up. */
-.js .fig svg.draw { clip-path: inset(-40px 100% -40px -40px); transition: clip-path .7s var(--ease); }
-.js .fig svg.draw.up { clip-path: inset(100% -400px -40px -40px); }
-.js .fig.drawn svg.draw { clip-path: inset(-40px -400px -40px -40px); }
+/* Draw in once when scrolled into view: lines trace left to right, bars grow up. On charts.js figures .draw is the
+   group of data marks (labels stay put); a hand-written svg.draw wipes whole. Pages tune --wipe-time / --wipe-ease. */
+.js .fig .draw { clip-path: inset(-40px 100% -40px -40px); transition: clip-path var(--wipe-time, .7s) var(--wipe-ease, var(--ease)); }
+.js .fig .draw.up { clip-path: inset(100% -400px -40px -40px); }
+.js .fig .draw.down { clip-path: inset(-40px -400px 100% -40px); }
+.js .fig.drawn .draw { clip-path: inset(-40px -400px -40px -40px); }
 
 /* Data view: the table is the chart's source and its accessible alternative. */
 .fig-table { overflow-x: auto; }
