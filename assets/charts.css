@@ -33,6 +33,7 @@
    group of data marks (labels stay put); a hand-written svg.draw wipes whole. Pages tune --wipe-time / --wipe-ease. */
 .js .fig .draw { clip-path: inset(-40px 100% -40px -40px); transition: clip-path var(--wipe-time, .7s) var(--wipe-ease, var(--ease)); }
 .js .fig .draw.up { clip-path: inset(100% -400px -40px -40px); }
+.js .fig .draw.down { clip-path: inset(-40px -400px 100% -40px); }
 .js .fig.drawn .draw { clip-path: inset(-40px -400px -40px -40px); }
 
 /* Data view: the table is the chart's source and its accessible alternative. */

@@ -1,0 +1,39 @@
+# Nima Yavari (n9e6y)
+
+> Personal site of Nima Yavari, handle n9e6y, a computer engineer who builds AI systems (LLM applications, retrieval pipelines and backend systems in Python and Go) and is pursuing an M.Sc. in algorithms and computation. Formerly a graphic designer. The site holds project write-ups, writing and an about page.
+
+Every page is static HTML. Charts on the site are drawn from HTML data tables in the same page, so the numbers are readable without running JavaScript.
+
+## About
+
+- [About](https://n9e6y.com/about.html): bio, interests, journey and stack. "I build AI systems, and I study the algorithms underneath them."
+- Interests: RAG and AI agents; NLP; recommender systems and representation learning; reinforcement learning.
+- Journey: account manager (Jun 2018 – Jun 2019), graphic designer, freelance and agencies (Jun 2019 – Nov 2021), B.Sc. Computer Engineering (2021 – 2025), ML training program at Fanap Campus (Dec 2023 – Aug 2024), M.Sc. Algorithms and Computation (Oct 2026 – present, expected Oct 2028 or Oct 2029).
+- Daily stack: Python, SQL, LLM integration, RAG pipelines, AI agents, LangChain, Pandas, NumPy, scikit-learn, FastAPI, Streamlit, PostgreSQL, MySQL, SQLite, Git. Working knowledge of Go.
+
+## Work
+
+- [All work](https://n9e6y.com/works.html): nine projects across systems, applied ML, tools and product.
+- [Bebin (ببین)](https://n9e6y.com/work/bebin.html): an in-person shopping assistant for Torob. Next.js, FastAPI, SQLite, embeddings. Full write-up.
+- [test-badger](https://n9e6y.com/work/test-badger.html): an AI agent that tests a website's signup and checkout flows in a real browser and reports bugs with evidence. Python, FastAPI, Playwright, React. Full write-up; built in five days for the buildX hackathon, scored 83 out of 100.
+- [GoCade](https://github.com/n9e6y/gocade): a multiplayer TCP game server you play with `nc host 9000`. Go.
+- [Delivery Fare Engine](https://github.com/n9e6y/snappboxchallengeforalgorithmarena): raw GPS CSV to per-delivery fares; a concurrent pipeline, profiled with pprof. Go.
+- [Persian Poetry Generator](https://huggingface.co/spaces/n9e6y/PPG): GPT-2 fine-tuned on classical Persian poetry.
+- [Letterboxd Recommender](https://huggingface.co/spaces/n9e6y/LMR): content-based movie recommendations from Word2Vec.
+- [Hokm × Jev](https://github.com/n9e6y/jev-hokm): Hokm, the Persian card game, against bots driven by the Jev decision model, with every decision recorded. In progress.
+- [Time Analyzer](https://github.com/n9e6y/time_management_panel): where your Google Calendar time actually goes.
+- [Semantic Code Search](https://github.com/n9e6y/scsc): a CLI that searches code by meaning, growing into RAG and agents. In progress.
+
+## Writing
+
+- [All writing](https://n9e6y.com/blog.html): notes on algorithms, machine learning, language models and other things he finds interesting.
+- [Five days, one developer, one AI pair](https://n9e6y.com/writing/building-test-badger.html) (24 Oct 2026): notes from a hackathon week, what went wrong and what he'd do differently.
+- [Turning the Dehkhoda Dictionary into Structured Data](https://n9e6y.com/writing/dehkhoda-dictionary.html) (16 Oct 2026): the Persian Dehkhoda Dictionary as an open, structured dataset on Hugging Face and Kaggle.
+
+## Contact
+
+- Email: n9e6y@outlook.com
+- GitHub: https://github.com/n9e6y
+- X: https://x.com/n9e6y
+- Kaggle: https://www.kaggle.com/nimayavari
+- Hugging Face: https://huggingface.co/n9e6y

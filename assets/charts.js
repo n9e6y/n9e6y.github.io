@@ -1,6 +1,6 @@
 // Figures: draws an SVG chart from the <table> inside each <figure class="fig" data-chart="...">.
 // The table stays as the accessible "Data" view and is the source for Copy CSV.
-// Options go in data-opts as JSON. Chart kinds: bars, hbar, split, stack, multiples, dumbbell, line, heatmap.
+// Options go in data-opts as JSON. Chart kinds: bars, hbar, split, stack, multiples, dumbbell, line, heatmap, graph, trace.
 (function () {
   var NS = 'http://www.w3.org/2000/svg';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -87,7 +87,7 @@
     node.addEventListener('mouseleave', off); node.addEventListener('blur', off);
   }
 
-  // ---- Charts. Each returns the draw-in direction ('up' for bars). Labels and axes get fix: 1 / class 'static' so only the data wipes in. ----
+  // ---- Charts. Each returns the draw-in direction ('up' for bars, 'down' for traces, nothing for left to right). Labels and axes get fix: 1 / class 'static' so only the data wipes in. ----
   var CHARTS = {};
 
   // Vertical bars (histograms, values over a category). hi: [from, to] indices drawn in ink.
@@ -300,6 +300,71 @@
     });
   };
 
+  // Tree or search space from an edge list (columns: from, to; the first row's "from" is the root). Breadth-first layers
+  // become columns, so the left-to-right wipe reads as the search frontier moving out. o.path: nodes drawn in ink (with
+  // the edges between them); o.miss: a node drawn dashed (not found). Drawn at the container's width.
+  CHARTS.graph = function (svg, d, o, tip) {
+    var W = o.w || Math.max(300, Math.round(svg.parentNode.clientWidth) || 680), rowH = 40, CH = 7.3;
+    var kids = {}, parent = {}, depth = {}, order = [];
+    d.rows.forEach(function (r) { (kids[r[0]] = kids[r[0]] || []).push(r[1]); parent[r[1]] = r[0]; });
+    var root = d.rows[0][0], q = [root];
+    depth[root] = 0;
+    while (q.length) {
+      var v = q.shift(); order.push(v);
+      (kids[v] || []).forEach(function (c) { if (depth[c] == null) { depth[c] = depth[v] + 1; q.push(c); } });
+    }
+    // Leaves take one row each, in depth-first order; a parent sits halfway between its first and last child.
+    var y = {}, rows = 0;
+    (function place(v) {
+      var c = kids[v] || [];
+      if (!c.length) { y[v] = rows++; return; }
+      c.forEach(place); y[v] = (y[c[0]] + y[c[c.length - 1]]) / 2;
+    })(root);
+    var layers = max(order.map(function (v) { return depth[v]; })) + 1;
+    var room = max(order.filter(function (v) { return !(kids[v] || []).length; }).map(function (v) { return v.length * CH; })) + 24;
+    var colW = layers > 1 ? (W - room - 8) / (layers - 1) : 0, H = rows * rowH;
+    var X = function (v) { return 6 + depth[v] * colW; }, Y = function (v) { return rowH / 2 + y[v] * rowH; };
+    var on = {};
+    (o.path || []).forEach(function (v) { on[v] = 1; });
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    order.forEach(function (v) {
+      var p = parent[v];
+      if (p == null) return;
+      var ink = on[v] && on[p], xm = (X(p) + X(v)) / 2;
+      el('path', { d: 'M' + r1(X(p) + 5) + ',' + r1(Y(p)) + 'H' + r1(xm) + 'V' + r1(Y(v)) + 'H' + r1(X(v) - 6),
+        style: 'fill:none;stroke:var(' + (ink ? '--ink' : '--line2') + ');stroke-width:' + (ink ? 1.5 : 1) }, svg);
+    });
+    order.forEach(function (v) {
+      var miss = v === o.miss, leaf = !(kids[v] || []).length, g = el('g', {}, svg);
+      el('circle', { cx: r1(X(v)), cy: r1(Y(v)), r: 5, style: miss ? 'fill:none;stroke:var(--ink);stroke-dasharray:3 2'
+        : on[v] ? 'fill:var(--ink)' : 'fill:var(--paper);stroke:var(--g5);stroke-width:1.5' }, g);
+      // Leaves are labelled to the right; inner nodes above, clear of their outgoing edges.
+      text(g, leaf ? X(v) + 14 : X(v) - 5, leaf ? Y(v) + 4 : Y(v) - 12, v, { ink: on[v] || miss, bold: on[v] });
+      point(g, v + ' · depth ' + depth[v], tip);
+    });
+  };
+
+  // Algorithm trace: one row per step, o.array drawn as cells. Columns: step, lo, mid, hi (indices into o.array).
+  // Cells outside lo..hi are discarded (light), mid is in ink. Steps run top to bottom, so it draws in downwards.
+  CHARTS.trace = function (svg, d, o, tip) {
+    var A = o.array || [], W = o.w || Math.max(300, Math.round(svg.parentNode.clientWidth) || 680), m = { l: o.left || 180 };
+    var cw = Math.min(48, (W - m.l) / A.length), ch = 32, gap = 14, H = d.rows.length * (ch + gap) - gap;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    d.rows.forEach(function (r, i) {
+      var lo = num(r[1]), mid = num(r[2]), hi = num(r[3]), yy = i * (ch + gap);
+      text(svg, 0, yy + ch / 2 + 4, r[0], { ink: 1, fix: 1 });
+      A.forEach(function (v, k) {
+        var x = m.l + k * cw, inR = k >= lo && k <= hi, isM = k === mid;
+        var c = el('rect', { x: r1(x + 1), y: yy, width: r1(cw - 2), height: ch,
+          style: isM ? 'fill:var(--ink)' : inR ? 'fill:var(--paper);stroke:var(--g5)' : 'fill:var(--g1)' }, svg);
+        el('text', { x: r1(x + cw / 2), y: yy + ch / 2 + 4, 'text-anchor': 'middle', text: String(v),
+          style: 'fill:var(' + (isM ? '--paper' : inR ? '--ink' : '--g4') + ')' }, svg);
+        if (isM) point(c, r[0] + ' · lo ' + lo + ', mid ' + mid + ', hi ' + hi, tip);
+      });
+    });
+    return 'down';
+  };
+
   // ---- Figure wiring: Data toggle + Copy CSV ----
   function csv(table) {
     var q = function (v) { return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
@@ -333,7 +398,7 @@
     if (o.minW) svg.style.minWidth = o.minW + 'px';
     var dir = draw(svg, readTable(table), o, tipper(fig));
     // Data marks move into one group that wipes in; axes and labels (class "static") stay put underneath.
-    var marks = el('g', { class: 'draw' + (dir === 'up' ? ' up' : '') });
+    var marks = el('g', { class: 'draw' + (dir ? ' ' + dir : '') });
     [].slice.call(svg.childNodes).forEach(function (n) {
       if (!(n.classList && n.classList.contains('static'))) marks.appendChild(n);
     });

@@ -25,7 +25,7 @@ jobs:
       - name: Pages answer over HTTPS
         run: |
           fail=0
-          for p in / /works.html /blog.html /about.html /writing/dehkhoda-dictionary.html /assets/og.png /sitemap.xml; do
+          for p in / /works.html /blog.html /about.html /writing/dehkhoda-dictionary.html /assets/og.png /sitemap.xml /llms.txt; do
             code=$(curl -s -o /dev/null -w '%{http_code}' --retry 2 --retry-delay 10 --max-time 20 "https://$SITE$p")
             echo "$code https://$SITE$p"
             [ "$code" = 200 ] || { echo "::error::https://$SITE$p returned $code"; fail=1; }
