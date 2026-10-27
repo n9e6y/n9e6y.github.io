@@ -2,37 +2,43 @@
 // Ported from animation/hero-anims.js. Monochrome: everything is drawn in the page's --ink-rgb,
 // so it follows the theme. Pointer input comes from the hero section (the canvas itself has
 // pointer-events: none): hover steers the search; click / tap sends a burst of expansion toward that spot.
+// Tune it live in working_on_it/hero-lab.html (local only).
 
 // ---- Tuning: change these to find the sweet spot ----
 const TREE = {
-  speed: 0.8,              // overall speed. 0 = frozen, 0.5 = half, 2 = double
-  center: [0.5, 0.5],    // where the root sits, as a share of hero width / height
-  spread: [0.46, 0.44],  // how far the outer ring reaches, as a share of hero width / height
-  depth: 6,              // number of rings the tree grows outward
-  rootBranches: 6,       // children of the root
-  branches: 3,           // children of every other node
-  density: 1900,         // hero area (px²) per node. Lower = more nodes
-  minNodes: 90,          // node cap on small screens
-  maxNodes: 320,         // node cap on large screens
-  probeEvery: 9,         // frames between new search probes. Lower = busier
+  speed: 0.7,              // overall speed. 0 = frozen, 0.5 = half, 2 = double
+  center: [0.7, 0.5],    // where the root sits, as a share of hero width / height
+  spread: [0.5, 0.5],    // how far the outer ring reaches, as a share of hero width / height
+  depth: 9,              // number of rings the tree grows outward
+  rootBranches: 4,       // children of the root
+  branches: 4,           // children of every other node
+  density: 650,          // hero area (px²) per node. Lower = more nodes
+  minNodes: 120,         // node cap on small screens
+  maxNodes: 1000,        // node cap on large screens
+  probeEvery: 40,        // frames between new search probes. Lower = busier
   maxProbes: 7,          // probes travelling at once
   probeSpeed: 0.13,      // how fast a probe walks down the tree
   backupSpeed: 0.18,     // how fast the result walks back up
-  explore: 0.9,          // UCT exploration. Higher = wider and bushier, lower = deeper and narrower
-  cursorPull: 0.6,       // how strongly hovering steers the search. 0 = ignore the cursor
-  rerootAfter: 30,       // root visits (once the tree is full) before it moves to its best child
+  explore: 0,            // UCT exploration. Higher = wider and bushier, lower = deeper and narrower
+  rerootAfter: 200,      // root visits (once the tree is full) before it moves to its best child
+  // Hover.
+  cursorPull: 1.7,       // how strongly hovering steers the search. 0 = ignore the cursor
+  hoverGlow: 0.5,        // how much branches near the cursor light up. 0 = off, 1 = as bright as a click burst
+  hoverRadius: 140,      // reach of that glow, px
+  hoverBusy: 4,          // probes come this many times as often while hovering. 1 = no change
   // Click / tap: a burst of search toward that spot.
-  burstProbes: 40,       // probes launched at once on click
-  burstTime: 90,         // frames the burst keeps feeding probes (60 = 1 second)
+  burstProbes: 8,        // probes launched at once on click
+  burstTime: 120,        // frames the burst keeps feeding probes (60 = 1 second)
   burstPerFrame: 2,      // extra probes per frame while the burst lasts
   burstPull: 4,          // how hard the burst steers toward the click (cursorPull is the gentle version)
   burstFocus: 12,        // how narrow the burst's aim is. 1 = whole half of the tree, 12 = tight cone, 30 = laser
   burstNodes: 0.6,       // extra node room during a burst, as a share of the cap (0.6 = +60%)
   burstHold: 240,        // frames after a burst before the tree may re-root (prune) again
-  burstGlow: 0.985,      // how slowly burst branches fade from bright to normal. Closer to 1 = longer glow
-  rotate: 0.0005,        // slow spin per frame. 0 = still
-  edgeAlpha: [0.08, 0.5],// opacity of the faintest and busiest edges
-  rootRing: 5.5,         // radius of the ring around the root, px
+  burstGlow: 0.999,      // how slowly burst branches fade from bright to normal. Closer to 1 = longer glow
+  // Look.
+  rotate: 0.0003,        // slow spin per frame. 0 = still
+  edgeAlpha: [0.03, 0.61], // opacity of the faintest and busiest edges
+  rootRing: 0,           // radius of the ring around the root, px
 };
 
 (function () {
@@ -132,7 +138,8 @@ const TREE = {
     }
     step(dt) {
       this.rot += TREE.rotate * dt;
-      this.spawnT -= dt; if (this.spawnT <= 0 && this.agents.length < TREE.maxProbes) { this.spawn(); this.spawnT = TREE.probeEvery; }
+      const busy = this.m.in ? Math.max(1, TREE.hoverBusy) : 1;
+      this.spawnT -= dt * busy; if (this.spawnT <= 0 && this.agents.length < TREE.maxProbes * busy) { this.spawn(); this.spawnT = TREE.probeEvery; }
       if (this.burst) {
         for (let i = 0; i < TREE.burstPerFrame && dt > 0; i++) this.spawn();
         this.burst.t -= dt; if (this.burst.t <= 0) { this.burst = null; this.hold = TREE.burstHold; }
@@ -158,6 +165,11 @@ const TREE = {
       const k = 1 - Math.pow(0.92, dt);
       const cool = Math.pow(TREE.burstGlow, dt);
       for (const n of this.live) { n.x += (n.tx - n.x) * k; n.y += (n.ty - n.y) * k; n.al = Math.min(1, n.al + 0.04 * dt); n.hot *= cool; }
+      // Hover: branches near the cursor warm up (same glow as a burst, fading the same way).
+      if (this.m.in && TREE.hoverGlow > 0) {
+        const R = TREE.hoverRadius;
+        for (const n of this.live) { const d = Math.hypot(n.x - this.m.x, n.y - this.m.y); if (d < R) n.hot = Math.max(n.hot, TREE.hoverGlow * (1 - d / R)); }
+      }
       for (const n of this.dying) { n.al -= 0.022 * dt; n.x += (n.x - this.cx) * 0.006 * dt; n.y += (n.y - this.cy) * 0.006 * dt; }
       this.dying = this.dying.filter(n => n.al > 0);
       if (this.fx) { this.fx.t -= 0.015 * dt; if (this.fx.t <= 0) this.fx = null; }
@@ -200,6 +212,8 @@ const TREE = {
   if (!canvas) return;
   const hero = canvas.parentElement;
   const tree = new Tree(canvas, hero);
+  // Handle for the local tuning page (working_on_it/hero-lab.html): edit config live, regrow after shape changes.
+  window.heroTree = { config: TREE, tree, regrow: () => { tree.init(); tree.step(0); tree.render(); } };
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let onScreen = true;
   const resume = () => { if (!reduce && onScreen && !document.hidden) tree.start(); };
