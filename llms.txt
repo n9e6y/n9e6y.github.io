@@ -13,7 +13,7 @@ Every page is static HTML. Charts on the site are drawn from HTML data tables in
 
 ## Work
 
-- [All work](https://n9e6y.com/works.html): nine projects across systems, applied ML, tools and product.
+- [All work](https://n9e6y.com/works.html): nine projects across systems, applied ML, tools and product. Two have full case studies (Bebin and test-badger, below, also featured on the home page); the other seven link to their code or demo.
 - [Bebin (ببین)](https://n9e6y.com/work/bebin.html): an in-person shopping assistant for Torob. Next.js, FastAPI, SQLite, embeddings. Full write-up.
 - [test-badger](https://n9e6y.com/work/test-badger.html): an AI agent that tests a website's signup and checkout flows in a real browser and reports bugs with evidence. Python, FastAPI, Playwright, React. Full write-up; built in five days for the buildX hackathon, scored 83 out of 100.
 - [GoCade](https://github.com/n9e6y/gocade): a multiplayer TCP game server you play with `nc host 9000`. Go.
