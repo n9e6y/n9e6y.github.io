@@ -167,15 +167,6 @@ header.site nav { display: flex; align-items: center; gap: 4px; font-size: 15px;
 .btn.outline:hover { background: var(--line); }
 .link-thick { font-weight: 500; text-underline-offset: 6px; }
 
-.pill {
-  display: inline-flex; align-items: center; justify-content: center; flex: none;
-  width: 48px; height: 48px; padding: 0; border: 1px solid var(--ink); border-radius: 50%;
-  text-decoration: none; transition: background .2s;
-}
-.pill:hover { background: var(--line); }
-.pill svg, .pill .glyph { display: block; width: 20px; height: 20px; }
-.pill .glyph { background: var(--ink); }
-
 
 .chip {
   display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 8px 16px;
@@ -217,7 +208,7 @@ blockquote { margin: 32px 0; padding-left: 24px; border-left: 2px solid var(--in
 .js [data-reveal] { opacity: 0; transform: translateY(12px); transition: opacity .65s var(--ease), transform .65s var(--ease); }
 .js [data-reveal].in { opacity: 1; transform: none; }
 
-/* ---- Contact block (ends every page) ---- */
+/* ---- Contact block (ends every page): big on Home, .compact everywhere else ---- */
 .contact {
   display: flex; flex-direction: column;
   margin-top: 128px; padding: 128px var(--pad) 24px;
@@ -226,7 +217,22 @@ blockquote { margin: 32px 0; padding-left: 24px; border-left: 2px solid var(--in
 .contact .inner { max-width: 1200px; width: 100%; margin: 0 auto; flex: 1; display: flex; flex-direction: column; justify-content: center; }
 .contact h2 { margin-top: 24px; }
 .contact .lede { margin: 32px 0 0; }
-.contact .pills { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 8px; }
+.contact .reach { margin-top: 40px; }
+/* Icon-only links (email first), no outline: each has an aria-label with the service name. The 44px box is the
+   tap target; the negative margin lines the first icon up with the text above. */
+.contact .profiles { display: flex; flex-wrap: wrap; gap: 4px; margin-left: -12px; }
+.contact .profiles a { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; text-decoration: none; transition: background .2s; }
+.contact .profiles a:hover { background: var(--line); }
+.contact .profiles svg, .contact .profiles .glyph { display: block; width: 20px; height: 20px; }
+.contact .profiles .glyph { background: var(--ink); }
+
+.contact.compact { padding-top: 56px; }
+.contact.compact .inner { flex-direction: row; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 24px 48px; }
+.contact.compact h2 { margin-top: 16px; }
+.contact.compact .reach { margin-top: 0; }
+.contact.compact .profiles { margin: 0 -12px -6px; }
+.contact.compact .site-foot { margin-top: 56px; }
+@media (max-width: 720px) { .contact.compact .profiles { margin-right: 0; } }
 .site-foot {
   max-width: 1200px; width: 100%; margin: 96px auto 0; padding-top: 20px;
   border-top: 1px solid var(--line);
