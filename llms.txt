@@ -27,7 +27,7 @@ Every page is static HTML. Charts on the site are drawn from HTML data tables in
 ## Writing
 
 - [All writing](https://n9e6y.com/blog.html): notes on algorithms, machine learning, language models and other things he finds interesting.
-- [Five days, one developer, one AI pair](https://n9e6y.com/writing/building-test-badger.html) (24 Oct 2026): notes from a hackathon week, what went wrong and what he'd do differently.
+- [A week of building an agent that tests websites](https://n9e6y.com/writing/building-test-badger.html) (24 Oct 2026): notes from a hackathon week, what went wrong and what he'd do differently.
 - [Turning the Dehkhoda Dictionary into Structured Data](https://n9e6y.com/writing/dehkhoda-dictionary.html) (16 Oct 2026): the Persian Dehkhoda Dictionary as an open, structured dataset on Hugging Face and Kaggle.
 
 ## Contact
