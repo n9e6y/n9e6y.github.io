@@ -120,19 +120,17 @@
   .pick:hover .t .go { transform: translateX(4px); color: var(--signal); }
   .pick:hover .t b { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
   .pick .one { font-size: 15px; line-height: 1.5; color: var(--muted); }
-  /* TEMP: options for the latest-writing card's picture (switcher below, local only). Remove the losers once Nima picks. */
+  /* Latest-writing card: a drawn picture instead of the share image, so it follows the theme. Each post's card can
+     carry both kinds; data-show on .img.post picks one (Nima's choice per post):
+     "figure" = the post's own figure data, drawn small in ink; "quote" = a line from the post, word for word. */
   .pick .img.post { position: relative; }
   .pick .img.post .v { position: absolute; inset: 0; display: none; color: var(--ink); }
-  .pick .img.post:not([data-show="og"]) .v-og { display: none; }
-  .pick .img.post[data-show="figure"] .v-figure, .pick .img.post[data-show="icon"] .v-icon { display: flex; align-items: center; justify-content: center; }
-  .pick .img.post[data-show="quote"] .v-quote, .pick .img.post[data-show="date"] .v-date { display: flex; flex-direction: column; justify-content: center; padding: 0 9%; }
+  .pick .img.post[data-show="figure"] .v-figure { display: flex; align-items: center; justify-content: center; }
+  .pick .img.post[data-show="quote"] .v-quote { display: flex; flex-direction: column; justify-content: center; padding: 0 9%; }
   .v-figure svg { width: 88%; height: auto; fill: currentColor; }
   .v-figure text { font: 9px var(--mono); fill: var(--muted); }
   .v-figure line { stroke: currentColor; stroke-width: .5; }
   .v-quote span { font-size: clamp(24px, 2.6vw, 36px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; text-wrap: balance; }
-  .v-date b { font-size: clamp(48px, 6vw, 84px); font-weight: 600; letter-spacing: -0.05em; line-height: 0.95; }
-  .v-date span { margin-top: 12px; font: 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-  .v-icon svg { height: 52%; width: auto; fill: currentColor; }
   [lang="fa"] { font-family: 'Vazirmatn', sans-serif; letter-spacing: 0; }
   @media (max-width: 900px) { .picks { grid-template-columns: minmax(0, 1fr); gap: 40px; } }
 
@@ -190,7 +188,7 @@
           <span class="one">An AI agent that tests a website's signup and checkout flows in a real browser and reports bugs with evidence.</span>
         </a>
         <a class="pick" data-umami-event="home-post-building-test-badger" href="/writing/building-test-badger.html">
-          <span class="img post" data-show="og"><img class="v-og" src="/assets/og/building-test-badger.png" alt="A week of building an agent that tests websites" loading="lazy" /><span class="v v-figure"><svg viewBox="0 0 200 125" aria-hidden="true"><text x="12" y="16">Decisions logged</text><rect x="12.0" y="29.1" width="16" height="26.9"/><rect x="37.5" y="55.0" width="16" height="1.0" opacity=".35"/><rect x="63.0" y="55.0" width="16" height="1.0" opacity=".35"/><rect x="88.5" y="45.9" width="16" height="10.1" opacity=".35"/><rect x="114.0" y="50.9" width="16" height="5.1" opacity=".35"/><rect x="139.5" y="34.1" width="16" height="21.9" opacity=".35"/><rect x="165.0" y="54.3" width="16" height="1.7" opacity=".35"/><line x1="12" y1="56.5" x2="181" y2="56.5"/><text x="12" y="76">Commits</text><rect x="12.0" y="110.6" width="16" height="3.4"/><rect x="37.5" y="100.5" width="16" height="13.5" opacity=".35"/><rect x="63.0" y="105.6" width="16" height="8.4" opacity=".35"/><rect x="88.5" y="108.9" width="16" height="5.1" opacity=".35"/><rect x="114.0" y="110.6" width="16" height="3.4" opacity=".35"/><rect x="139.5" y="82.0" width="16" height="32.0" opacity=".35"/><rect x="165.0" y="110.6" width="16" height="3.4" opacity=".35"/><line x1="12" y1="114.5" x2="181" y2="114.5"/></svg></span><span class="v v-quote" aria-hidden="true"><span>“What was on its screen?”</span></span><span class="v v-date" aria-hidden="true"><b>24 Oct</b><span>2026 · 2 min read</span></span><span class="v v-icon" aria-hidden="true"><svg viewBox="0 0 60 76"><rect x="1" y="1" width="58" height="74" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="9" y="11" width="34" height="5"/><rect x="9" y="25" width="42" height="2" opacity=".45"/><rect x="9" y="31" width="38" height="2" opacity=".45"/><rect x="9" y="37" width="42" height="2" opacity=".45"/><rect x="9" y="43" width="26" height="2" opacity=".45"/><rect x="9" y="53" width="42" height="2" opacity=".45"/><rect x="9" y="59" width="34" height="2" opacity=".45"/></svg></span></span>
+          <span class="img post" data-show="quote"><span class="v v-figure"><svg viewBox="0 0 200 125" aria-hidden="true"><text x="12" y="16">Decisions logged</text><rect x="12.0" y="29.1" width="16" height="26.9"/><rect x="37.5" y="55.0" width="16" height="1.0" opacity=".35"/><rect x="63.0" y="55.0" width="16" height="1.0" opacity=".35"/><rect x="88.5" y="45.9" width="16" height="10.1" opacity=".35"/><rect x="114.0" y="50.9" width="16" height="5.1" opacity=".35"/><rect x="139.5" y="34.1" width="16" height="21.9" opacity=".35"/><rect x="165.0" y="54.3" width="16" height="1.7" opacity=".35"/><line x1="12" y1="56.5" x2="181" y2="56.5"/><text x="12" y="76">Commits</text><rect x="12.0" y="110.6" width="16" height="3.4"/><rect x="37.5" y="100.5" width="16" height="13.5" opacity=".35"/><rect x="63.0" y="105.6" width="16" height="8.4" opacity=".35"/><rect x="88.5" y="108.9" width="16" height="5.1" opacity=".35"/><rect x="114.0" y="110.6" width="16" height="3.4" opacity=".35"/><rect x="139.5" y="82.0" width="16" height="32.0" opacity=".35"/><rect x="165.0" y="110.6" width="16" height="3.4" opacity=".35"/><line x1="12" y1="114.5" x2="181" y2="114.5"/></svg></span><span class="v v-quote" aria-hidden="true"><span>“What was on its screen?”</span></span></span>
           <span class="eyebrow">Latest writing · 24 Oct 2026</span>
           <span class="t"><b>A week of building an agent that tests websites</b><span class="go">↗</span></span>
           <span class="one">Notes from a hackathon week: what I got wrong, and what I'd do differently.</span>
@@ -264,30 +262,6 @@
   if (document.fonts) document.fonts.ready.then(fit);
   window.addEventListener('resize', fit);
   schedule();
-})();
-</script>
-<script>
-// TEMP: picture options for the latest-writing card, local only (no-op on n9e6y.com). ?card=og|figure|quote|date|icon
-(function () {
-  if (/(^|\.)n9e6y\.com$/.test(location.hostname)) return;
-  var box = document.querySelector('.pick .img.post'); if (!box) return;
-  var OPTS = ['og', 'figure', 'quote', 'date', 'icon'];
-  var pick = new URLSearchParams(location.search).get('card');
-  try { pick = pick || localStorage.getItem('card-preview'); } catch (e) {}
-  var panel = document.createElement('div');
-  panel.setAttribute('style', 'position:fixed;right:16px;bottom:16px;z-index:100;display:flex;gap:4px;align-items:center;padding:6px;border:1px solid var(--line2);border-radius:999px;background:var(--paper);font:12px var(--mono)');
-  panel.innerHTML = '<span style="padding:0 6px;color:var(--muted)">Post card</span>' + OPTS.map(function (k) {
-    return '<button data-k="' + k + '" style="padding:4px 10px;border:1px solid var(--line2);border-radius:999px;background:transparent;color:var(--ink);font:inherit;cursor:pointer">' + k + '</button>';
-  }).join('');
-  function set(k) {
-    if (OPTS.indexOf(k) < 0) k = 'og';
-    box.dataset.show = k;
-    try { localStorage.setItem('card-preview', k); } catch (e) {}
-    panel.querySelectorAll('button').forEach(function (b) { var on = b.dataset.k === k; b.style.background = on ? 'var(--ink)' : 'transparent'; b.style.color = on ? 'var(--paper)' : 'var(--ink)'; });
-  }
-  panel.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) set(b.dataset.k); });
-  document.body.appendChild(panel);
-  set(pick);
 })();
 </script>
 <script src="/assets/brand.js"></script>
