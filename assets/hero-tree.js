@@ -6,7 +6,7 @@
 
 // ---- Tuning: change these to find the sweet spot ----
 const TREE = {
-  speed: 0.4,              // overall speed. 0 = frozen, 0.5 = half, 2 = double
+  speed: 0.5,              // overall speed. 0 = frozen, 0.5 = half, 2 = double
   center: [0.68, 0.5],   // where the root sits, as a share of hero width / height
   spread: [0.46, 0.46],  // how far the outer ring reaches, as a share of hero width / height
   depth: 7,              // number of rings the tree grows outward
@@ -21,6 +21,7 @@ const TREE = {
   backupSpeed: 0.18,     // how fast the result walks back up
   explore: 0,            // UCT exploration. Higher = wider and bushier, lower = deeper and narrower
   rerootAfter: 200,      // root visits (once the tree is full) before it moves to its best child
+  rootEven: 0.6,         // how evenly the root's branches share the circle. 0 = by size (one big branch can wrap all the way round), 1 = equal slices
   // Hover.
   cursorPull: 0.8,       // how strongly hovering steers the search. 0 = ignore the cursor
   hoverGlow: 0.55,       // how much branches near the cursor light up. 0 = off, 1 = as bright as a click burst
@@ -42,6 +43,7 @@ const TREE = {
   rootSize: 3.5,         // radius of the root dot, px (other nodes are 1 to 3)
   rootHalo: 14,          // radius of the soft glow around the root, px. 0 = off
   rootHaloAlpha: 0.3,    // how bright that glow is at its centre. 0 = off, 1 = solid
+  rootEdgeMin: 0.2,      // lowest opacity of the root's own edges, so all its branches show even when the search ignores some. 0 = off
   accent: 'root',        // where the orange Signal shows: 'off', 'root', 'path' (root to its most-visited leaf), 'probes', 'wins', 'hover'
 };
 
@@ -113,10 +115,13 @@ const TREE = {
     layout() {
       const rx = this.w * TREE.spread[0] / this.maxD, ry = this.h * TREE.spread[1] / this.maxD; this.rx = rx; this.ry = ry;
       const sz = n => { let s = 1; for (const c of n.ch) s += sz(c); n.size = s; return s; }; sz(this.root);
+      // Each child gets a slice of its parent's arc by subtree size. At the root that is softened (TREE.rootEven):
+      // after a re-root one branch holds nearly every node, would take the whole circle and leave the root at its side.
       const pl = (n, a0, a1, d) => {
         const a = (a0 + a1) / 2; n.ang = a; n.tx = this.cx + Math.cos(a) * d * rx; n.ty = this.cy + Math.sin(a) * d * ry; if (!n.ch.length) return;
-        let tot = 0; for (const c of n.ch) tot += Math.pow(c.size, 0.7); let cur = a0;
-        for (const c of n.ch) { const sp = (a1 - a0) * Math.pow(c.size, 0.7) / tot; pl(c, cur, cur + sp, d + 1); cur += sp; }
+        const pw = d === 0 ? 0.7 * (1 - clamp(TREE.rootEven, 0, 1)) : 0.7;
+        let tot = 0; for (const c of n.ch) tot += Math.pow(c.size, pw); let cur = a0;
+        for (const c of n.ch) { const sp = (a1 - a0) * Math.pow(c.size, pw) / tot; pl(c, cur, cur + sp, d + 1); cur += sp; }
       };
       pl(this.root, this.rot, this.rot + TAU, 0);
     }
@@ -192,7 +197,7 @@ const TREE = {
       const R_ = acc === 'root' || acc === 'path' ? a => this.sig(a) : F;
       for (const n of this.dying) { if (!n.p) continue; x.strokeStyle = F(la(n) * n.al); x.lineWidth = lw(n); x.beginPath(); x.moveTo(n.p.x, n.p.y); x.lineTo(n.x, n.y); x.stroke(); }
       if (this.fx) { const f = this.fx; x.strokeStyle = F(0.85 * f.t); x.lineWidth = 2; x.beginPath(); x.moveTo(f.from.x, f.from.y); x.lineTo(f.to.x, f.to.y); x.stroke(); }
-      for (const n of this.live) { if (!n.p) continue; x.strokeStyle = F(la(n) * n.al); x.lineWidth = lw(n); x.beginPath(); x.moveTo(n.p.x, n.p.y); x.lineTo(n.x, n.y); x.stroke(); }
+      for (const n of this.live) { if (!n.p) continue; x.strokeStyle = F((n.p === this.root ? Math.max(la(n), TREE.rootEdgeMin) : la(n)) * n.al); x.lineWidth = lw(n); x.beginPath(); x.moveTo(n.p.x, n.p.y); x.lineTo(n.x, n.y); x.stroke(); }
       // 'hover': glowing branches (hover and click bursts) turn orange as they warm up.
       if (acc === 'hover') for (const n of this.live) { if (!n.p || n.hot < 0.02) continue; x.strokeStyle = this.sig(Math.min(1, n.hot) * n.al); x.lineWidth = lw(n); x.beginPath(); x.moveTo(n.p.x, n.p.y); x.lineTo(n.x, n.y); x.stroke(); }
       // 'path': the search's current answer, root to leaf along the most-visited children.

@@ -96,7 +96,12 @@
   .tl-row .what { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; }
   .tl-row .what b { font-size: 18px; font-weight: 500; }
   .tl-row .what span { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-  @media (max-width: 720px) { .tl-row .what { margin-left: 0 !important; } .timeline .axis span:nth-child(even) { color: transparent; } }
+  /* Narrow screens: the timeline keeps a readable width (every year label, labels under their bars) and scrolls sideways. */
+  .timeline { --tl-min: 640px; }
+  @media (max-width: 720px) {
+    .timeline { overflow-x: auto; overscroll-behavior-x: contain; padding-bottom: 8px; }
+    .timeline > * { min-width: var(--tl-min); }
+  }
   /* Expected spans: outlined, not filled; the optional extra year is dashed. */
   .tl-row .track span.planned { border: 1.5px solid var(--ink); }
   .tl-row .track span.maybe { border: 1.5px dashed var(--ink); border-left: 0; }
