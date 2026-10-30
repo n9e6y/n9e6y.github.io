@@ -68,12 +68,12 @@
 <style>
   /* Hero: headline, a fixed line about the work, then the rotator. On every screen it fills the first view
      except a thin strip at the bottom (--peek) where the Selected work row shows, so it's clear there's more. */
-  #home { --peek: 66px; position: relative; overflow: hidden; }
+  #home { --peek: 64px; position: relative; overflow: hidden; }
   #home canvas {
     position: absolute; top: 0; left: 0; width: 100%; height: calc(100svh - 65px - var(--peek)); pointer-events: none;
     opacity: 0.9;
-    -webkit-mask-image: radial-gradient(ellipse at 60% 50%, #000 30%, transparent 80%);
-    mask-image: radial-gradient(ellipse at 60% 50%, #000 30%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse at 68% 50%, #000 28%, transparent 85%);
+    mask-image: radial-gradient(ellipse at 68% 50%, #000 28%, transparent 85%);
   }
   #home .inner {
     position: relative; min-height: calc(100svh - 65px - var(--peek));
@@ -195,7 +195,7 @@
     <p class="lede">Research, code, ideas — feel free to say hi.</p>
     <div class="reach">
       <span class="profiles">
-        <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" aria-label="Email" data-tip="n9e6y@outlook.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+        <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" aria-label="Email" data-tip="n9e6y@outlook.com"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.simpleicons.org/gmail) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/gmail) center/contain no-repeat"></span></a>
         <!-- <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a> -->
         <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" aria-label="GitHub"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
         <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" aria-label="X"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>

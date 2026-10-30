@@ -1,44 +1,48 @@
 // Hero animation: Monte Carlo tree search (select, expand, rollout, backprop, re-root).
-// Ported from animation/hero-anims.js. Monochrome: everything is drawn in the page's --ink-rgb,
-// so it follows the theme. Pointer input comes from the hero section (the canvas itself has
+// Ported from animation/hero-anims.js. Drawn in the page's --ink-rgb so it follows the theme; one part
+// (TREE.accent) can take the page's --signal orange instead. Pointer input comes from the hero section (the canvas itself has
 // pointer-events: none): hover steers the search; click / tap sends a burst of expansion toward that spot.
 // Tune it live in working_on_it/hero-lab.html (local only).
 
 // ---- Tuning: change these to find the sweet spot ----
 const TREE = {
-  speed: 0.7,              // overall speed. 0 = frozen, 0.5 = half, 2 = double
-  center: [0.7, 0.5],    // where the root sits, as a share of hero width / height
-  spread: [0.5, 0.5],    // how far the outer ring reaches, as a share of hero width / height
-  depth: 9,              // number of rings the tree grows outward
+  speed: 0.4,              // overall speed. 0 = frozen, 0.5 = half, 2 = double
+  center: [0.68, 0.5],   // where the root sits, as a share of hero width / height
+  spread: [0.46, 0.46],  // how far the outer ring reaches, as a share of hero width / height
+  depth: 7,              // number of rings the tree grows outward
   rootBranches: 4,       // children of the root
   branches: 4,           // children of every other node
-  density: 650,          // hero area (px²) per node. Lower = more nodes
-  minNodes: 120,         // node cap on small screens
-  maxNodes: 1000,        // node cap on large screens
-  probeEvery: 40,        // frames between new search probes. Lower = busier
+  density: 1300,         // hero area (px²) per node. Lower = more nodes
+  minNodes: 100,         // node cap on small screens
+  maxNodes: 520,         // node cap on large screens
+  probeEvery: 22,        // frames between new search probes. Lower = busier
   maxProbes: 7,          // probes travelling at once
   probeSpeed: 0.13,      // how fast a probe walks down the tree
   backupSpeed: 0.18,     // how fast the result walks back up
   explore: 0,            // UCT exploration. Higher = wider and bushier, lower = deeper and narrower
   rerootAfter: 200,      // root visits (once the tree is full) before it moves to its best child
   // Hover.
-  cursorPull: 1.7,       // how strongly hovering steers the search. 0 = ignore the cursor
-  hoverGlow: 0.5,        // how much branches near the cursor light up. 0 = off, 1 = as bright as a click burst
-  hoverRadius: 140,      // reach of that glow, px
-  hoverBusy: 4,          // probes come this many times as often while hovering. 1 = no change
+  cursorPull: 0.8,       // how strongly hovering steers the search. 0 = ignore the cursor
+  hoverGlow: 0.55,       // how much branches near the cursor light up. 0 = off, 1 = as bright as a click burst
+  hoverRadius: 170,      // reach of that glow, px
+  hoverBusy: 3,          // probes come this many times as often while hovering. 1 = no change
   // Click / tap: a burst of search toward that spot.
-  burstProbes: 8,        // probes launched at once on click
-  burstTime: 120,        // frames the burst keeps feeding probes (60 = 1 second)
-  burstPerFrame: 2,      // extra probes per frame while the burst lasts
-  burstPull: 4,          // how hard the burst steers toward the click (cursorPull is the gentle version)
+  burstProbes: 4,        // probes launched at once on click
+  burstTime: 25,         // frames the burst keeps feeding probes (60 = 1 second)
+  burstPerFrame: 4,      // extra probes per frame while the burst lasts
+  burstPull: 3,          // how hard the burst steers toward the click (cursorPull is the gentle version)
   burstFocus: 12,        // how narrow the burst's aim is. 1 = whole half of the tree, 12 = tight cone, 30 = laser
   burstNodes: 0.6,       // extra node room during a burst, as a share of the cap (0.6 = +60%)
-  burstHold: 240,        // frames after a burst before the tree may re-root (prune) again
-  burstGlow: 0.999,      // how slowly burst branches fade from bright to normal. Closer to 1 = longer glow
+  burstHold: 300,        // frames after a burst before the tree may re-root (prune) again
+  burstGlow: 0.995,      // how slowly burst branches fade from bright to normal. Closer to 1 = longer glow
   // Look.
-  rotate: 0.0003,        // slow spin per frame. 0 = still
-  edgeAlpha: [0.03, 0.61], // opacity of the faintest and busiest edges
-  rootRing: 0,           // radius of the ring around the root, px
+  rotate: 0.001,         // slow spin per frame. 0 = still
+  edgeAlpha: [0.06, 0.5],  // opacity of the faintest and busiest edges
+  rootRing: 4,           // radius of the ring around the root, px
+  rootSize: 3.5,         // radius of the root dot, px (other nodes are 1 to 3)
+  rootHalo: 14,          // radius of the soft glow around the root, px. 0 = off
+  rootHaloAlpha: 0.3,    // how bright that glow is at its centre. 0 = off, 1 = solid
+  accent: 'root',        // where the orange Signal shows: 'off', 'root', 'path' (root to its most-visited leaf), 'probes', 'wins', 'hover'
 };
 
 (function () {
@@ -58,6 +62,7 @@ const TREE = {
       new ResizeObserver(() => this.resize()).observe(canvas);
     }
     ink(a) { return 'rgba(' + this.rgb + ',' + a + ')'; }
+    sig(a) { return 'rgba(' + this.srgb + ',' + a + ')'; }
     _bind() {
       const pos = e => { const r = this.c.getBoundingClientRect(); this.m.x = e.clientX - r.left; this.m.y = e.clientY - r.top; };
       const t = this.target;
@@ -89,7 +94,11 @@ const TREE = {
     }
     stop() { this.running = false; }
     render() {
-      this.rgb = getComputedStyle(document.documentElement).getPropertyValue('--ink-rgb').trim() || '13,13,13';
+      const cs = getComputedStyle(document.documentElement);
+      this.rgb = cs.getPropertyValue('--ink-rgb').trim() || '13,13,13';
+      // --signal is a hex colour (#ff4d1a); the canvas needs its r,g,b to vary the opacity.
+      const hex = cs.getPropertyValue('--signal').trim().replace('#', '');
+      this.srgb = hex.length === 6 ? [0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16)).join(',') : '255,77,26';
       this.ctx.clearRect(0, 0, this.w, this.h);
       this.draw(this.ctx);
     }
@@ -177,27 +186,45 @@ const TREE = {
     draw(x) {
       const [a0, a1] = TREE.edgeAlpha;
       const lw = n => 0.5 + Math.min(2.4, Math.log1p(n.N) * 0.42) + n.hot, la = n => a0 + Math.min(a1, Math.log1p(n.N) * 0.085) + 0.6 * n.hot;
-      const F = a => this.ink(a);
+      const F = a => this.ink(a), acc = TREE.accent;
+      // Probes, wins and the root take the accent colour when TREE.accent names them.
+      const P_ = acc === 'probes' ? a => this.sig(a) : F, W_ = acc === 'wins' ? a => this.sig(a) : F;
+      const R_ = acc === 'root' || acc === 'path' ? a => this.sig(a) : F;
       for (const n of this.dying) { if (!n.p) continue; x.strokeStyle = F(la(n) * n.al); x.lineWidth = lw(n); x.beginPath(); x.moveTo(n.p.x, n.p.y); x.lineTo(n.x, n.y); x.stroke(); }
       if (this.fx) { const f = this.fx; x.strokeStyle = F(0.85 * f.t); x.lineWidth = 2; x.beginPath(); x.moveTo(f.from.x, f.from.y); x.lineTo(f.to.x, f.to.y); x.stroke(); }
       for (const n of this.live) { if (!n.p) continue; x.strokeStyle = F(la(n) * n.al); x.lineWidth = lw(n); x.beginPath(); x.moveTo(n.p.x, n.p.y); x.lineTo(n.x, n.y); x.stroke(); }
+      // 'hover': glowing branches (hover and click bursts) turn orange as they warm up.
+      if (acc === 'hover') for (const n of this.live) { if (!n.p || n.hot < 0.02) continue; x.strokeStyle = this.sig(Math.min(1, n.hot) * n.al); x.lineWidth = lw(n); x.beginPath(); x.moveTo(n.p.x, n.p.y); x.lineTo(n.x, n.y); x.stroke(); }
+      // 'path': the search's current answer, root to leaf along the most-visited children.
+      if (acc === 'path') {
+        x.strokeStyle = this.sig(0.9); x.lineWidth = 1.6; x.beginPath(); x.moveTo(this.root.x, this.root.y);
+        for (let n = this.root; n.ch.length;) { n = n.ch.reduce((a, b) => b.N > a.N ? b : a); if (!n.N) break; x.lineTo(n.x, n.y); }
+        x.stroke();
+      }
       for (const n of this.dying) { x.fillStyle = F(0.3 * n.al); x.beginPath(); x.arc(n.x, n.y, 1.2, 0, TAU); x.fill(); }
       for (const n of this.live) { x.fillStyle = F((0.3 + Math.min(0.5, n.N * 0.03) + 0.6 * n.hot) * n.al); x.beginPath(); x.arc(n.x, n.y, 1.1 + Math.min(2.2, Math.log1p(n.N) * 0.35), 0, TAU); x.fill(); }
       for (const g of this.agents) {
         const P = g.path;
         if (g.ph === 'down') {
-          const pos = this.at(P, g.p), i = Math.floor(g.p); x.strokeStyle = F(0.5); x.lineWidth = 1.3; x.beginPath(); x.moveTo(P[0].x, P[0].y);
+          const pos = this.at(P, g.p), i = Math.floor(g.p); x.strokeStyle = P_(0.5); x.lineWidth = 1.3; x.beginPath(); x.moveTo(P[0].x, P[0].y);
           for (let k = 1; k <= i && k < P.length; k++) x.lineTo(P[k].x, P[k].y); x.lineTo(pos[0], pos[1]); x.stroke();
-          x.fillStyle = F(1); x.beginPath(); x.arc(pos[0], pos[1], 2.1, 0, TAU); x.fill();
+          x.fillStyle = P_(1); x.beginPath(); x.arc(pos[0], pos[1], 2.1, 0, TAU); x.fill();
         } else if (g.ph === 'roll') {
           const L = P[P.length - 1], pts = g.roll, m = Math.max(1, Math.ceil(g.rt * (pts.length - 1)));
           x.setLineDash([2, 3]); x.strokeStyle = F(0.55 * (1 - g.rt * 0.5)); x.lineWidth = 1; x.beginPath(); x.moveTo(L.x, L.y);
           for (let k = 1; k <= m; k++) x.lineTo(L.x + pts[k][0], L.y + pts[k][1]); x.stroke(); x.setLineDash([]);
-          if (g.rt > 0.8) { const e = pts[pts.length - 1]; x.fillStyle = F(g.r ? 0.9 : 0.5); x.beginPath(); x.arc(L.x + e[0], L.y + e[1], 1.8, 0, TAU); x.fill(); }
-        } else { const pos = this.at(P, Math.max(0, g.p)); x.fillStyle = F(g.r ? 0.9 : 0.6); x.beginPath(); x.arc(pos[0], pos[1], 1.8, 0, TAU); x.fill(); }
+          if (g.rt > 0.8) { const e = pts[pts.length - 1]; x.fillStyle = g.r ? W_(0.9) : F(0.5); x.beginPath(); x.arc(L.x + e[0], L.y + e[1], 1.8, 0, TAU); x.fill(); }
+        } else { const pos = this.at(P, Math.max(0, g.p)); x.fillStyle = g.r ? W_(0.9) : F(0.6); x.beginPath(); x.arc(pos[0], pos[1], g.r && acc === 'wins' ? 2.2 : 1.8, 0, TAU); x.fill(); }
       }
-      const r = this.root; x.strokeStyle = F(0.9); x.lineWidth = 1.2; x.beginPath(); x.arc(r.x, r.y, TREE.rootRing, 0, TAU); x.stroke();
-      x.fillStyle = F(1); x.beginPath(); x.arc(r.x, r.y, 2.2, 0, TAU); x.fill();
+      // Root: a soft halo, the ring and a bigger dot, so the main node stands out.
+      const r = this.root;
+      if (TREE.rootHalo > 0 && TREE.rootHaloAlpha > 0) {
+        const gr = x.createRadialGradient(r.x, r.y, 0, r.x, r.y, TREE.rootHalo);
+        gr.addColorStop(0, R_(TREE.rootHaloAlpha)); gr.addColorStop(1, R_(0));
+        x.fillStyle = gr; x.beginPath(); x.arc(r.x, r.y, TREE.rootHalo, 0, TAU); x.fill();
+      }
+      if (TREE.rootRing > 0) { x.strokeStyle = R_(0.9); x.lineWidth = 1.2; x.beginPath(); x.arc(r.x, r.y, TREE.rootRing, 0, TAU); x.stroke(); }
+      x.fillStyle = R_(1); x.beginPath(); x.arc(r.x, r.y, TREE.rootSize, 0, TAU); x.fill();
     }
     // Click / tap: aim the search at that spot and flood it with probes.
     onDown() {
