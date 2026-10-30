@@ -84,14 +84,17 @@
   /* Index view: date, title, line and tags. */
   .posts { margin-top: 48px; border-top: 1px solid var(--ink); }
   .toolbar:not([hidden]) + .posts { margin-top: 0; }
-  .post-row { display: block; padding: 28px 0; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s; }
+  /* Rows reach 12px past the text on both sides, so the hover tint doesn't touch the words. They rise in one after
+     another; the script below sets --k (position among the visible rows). */
+  .post-row { display: block; padding: 28px 12px; margin: 0 -12px; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s; }
+  .post-row { animation: rise .55s var(--ease) both; animation-delay: calc(var(--k, 0) * .06s); }
   .post-row:hover { background: var(--line); }
   .post-row .txt { display: flex; flex-direction: column; gap: 10px; }
   .post-row .date { font-family: var(--mono); font-size: 13px; color: var(--muted); }
   .post-row b { font-size: clamp(26px, 2.8vw, 34px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; max-width: 22ch; text-wrap: balance; }
   .post-row .one { font-size: 17px; line-height: 1.5; color: var(--muted); max-width: 52ch; }
   .post-row .tags { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; }
-  @media (max-width: 720px) { .post-row { padding: 24px 0; } }
+  @media (max-width: 720px) { .post-row { padding: 24px 12px; } }
 
   /* Grid view: cards as on the work page; cards in a row share row tracks (subgrid). */
   .cards { margin-top: 8px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); grid-auto-rows: auto minmax(140px, auto) auto; gap: 16px; }
@@ -174,10 +177,10 @@
 
 <section id="contact" class="contact compact">
   <div class="inner">
-    <div><div class="eyebrow">Contact</div><h2 class="h2">Let's talk.</h2></div>
+    <div><div class="eyebrow">Contact</div><h2 class="h2">Let's talk<span class="signal">.</span></h2></div>
     <div class="reach">
       <span class="profiles">
-        <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+        <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" aria-label="Email" data-tip="n9e6y@outlook.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
         <!-- <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a> -->
         <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" aria-label="GitHub"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
         <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" aria-label="X"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
@@ -195,12 +198,20 @@
 (function () {
   // Tag chips and Index/Grid toggle. A post can carry several tags (data-tags, "|"-separated).
   var items = document.querySelectorAll('[data-tags]');
+  var rows = document.querySelectorAll('.post-row');
+  // Stagger index among the visible rows (CSS turns it into the rise delay).
+  function stagger() {
+    var k = 0;
+    rows.forEach(function (it) { if (!it.hidden) it.style.setProperty('--k', k++); });
+  }
   document.querySelectorAll('[data-filter]').forEach(function (b, _, all) {
     b.addEventListener('click', function () {
       all.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
       items.forEach(function (it) { it.hidden = b.dataset.filter !== 'All' && it.dataset.tags.split('|').indexOf(b.dataset.filter) < 0; });
+      stagger();
     });
   });
+  stagger();
   document.querySelectorAll('[data-view]').forEach(function (b, _, all) {
     b.addEventListener('click', function () {
       all.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });

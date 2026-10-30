@@ -77,13 +77,21 @@
   .ledger .big { font-size: clamp(22px, 2.4vw, 28px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.25; }
   .ledger > div { padding: 20px 0; }
 
-  .timeline { margin-top: 40px; }
-  .timeline .axis { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  /* Bars grow one row after another (--k is the row's index); the optional year draws after its row. Tune here. */
+  .timeline { margin-top: 40px; --tl-time: .7s; --tl-first: .15s; --tl-stagger: .12s; }
+  .timeline .axis { position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); border-bottom: 1px solid var(--ink); font-family: var(--mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
   .timeline .axis span { padding: 0 0 6px 4px; border-left: 1px solid var(--line2); }
   .tl-row { padding: 20px 0; border-bottom: 1px solid var(--line); }
   .tl-row .track { position: relative; height: 12px; }
   .tl-row .track span { position: absolute; top: 0; bottom: 0; }
-  .js .timeline[data-reveal] .track span { transform: scaleX(0); transform-origin: left; transition: transform .7s var(--ease); }
+  .timeline .axis .now-y { color: var(--ink); }
+  /* Today: placed by the script below from the real date (months since Jan 2018 / 144). */
+  .timeline .axis .now { position: absolute; bottom: -4px; width: 7px; height: 7px; border-radius: 50%; background: var(--signal); transform: translateX(-50%); }
+  .js .timeline[data-reveal] .track span {
+    transform: scaleX(0); transform-origin: left;
+    transition: transform var(--tl-time) var(--ease) calc(var(--tl-first) + var(--k, 0) * var(--tl-stagger));
+  }
+  .js .timeline[data-reveal] .track span.maybe { transition-delay: calc(var(--tl-first) + var(--tl-time) + var(--k, 0) * var(--tl-stagger)); }
   .js .timeline[data-reveal].in .track span { transform: none; }
   .tl-row .what { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: baseline; }
   .tl-row .what b { font-size: 18px; font-weight: 500; }
@@ -170,29 +178,29 @@
       <div class="body">
         <h2 class="h2">Not the shortest path.</h2>
         <div class="timeline" data-reveal>
-          <div class="axis" aria-hidden="true"><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>2026</span><span>2027</span><span>2028</span><span>2029</span></div>
-        <div class="tl-row">
+          <div class="axis" aria-hidden="true"><span>2018</span><span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>2026</span><span>2027</span><span>2028</span><span>2029</span><i class="now" hidden></i></div>
+        <div class="tl-row" style="--k:0">
           <div class="track"><span style="left:3.5%;width:8.3%;background:var(--g4)"></span></div>
           <div class="what" style="margin-left:min(3.5%, calc(100% - 300px))"><b>Account Manager, Limitlines</b><span>Jun 2018 – Jun 2019</span></div>
         </div>
-        <div class="tl-row">
+        <div class="tl-row" style="--k:1">
           <div class="track"><span style="left:11.8%;width:20.1%;background:var(--g4)"></span></div>
           <div class="what" style="margin-left:min(11.8%, calc(100% - 300px))"><b>Graphic Designer, freelance &amp; agencies</b><span>Jun 2019 – Nov 2021</span></div>
         </div>
-        <div class="tl-row">
+        <div class="tl-row" style="--k:2">
           <div class="track"><span style="left:25.0%;width:33.3%;background:var(--ink)"></span></div>
           <div class="what" style="margin-left:min(25.0%, calc(100% - 300px))"><b>B.Sc. Computer Engineering, IAzad University</b><span>2021 – 2025</span></div>
         </div>
-        <div class="tl-row">
+        <div class="tl-row" style="--k:3">
           <div class="track"><span style="left:49.3%;width:5.6%;background:var(--ink)"></span></div>
           <div class="what" style="margin-left:min(49.3%, calc(100% - 300px))"><b>ML Training Program, Fanap Campus</b><span>Dec 2023 – Aug 2024</span></div>
         </div>
-        <div class="tl-row">
+        <div class="tl-row" style="--k:4">
           <div class="track"><span class="planned" style="left:72.9%;width:16.7%"></span><span class="maybe" style="left:89.6%;width:8.3%"></span></div>
           <div class="what" style="margin-left:min(72.9%, calc(100% - 420px))"><b>M.Sc. Algorithms and Computation, University of Tehran</b><span>Oct 2026 – present · expected Oct 2028 or Oct 2029</span></div>
         </div>
         </div>
-        <div class="eyebrow" style="margin-top:12px;text-transform:none;letter-spacing:0">Gray = design and client work · ink = engineering · outline = expected</div>
+        <div class="eyebrow" style="margin-top:12px;text-transform:none;letter-spacing:0">Gray = design and client work · ink = engineering · outline = expected<span class="now-key" hidden> · <span class="signal">●</span> today</span></div>
       </div>
     </section>
 
@@ -213,10 +221,10 @@
 
 <section id="contact" class="contact compact">
   <div class="inner">
-    <div><div class="eyebrow">Contact</div><h2 class="h2">Let's talk.</h2></div>
+    <div><div class="eyebrow">Contact</div><h2 class="h2">Let's talk<span class="signal">.</span></h2></div>
     <div class="reach">
       <span class="profiles">
-        <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" aria-label="Email"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
+        <a data-umami-event="contact-email" href="mailto:n9e6y@outlook.com" aria-label="Email" data-tip="n9e6y@outlook.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
         <!-- <a data-umami-event="contact-linkedin" href="https://www.linkedin.com/in/nimayavari" target="_blank" rel="noopener" aria-label="LinkedIn"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat;mask:url(https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-plain.svg) center/contain no-repeat"></span></a> -->
         <a data-umami-event="contact-github" href="https://github.com/n9e6y" target="_blank" rel="noopener" aria-label="GitHub"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/github) center/contain no-repeat"></span></a>
         <a data-umami-event="contact-x" href="https://x.com/n9e6y" target="_blank" rel="noopener" aria-label="X"><span class="glyph" aria-hidden="true" style="-webkit-mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat;mask:url(https://cdn.simpleicons.org/x) center/contain no-repeat"></span></a>
@@ -257,6 +265,20 @@
   }
   later(play, NAME.firstAfter);
   el.addEventListener('mouseenter', play);
+})();
+(function () {
+  // Journey timeline: mark today on the axis (Jan 2018 – Dec 2029) and its year label; hidden outside that range.
+  var axis = document.querySelector('.timeline .axis');
+  if (!axis) return;
+  var d = new Date(), y = d.getFullYear(), m = d.getMonth();
+  var days = new Date(y, m + 1, 0).getDate();
+  var pos = ((y - 2018) * 12 + m + d.getDate() / days) / 144 * 100;
+  if (pos < 0 || pos > 100) return;
+  var dot = axis.querySelector('.now'), key = document.querySelector('.now-key');
+  dot.style.left = pos.toFixed(1) + '%';
+  dot.hidden = false;
+  if (key) key.hidden = false;
+  axis.querySelectorAll('span').forEach(function (s) { if (s.textContent === String(y)) s.classList.add('now-y'); });
 })();
 </script>
 <script src="/assets/brand.js"></script>
